@@ -11,8 +11,8 @@ to it.
 
 from reprlib import recursive_repr
 
-from .latex_object import LatexObject
-from ..utils import dumps_list
+from . import LatexObject
+from pylatex.utils import dumps_list
 
 
 class CommandBase(LatexObject):

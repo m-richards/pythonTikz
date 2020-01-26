@@ -5,11 +5,12 @@ Baseclasses that can be used to create classes representing LaTeX objects.
     :license: MIT, see License for more details.
 """
 
-from .latex_object import LatexObject
-from .containers import Container, Environment, ContainerCommand
+from pylatex.base_classes.latex_object import LatexObject
+from pylatex.base_classes.containers import Container, Environment, \
+    ContainerCommand
 from .command import CommandBase, Command, UnsafeCommand, Options, \
     SpecialOptions, Arguments
-from .float import Float
+from pylatex.base_classes.float import Float
 
 # Old names of the base classes for backwards compatibility
 BaseLaTeXClass = LatexObject

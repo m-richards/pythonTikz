@@ -6,7 +6,7 @@ This module implements the classes used to show plots.
     :license: MIT, see License for more details.
 """
 from .base_classes import LatexObject, Environment, Command, Options, Container
-from .package import Package
+from . import Package
 import re
 import math
 
