@@ -1,15 +1,30 @@
-PyLaTeX |Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
+pythonTikZ .. |Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
 =============================================================
+This repository is still experiencing migratory changes as it departs
+from being a fork of PyLaTeX and becomes a package extension to
+PyLaTeX and also a standalone package. Please keep this in mind,
+as some links and text still refer to the original repository.
+Additionally, duplicated code sections will be progressively
+removed from this repository.
 
-PyLaTeX is a Python library for creating and compiling LaTeX files or
-snippets. The goal of this library is being an easy, but extensible
-interface between Python and LaTeX.
+pythonTikZ is a Python library creating TikZ graphics in LaTeX. 
+The library began in concept as a fork of PyLaTeX, which still
+forms a basis for the package. Its goal is to provide a higher
+level interface, less error prone interface to writing TikZ,
+whilst still exposing enough low level detail that complex 
+diagrams can be produced. 
+
+The library aims to provide a convenient, reusable way
+of writing TikZ where documentation and type hinting
+are available to aid in this process.
+
 
 Installation
 ------------
-Simply install using ``pip``::
+Fork the Repository
+.. Simply install using ``pip``::
 
-    pip install pylatex
+..    pip install pylatex
 
 Documentation
 -------------
@@ -40,21 +55,22 @@ picture:
 
 Copyright and License
 ---------------------
-
+Copyright 2020 Matthew Richards,
+Original copyright:
 Copyright 2014 Jelte Fennema, under `the MIT
-license <https://github.com/JelteF/PyLaTeX/blob/master/LICENSE>`__
+license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
-.. |Travis| image:: https://img.shields.io/travis/JelteF/PyLaTeX.svg
-   :target: https://travis-ci.org/JelteF/PyLaTeX
+.. .. |Travis| image:: https://img.shields.io/travis/JelteF/PyLaTeX.svg
+..   :target: https://travis-ci.org/JelteF/PyLaTeX
    
 .. |License| image:: https://img.shields.io/github/license/jeltef/pylatex.svg   
    :target: https://github.com/JelteF/PyLaTeX/blob/master/LICENSE
 
-.. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
-   :target: https://pypi.python.org/pypi/PyLaTeX
+.. .. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
+..   :target: https://pypi.python.org/pypi/PyLaTeX
    
-.. |Latest Docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
-   :target: https://jeltef.github.io/PyLaTeX/latest/
+.. .. |Latest Docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
+..   :target: https://jeltef.github.io/PyLaTeX/latest/
    
-.. |Stable Docs| image:: https://img.shields.io/badge/docs-stable-brightgreen.svg?style=flat
-   :target: https://jeltef.github.io/PyLaTeX/current/
+.. .. |Stable Docs| image:: https://img.shields.io/badge/docs-stable-brightgreen.svg?style=flat
+..    :target: https://jeltef.github.io/PyLaTeX/current/
