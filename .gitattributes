@@ -1,1 +1,5 @@
 pylatex/_version.py export-subst
+
+
+*.txt text eol=lf 
+*.sh bash eol=lf 
