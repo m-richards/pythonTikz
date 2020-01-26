@@ -4,3 +4,5 @@ pylatex/_version.py export-subst
 *.txt text eol=lf 
 *.sh text eol=lf 
 *.py text eol=lf
+*.rst text eol=lf
+Makefile text eol=lf

@@ -1,5 +1,8 @@
-pythonTikZ .. |Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
-=============================================================
+pythonTikZ |License|
+====================
+
+  ..  #|Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
+
 This repository is still experiencing migratory changes as it departs
 from being a fork of PyLaTeX and becomes a package extension to
 PyLaTeX and also a standalone package. Please keep this in mind,
@@ -22,9 +25,9 @@ are available to aid in this process.
 Installation
 ------------
 Fork the Repository
-.. Simply install using ``pip``::
+ .. Simply install using ``pip``::
 
-..    pip install pylatex
+ ..    pip install pylatex
 
 Documentation
 -------------
