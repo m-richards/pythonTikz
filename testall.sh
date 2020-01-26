@@ -53,6 +53,7 @@ if [ "$python_version" = '3' ]; then
     # Check code guidelines
     echo -e '\e[32mChecking for code style errors \e[0m'
     if ! flake8 pylatex examples tests; then
+		echo -e '\e[31mCode style tests failed. Tests Aborted. \e[0m'
         exit 1
     fi
 fi
@@ -67,6 +68,7 @@ fi
 
 echo -e '\e[32mTesting tests directory\e[0m'
 if ! $python "$(command -v nosetests)" --with-coverage tests/*; then
+	echo -e '\e[31mNose Unit Tests Failed. Tests Aborted. \e[0m'
     exit 1
 fi
 mv .coverage{,.tests}
@@ -80,6 +82,7 @@ count=0
 for f in "$main_folder"/examples/*.py; do
     echo -e '\e[32mTesting '"$f"'\e[0m'
     if ! $python "$(command -v coverage)" run "$f"; then
+		echo -e '\e[31mTesting '"$f"'\e Failed. Tests Aborted. \e[0m'
         exit 1
     fi
     ((count ++))
@@ -101,6 +104,7 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     make clean
     set +e
     if ! $python "$(command -v sphinx-build)" -b html -d build/doctrees/ source build/html -nW; then
+		echo -e '\e[31mSphinx Build Tests Failed. Tests Aborted. \e[0m'
         exit 1
     fi
 fi
