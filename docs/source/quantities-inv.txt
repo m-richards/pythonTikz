@@ -1,4 +1,0 @@
-# Sphinx inventory version 1
-# Project: quantities
-# Version: 0.10.0
-quantities.quantity.Quantity class user/tutorial.html
