@@ -19,8 +19,13 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..')) # up a level
-
+import inspect
+# sys.path.insert(0, os.path.abspath('..')) # up a level
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+sys.path.insert(0, os.path.abspath('../../'))
+from pythontikz import __version__
 
 # -- General configuration ------------------------------------------------
 
@@ -34,6 +39,7 @@ sys.path.insert(0, os.path.abspath('..')) # up a level
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.autosummary',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
@@ -61,7 +67,7 @@ author = 'Matthew Richards'
 # built documents.
 #
 # The short X.Y version.
-version = '0.1'
+version = '0.1'  #version = __version__.rstrip('.dirty')
 # The full version, including alpha/beta/rc tags.
 release = '0.1'
 
@@ -76,6 +82,12 @@ language = None
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = []
+
+# The reST default role (used for this markup: `text`) to use for all
+# documents.
+# Note this sets what `<text> ` prefix is i.e. py:obj`<text>`
+default_role = 'py:obj'
+
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -163,3 +175,133 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+
+
+
+
+# inherited features
+
+autodoc_member_order = 'bysource'
+autodoc_default_flags = ['inherited-members']
+autoclass_content = 'both'
+
+
+def auto_change_docstring(app, what, name, obj, options, lines):
+    r"""Make some automatic changes to docstrings.
+
+    Things this function does are:
+
+        - Add a title to module docstrings
+        - Merge lines that end with a '\' with the next line.
+    """
+    if what == 'module' and name.startswith('pythontikz'):
+        lines.insert(0, len(name) * '=')
+        lines.insert(0, name)
+
+    hits = 0
+    for i, line in enumerate(lines.copy()):
+        if line.endswith('\\'):
+            lines[i - hits] += lines.pop(i + 1 - hits)
+            hits += 1
+
+
+
+def autodoc_allow_most_inheritance(app, what, name, obj, namespace, skip,
+                                   options):
+    cls = namespace.split('.')[-1]
+
+    members = {
+        'object': ['dump', 'dumps_packages', 'dump_packages', 'latex_name',
+                   'escape', 'generate_tex', 'packages', 'dumps_as_content',
+                   'end_paragraph', 'separate_paragraph', 'content_separator'],
+
+        'container': ['create', 'dumps', 'dumps_content', 'begin_paragraph'],
+
+        'userlist': ['append', 'clear', 'copy', 'count', 'extend', 'index',
+                     'insert', 'pop', 'remove', 'reverse', 'sort'],
+        'error': ['args', 'with_traceback'],
+    }
+
+    members['all'] = list(set([req for reqs in members.values() for req in
+                               reqs]))
+
+    if name in members['all']:
+        skip = True
+
+        if cls == 'LatexObject':
+            return False
+
+        if cls in ('Container', 'Environment') and \
+                name in members['container']:
+            return False
+
+        if cls == 'Document' and name == 'generate_tex':
+            return False
+
+    if name == 'separate_paragraph' and cls in ('SubFigure', 'Float'):
+        return False
+
+    # Ignore all functions of NoEscape, since it is inherited
+    if cls == 'NoEscape':
+        return True
+
+    return skip
+
+
+def setup(app):
+    """Connect autodoc event to custom handler."""
+    app.connect('autodoc-process-docstring', auto_change_docstring)
+    app.connect('autodoc-skip-member', autodoc_allow_most_inheritance)
+
+
+def linkcode_resolve(domain, info):
+    """A simple function to find matching source code."""
+    module_name = info['module']
+    fullname = info['fullname']
+    attribute_name = fullname.split('.')[-1]
+    base_url = 'https://github.com/JelteF/PyLaTeX/'
+
+    if '+' in version:
+        commit_hash = version.split('.')[-1][1:]
+        base_url += 'tree/%s/' % commit_hash
+    else:
+        base_url += 'blob/v%s/' % version
+
+    filename = module_name.replace('.', '/') + '.py'
+    module = sys.modules.get(module_name)
+
+    # Get the actual object
+    try:
+        actual_object = module
+        for obj in fullname.split('.'):
+            parent = actual_object
+            actual_object = getattr(actual_object, obj)
+    except AttributeError:
+        return None
+
+    # Fix property methods by using their getter method
+    if isinstance(actual_object, property):
+        actual_object = actual_object.fget
+
+    # Try to get the linenumber of the object
+    try:
+        source, start_line = inspect.getsourcelines(actual_object)
+    except TypeError:
+        # If it can not be found, try to find it anyway in the parents its
+        # source code
+        parent_source, parent_start_line = inspect.getsourcelines(parent)
+        for i, line in enumerate(parent_source):
+            if line.strip().startswith(attribute_name):
+                start_line = parent_start_line + i
+                end_line = start_line
+                break
+        else:
+            return None
+
+    else:
+        end_line = start_line + len(source) - 1
+
+    line_anchor = '#L%d-L%d' % (start_line, end_line)
+
+    return base_url + filename + line_anchor
+

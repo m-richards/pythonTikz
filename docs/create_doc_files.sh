@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Script to generate the automodule sphinx contents for api documentation
+# Note script must be run from directory above to work
 # Optional named arguments:
 #      -p COMMAND: the python command that should be used, e.g. -p python3
 
@@ -26,19 +28,21 @@ done
 
 ARGS='--separate --force --no-headings --no-toc'
 
-echo Cleaning pylatex and examples
-rm -rf source/pylatex/*
+echo Cleaning pythontikz and examples
+rm -rf source/pythontikz/*
 rm -rf source/examples/*
 rm -rf source/_static/examples/*
 
-sphinx-apidoc -o source/pylatex/ ../pylatex/ $ARGS
-echo Removing file source/pylatex/pylatex.rst
-rm source/pylatex/pylatex.rst
-echo Removing file source/pylatex/pylatex.base_classes.rst
-rm source/pylatex/pylatex.base_classes.rst
+sphinx-apidoc -o source/pythontikz/ ../pythontikz/ $ARGS
+echo Removing file source/pythontikz/pythontikz.rst
+rm source/pythontikz/pythontikz.rst
+echo Removing file source/pythontikz/pythontikz.base_classes.rst
+rm source/pythontikz/pythontikz.base_classes.rst
 
 for f in ../examples/*.py; do
+    echo $f
     name=`echo $f | cut -d'/' -f3 | cut -d'.' -f1`
+    echo $name
     rst=source/examples/${name}.rst
     $python gen_example_title.py "$name" > $rst
     echo Creating file ${rst}

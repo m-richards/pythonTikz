@@ -31,6 +31,12 @@ that is not guaranteed.
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   usage
+   examples
+   api
+   changelog
+   contributing
 
 
 
