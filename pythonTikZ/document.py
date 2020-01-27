@@ -11,8 +11,8 @@ import subprocess
 import errno
 from .base_classes import Environment, Command, Container, LatexObject, \
     UnsafeCommand
-from . import Package
-from .errors import CompilerError
+from pylatex import Package
+from pylatex.errors import CompilerError
 from pylatex.utils import dumps_list, rm_temp_dir, NoEscape
 import pylatex.config as cf
 

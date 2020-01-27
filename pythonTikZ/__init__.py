@@ -8,6 +8,7 @@ A library for creating TikZ pictures from python.
 
 from .document import Document
 from pylatex.package import Package
+from pylatex.utils import NoEscape
 from .tikz import TikZ, Axis, Plot, TikZNode, TikZDraw, TikZCoordinate,\
     TikZPolarCoordinate, TikZArc, TikZPathList, TikZPath, TikZUserPath, \
     TikZOptions, TikZNodeAnchor, \
@@ -17,7 +18,6 @@ from .tikz import TikZ, Axis, Plot, TikZNode, TikZDraw, TikZCoordinate,\
 
 from .base_classes import Command, UnsafeCommand
 
-from .errors import TableRowSizeError
 
 from ._version import get_versions
 __version__ = get_versions()['version']
