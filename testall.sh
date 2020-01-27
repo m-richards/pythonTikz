@@ -42,6 +42,9 @@ while getopts ":p:cdh" opt; do
   esac
 done
 
+#hack to get pythonpath and modules to behave (used to work without this)
+current_ppath=$PYTHONPATH # copy so as to not permanantly edit path
+export PYTHONPATH=$PYTHONPATH:$PWD
 
 # Run the examples and tests
 python_version=$($python --version |& sed 's|Python \(.\).*|\1|g' | head -n 1)
@@ -82,7 +85,7 @@ count=0
 for f in "$main_folder"/examples/*.py; do
     echo -e '\e[32mTesting '"$f"'\e[0m'
     if ! $python "$(command -v coverage)" run "$f"; then
-		echo -e '\e[31mTesting '"$f"'\e Failed. Tests Aborted. \e[0m'
+		echo -e '\e[31mTesting '"$f"' Failed. Tests Aborted. \e[0m'
         exit 1
     fi
     ((count ++))
@@ -108,3 +111,5 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
         exit 1
     fi
 fi
+
+export PYTHONPATH=$current_ppath # restore path to old value
