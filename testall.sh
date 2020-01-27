@@ -52,7 +52,7 @@ python_version_long=$($python --version |& sed 's|Python \(.*\)|\1|g' | head -n 
 if [ "$python_version" = '3' ]; then
     # Check code guidelines
     echo -e '\e[32mChecking for code style errors \e[0m'
-    if ! flake8 pylatex examples tests; then
+    if ! flake8 pythontikz examples tests --exclude pythontikz/_version.py; then
 		echo -e '\e[31mCode style tests failed. Tests Aborted. \e[0m'
         exit 1
     fi
@@ -60,8 +60,8 @@ fi
 
 
 if [ "$python_version" = '2' ]; then
-    main_folder=python2_source
-    cd $main_folder
+	echo -e '\e[31mPython 2 is unsupported. Tests Aborted. \e[0m'
+    exit 1
 else
     main_folder=.
 fi
