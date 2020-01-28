@@ -91,7 +91,6 @@
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#os-specific-dependencies">OS specific dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#getting-the-source-code">Getting the source code</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-environment-setup">Python environment setup</a></li>
 </ul>
@@ -151,18 +150,22 @@ any other for that matter), please send in a pull request. It is important that
 setting up the development environment is as painless as possible.</p>
 <div class="section" id="setting-up-the-development-environment">
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="os-specific-dependencies">
-<h3>OS specific dependencies<a class="headerlink" href="#os-specific-dependencies" title="Permalink to this headline">¶</a></h3>
-<p>Some dependencies are OS specific. Ofcourse you need to have LaTeX installed,
-but that also comes in some different packages on most systems.</p>
+<p>It is <strong>strongly</strong> recommended to have a Linux environment set up
+in the development process to run the integration tests from. They are written
+in bash and so mileage may vary on other operating systems.</p>
+<p>This does not however mean that all development needs to take place on a
+Linux OS. I develop on windows and use WSL to run the integration tests.</p>
+<p>Regardless of operating system, you will however need a LaTeX distribution
+(obviously) so that pdflatex or latexmk can be run.</p>
+<p>Note that TeXLive need not be used, MikTeX or other LaTeX distributions should
+work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)
+Linux dependencies
+~~~~~~~~~~~~~~~~~~</p>
 <p>For Ubuntu and other Debian based systems:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-get install python3 python3-dev virtualenv <span class="se">\</span>
     texlive-pictures texlive-science texlive-latex-extra <span class="se">\</span>
     imagemagick
 </pre></div>
-</div>
-<p>Note that TeXLive need not be used, MikTeX or other LaTeX distributions should
-work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)</p>
 </div>
 <div class="section" id="getting-the-source-code">
 <h3>Getting the source code<a class="headerlink" href="#getting-the-source-code" title="Permalink to this headline">¶</a></h3>
@@ -174,9 +177,13 @@ like this:</p>
 </pre></div>
 </div>
 <p>It is also fairly likely you will need a fork of the parent library
-&lt;<a class="reference external" href="https://github.com/JelteF/PyLaTeX">https://github.com/JelteF/PyLaTeX</a>&gt;`_ if you are contributing anything new,
-as pythontikz is designed to operate as a wrapper sitting on top of this
-library.</p>
+&lt;<a class="reference external" href="https://github.com/JelteF/PyLaTeX">https://github.com/JelteF/PyLaTeX</a>&gt;`_ if you need to modify any of the
+underlying base classes. pythontikz is designed to operate as a wrapper
+sitting on top of this library to reduce maintenance and avoid duplication of
+code.</p>
+<p>This doesn&#8217;t mean that you should make changes and submit pull requests to
+PyLaTeX. Instead, make your changes in your local pythontikz fork and adjust
+the inheritance chain accordingly.</p>
 <p>Make your own branch for your specific feature or fix (don&#8217;t do this just on
 master):</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>git checkout -b your-nice-feature
@@ -210,15 +217,20 @@ running:</p>
 </div>
 <div class="section" id="some-tips-before-starting">
 <h2>Some tips before starting<a class="headerlink" href="#some-tips-before-starting" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>Look at the code that is already there when creating something new, for
-instance the classes for tables.</li>
-<li>To learn how to squash commits, read this <a class="reference external" href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html">blog</a>.
-Ignore the word of caution, since that only applies to main repositories on
-which people base their own work.  You can do this when you have a couple of
+<ol class="arabic">
+<li><p class="first">Look at the code that is already there when creating something new, and
+also make sure it isn&#8217;t part of
+<a class="reference external" href="https://jeltef.github.io/PyLaTeX/current/">PyLaTeX</a>.</p>
+</li>
+<li><p class="first">To learn how to squash commits, read this <a class="reference external" href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html">blog</a>.
+Ignore the word of caution (saying that interactive rebases after changes
+are pushed are bad), since this is directed to the case that other people
+are working on the branch that your force push will override.</p>
+<p>You can do this when you have a couple of
 commits that could be merged together. This mostly happens when you have
 commits that fix a typo or bug you made in a pull request and you fix that
-in a new commit.</li>
+in a new commit.</p>
+</li>
 </ol>
 </div>
 <div class="section" id="some-rules">
@@ -239,6 +251,11 @@ easy to see when the external API is changed in the future.</li>
 <li>Change docstrings when necessary. For instance when adding new arguments or
 changing behaviour.</li>
 <li>If you fix something, add a <strong>test</strong> so it won&#8217;t break again.</li>
+<li>If you add new functionality add <strong>tests</strong> for it. Make sure that the
+code actually does what you think it does! Also make sure that it breaks
+when you expect it to break. It is far more user friendly if you can catch
+formatting errors in the python, rather than waiting for the latex
+compilation to fail.</li>
 <li>If your change is user facing, add it to the <strong>changelog</strong> so it will be
 mentioned in the next release. Its location is at
 <code class="docutils literal"><span class="pre">docs/source/changelog.rst</span></code>.</li>

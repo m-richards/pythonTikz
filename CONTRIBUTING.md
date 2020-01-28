@@ -1,1 +1,1 @@
-See the documentation: https://jeltef.github.io/PyLaTeX/latest/contributing.html
+See the documentation: https://m-richards.github.io/pythonTikz/contributing.html

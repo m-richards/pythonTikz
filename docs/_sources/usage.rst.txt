@@ -3,7 +3,7 @@ Library usage
 We assume the reader is familiar with the `usage principles of PyLaTeX <https://jeltef.github.io/PyLaTeX/latest/usage.html>`_.
 If not, it might be work checking that.
 
-pythontikz package Intent
+pythontikz Package Intent
 -------------------------
 pythontikz is intended to integrate with  and extend the two use cases of PyLaTeX;
 Generating LaTeX code, and compiling LaTeX documents. Additionally, it aims to 

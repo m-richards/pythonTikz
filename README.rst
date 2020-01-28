@@ -5,13 +5,14 @@ pythonTikZ
 
 This repository is still experiencing migratory changes as it departs
 from being a fork of PyLaTeX and becomes a package extension to
-PyLaTeX and also a standalone package. Please keep this in mind,
+PyLaTeX as a standalone package. Please keep this in mind,
 as some links and text still refer to the original repository.
 Additionally, duplicated code sections will be progressively
 removed from this repository.
 
 pythonTikZ is a Python library creating TikZ graphics in LaTeX. 
-The library began in concept as a fork of PyLaTeX, which still
+The library began in concept as a fork of
+`PyLaTeX <https://jeltef.github.io/PyLaTeX/current/>`_, which still
 forms a basis for the package. Its goal is to provide a higher
 level interface, less error prone interface to writing TikZ,
 whilst still exposing enough low level detail that complex 

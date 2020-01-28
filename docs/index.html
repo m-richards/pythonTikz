@@ -142,9 +142,24 @@ forms a basis for the package. Its goal is to provide a higher
 level interface, less error prone interface to writing TikZ,
 whilst still exposing enough low level detail that complex
 diagrams can be produced.</p>
+<p><strong>pythonTikZ is not a substitute for learning TikZ (unfortunately).</strong>
+However, the intent is to make available a number of easy to use wrappers,
+which hide the TikZ writing details beneath a relatively intuitive exterior.
+The hope is that pythonTikZ eases the burden of using TikZ for occasional
+TikZ users, making image production a simple iterative process, without the
+need to continually look up &#8220;how do I do xyz in TikZ?&#8221;</p>
 <p>The library aims to provide a convenient, reusable way
 of writing TikZ where documentation and type hinting
-are available to aid in this process.</p>
+are available to aid in this process. The intention is that the python
+interface is easy to understand at a glance and thereby is easily modified
+and more reusable.</p>
+<p>It does not promise concise output TikZ. Whilst one could use
+the various TikZ styles to write less verbose TikZ, this has a nontrivial
+implementation burden. Additionally, it introduces the need to heuristically
+determine when a style definition is &#8220;worthwhile&#8221;.</p>
+<p>Finally, pythontikz aims to be more strict about the testing of new function
+than PyLaTeX (currently) is. Unit tests should verify that the output is as
+expected (which in turn should be valid TikZ).</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>pythonTikZ works on Python 3.6+
@@ -153,13 +168,13 @@ To be completed</p>
 <div class="section" id="support">
 <h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
 <p>This library is developed for use on Windows, but is tested on WSL.
-This should mean the library will work on both Windows and Linux but
-that is not guaranteed.</p>
+This should mean the library will work on both platforms but there is
+potential for some cases where they do not.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Library usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#pythontikz-package-intent">pythontikz package Intent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#pythontikz-package-intent">pythontikz Package Intent</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
