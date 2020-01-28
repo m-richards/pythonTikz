@@ -114,6 +114,11 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     # documentation is built into doc_building/build
     # copy to docs so that gh pages can find it
 
+    # we do a manual check to make sure that the docs have been build locally
+    # This is a bad way to make sure a  commit fails if someone hasn't
+    # updated the docs (by not running this script)
+    cp -r ../docs ../docs_old
+
     # clean docs folder first
     rm ../docs/ -r;
     mkdir ../docs/   # delete and recreate so that rm doesn't produce
@@ -126,6 +131,26 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     cp -r source ../docs/source
     cd ../docs/
     cat <>.nojekyll # add no jekyll indicator file
+
+    # check old docs match the newly build docs
+    cd ..
+    if diff docs/ docs_old -r ; then # same
+      exitVal=0
+      echo -e '\e[32mBuilt Docs have not changed since last version. \e[0m'
+    else
+      echo -e '\e[33mBuilt Docs have changed. This error can safely be ignored
+        locally; running this script has now updated the cached gh
+        pages docs.
+
+        If this triggers on integration, you have changed the documentation
+        and not run this prior to pushing, so the docs have not be updated.
+        Integration tests will now fail.
+        \e[0m'
+      exitVal=1
+    fi
+    rm docs_old -r
+
+exit $exitVal
 
 
 fi
