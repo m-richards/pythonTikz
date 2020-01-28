@@ -43,7 +43,7 @@ like this::
     cd pythontikz
 	
 It is also fairly likely you will need a fork of the parent library
-<https://github.com/JelteF/PyLaTeX>`_ if you need to modify any of the
+`<https://github.com/JelteF/PyLaTeX>`_ if you need to modify any of the
 underlying base classes. pythontikz is designed to operate as a wrapper
 sitting on top of this library to reduce maintenance and avoid duplication of
 code.

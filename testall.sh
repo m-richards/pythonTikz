@@ -124,5 +124,8 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     cp -r build/html/. ../docs/
     # copy source folder so that gh pages applies style sheets
     cp -r source ../docs/source
+    cd ../docs/
+    cat <>.nojekyll # add no jekyll indicator file
+
 
 fi
