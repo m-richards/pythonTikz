@@ -101,7 +101,7 @@ fi
 
 if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" != 3.3.* && "$python_version_long" != 3.4.* ]]; then
     echo -e '\e[32mChecking for errors in docs and docstrings: Examples\e[0m'
-    cd docs
+    cd doc_building
     set -e
     ./create_doc_files.sh -p "$python"
     make clean
@@ -111,4 +111,16 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
 		echo -e '\e[31mSphinx Build Tests Failed. Tests Aborted. \e[0m'
         exit 1
     fi
+    # documentation is built into doc_building/build
+    # copy to docs so that gh pages can find it
+
+    # clean docs folder first
+    rm ../docs/ -r;
+    mkdir ../docs/   # delete and recreate so that rm doesn't produce
+    # non existence warnings (we could stop these with -f but that might
+    # discard something important)
+
+    # copy contents of html folder not folder itself
+    cp -r build/html/. ../docs/
+
 fi

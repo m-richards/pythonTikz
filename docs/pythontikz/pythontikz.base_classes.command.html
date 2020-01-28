@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pythontikz.base_classes.command &mdash; pythonTikZ 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pythonTikZ 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="API reference" href="../api.html"/>
+        <link rel="next" title="pythontikz.document" href="pythontikz.document.html"/>
+        <link rel="prev" title="API reference" href="../api.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pythonTikZ
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Library usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pythontikz.base_classes.command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.document.html">pythontikz.document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.tikz.html">pythontikz.tikz</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pythonTikZ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+        <li><a href="../api.html">API reference</a> &raquo;</li>
+      
+    <li>pythontikz.base_classes.command</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="../_sources/pythontikz/pythontikz.base_classes.command.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-pythontikz.base_classes.command"></span><div class="section" id="pythontikz-base-classes-command">
+<h1>pythontikz.base_classes.command<a class="headerlink" href="#pythontikz-base-classes-command" title="Permalink to this headline">¶</a></h1>
+<p>This module implements a class that implements a latex command.</p>
+<p>This can be used directly or it can be inherited to make an easier interface
+to it.</p>
+<dl class="class">
+<dt id="pythontikz.base_classes.command.Parameters">
+<em class="property">class </em><code class="descclassname">pythontikz.base_classes.command.</code><code class="descname">Parameters</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/base_classes/command.html#Parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.base_classes.command.Parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.Parameters" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.command.Parameters</span></code></a></p>
+<p>The base class used by <a class="reference internal" href="#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-class docutils literal"><span class="pre">Options</span></code></a> and
+<a class="reference internal" href="#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a>.</p>
+<p>This class should probably never be used on its own and inhereting from it
+is only useful if a class like <a class="reference internal" href="#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a> or <a class="reference internal" href="#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a> is needed again.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>*args</strong> &#8211; Positional parameters</li>
+<li><strong>**kwargs</strong> &#8211; Keyword parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.base_classes.command.Options">
+<em class="property">class </em><code class="descclassname">pythontikz.base_classes.command.</code><code class="descname">Options</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/base_classes/command.html#Options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.base_classes.command.Options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.Options" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.command.Options</span></code></a>, <a class="reference internal" href="#pythontikz.base_classes.command.Parameters" title="pythontikz.base_classes.command.Parameters"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.base_classes.command.Parameters</span></code></a></p>
+<p>Shallow Wrapper class to enable inheritance from overridden parameters
+class, with otherwise same behaviour as
+<a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.Options" title="(in PyLaTeX v1.3.1)"><code class="xref py py-obj docutils literal"><span class="pre">pylatex.base_classes.command.Options</span></code></a>
+A class implementing LaTex options for a command.</p>
+<p>It supports normal positional parameters, as well as key-value pairs.
+Options are the part of a command located between the square brackets
+(<code class="docutils literal"><span class="pre">[]</span></code>). The positional parameters will be outputted in order and will
+appear before the key-value-pairs. The key value-pairs won&#8217;t be outputted
+in the order in which they were entered</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="n">Options</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+<span class="go">&#39;[a,b,c]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Options</span><span class="p">(</span><span class="s1">&#39;clip&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;25em&#39;</span><span class="p">,</span> <span class="n">trim</span><span class="o">=</span><span class="s1">&#39;1 2 3 4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+<span class="go">&#39;[clip,trim=1 2 3 4,width=50,height=25em]&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>*args</strong> &#8211; Positional parameters</li>
+<li><strong>**kwargs</strong> &#8211; Keyword parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.base_classes.command.SpecialOptions">
+<em class="property">class </em><code class="descclassname">pythontikz.base_classes.command.</code><code class="descname">SpecialOptions</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/base_classes/command.html#SpecialOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.base_classes.command.SpecialOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.SpecialOptions" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.command.SpecialOptions</span></code></a>, <a class="reference internal" href="#pythontikz.base_classes.command.Parameters" title="pythontikz.base_classes.command.Parameters"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.base_classes.command.Parameters</span></code></a></p>
+<p>A class that sepparates the options with &#8216;][&#8216; instead of &#8216;,&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>*args</strong> &#8211; Positional parameters</li>
+<li><strong>**kwargs</strong> &#8211; Keyword parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.base_classes.command.Arguments">
+<em class="property">class </em><code class="descclassname">pythontikz.base_classes.command.</code><code class="descname">Arguments</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/base_classes/command.html#Arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.base_classes.command.Arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.Arguments" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.command.Arguments</span></code></a>, <a class="reference internal" href="#pythontikz.base_classes.command.Parameters" title="pythontikz.base_classes.command.Parameters"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.base_classes.command.Parameters</span></code></a></p>
+<p>A class implementing LaTex arguments for a command.</p>
+<p>It supports normal positional parameters, as well as key-value pairs.
+Arguments are the part of a command located between the curly braces
+(<code class="docutils literal"><span class="pre">{}</span></code>). The positional parameters will be outputted in order and will
+appear before the key-value-pairs. The key value-pairs won&#8217;t be outputted
+in the order in which they were entered</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="n">Arguments</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+<span class="go">&#39;{a}{b}{c}&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="n">Arguments</span><span class="p">(</span><span class="s1">&#39;clip&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;25em&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+<span class="go">&#39;{clip}{width=50}{height=25em}&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>*args</strong> &#8211; Positional parameters</li>
+<li><strong>**kwargs</strong> &#8211; Keyword parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pythontikz.document.html" class="btn btn-neutral float-right" title="pythontikz.document" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../api.html" class="btn btn-neutral" title="API reference" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matthew Richards.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
