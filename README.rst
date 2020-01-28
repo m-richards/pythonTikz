@@ -1,7 +1,7 @@
-pythonTikZ |License|
+pythonTikZ
 ====================
 
-  ..  #|Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
+  ..  ..|Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
 
 This repository is still experiencing migratory changes as it departs
 from being a fork of PyLaTeX and becomes a package extension to
@@ -48,7 +48,7 @@ page for tips and rules when you want to contribute.
 
 Examples
 --------
-
+.. todo:: Update this
 The documentation contains a lot of examples that show the
 functionality. To give an impression of what can be generated see this
 picture:
@@ -64,16 +64,17 @@ Copyright 2014 Jelte Fennema, under `the MIT
 license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
 .. .. |Travis| image:: https://img.shields.io/travis/JelteF/PyLaTeX.svg
-..   :target: https://travis-ci.org/JelteF/PyLaTeX
+ ..   :target: https://travis-ci.org/JelteF/PyLaTeX
    
-.. |License| image:: https://img.shields.io/github/license/jeltef/pylatex.svg   
-   :target: https://github.com/JelteF/PyLaTeX/blob/master/LICENSE
+ .. .. |License| image:: https://img.shields.io/github/license/jeltef/pylatex
+.svg
+   :target: https://img.shields.io/github/license/m-richards/pythontikz.svg
 
 .. .. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
-..   :target: https://pypi.python.org/pypi/PyLaTeX
+ ..   :target: https://pypi.python.org/pypi/PyLaTeX
    
 .. .. |Latest Docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
-..   :target: https://jeltef.github.io/PyLaTeX/latest/
+     :target: https://jeltef.github.io/PyLaTeX/latest/
    
 .. .. |Stable Docs| image:: https://img.shields.io/badge/docs-stable-brightgreen.svg?style=flat
-..    :target: https://jeltef.github.io/PyLaTeX/current/
+ ..    :target: https://jeltef.github.io/PyLaTeX/current/
