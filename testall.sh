@@ -122,5 +122,7 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
 
     # copy contents of html folder not folder itself
     cp -r build/html/. ../docs/
+    # copy source folder so that gh pages applies style sheets
+    cp -r source ../docs/source
 
 fi
