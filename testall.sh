@@ -81,8 +81,9 @@ fi
 
 
 count=0
+echo -e '\e[32mTesting example scripts'"$f"'\e[0m'
 for f in "$main_folder"/examples/*.py; do
-    echo -e '\e[32mTesting '"$f"'\e[0m'
+    echo -e '\e[32m\t '"$f"'\e[0m'
     if ! $python "$(command -v coverage)" run "$f"; then
 		echo -e '\e[31mTesting '"$f"' Failed. Tests Aborted. \e[0m'
         exit 1
