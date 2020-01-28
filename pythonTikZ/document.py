@@ -37,7 +37,7 @@ class Document(Environment):
         ----
         default_filepath: str
             The default path to save files.
-        documentclass: str or `~.Command`
+        documentclass: str or `~pylatex.base_classes.command.Command`
             The LaTeX class of the document.
         document_options: str or `list`
             The options to supply to the documentclass

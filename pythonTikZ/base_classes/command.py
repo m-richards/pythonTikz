@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module implements a class that implements a latex command.
@@ -22,7 +23,8 @@ from pylatex.base_classes import (CommandBase, Command,  # noqa: F401
 
 
 class Parameters(pylatex.base_classes.command.Parameters):
-    """The base class used by `~Options` and `~Arguments`.
+    """The base class used by :class:`~Options` and
+    `~Arguments`.
 
     This class should probably never be used on its own and inhereting from it
     is only useful if a class like `~Options` or `~Arguments` is needed again.
@@ -61,10 +63,11 @@ class Parameters(pylatex.base_classes.command.Parameters):
 
 class Options(pylatex.base_classes.Options, Parameters):
     """Shallow Wrapper class to enable inheritance from overridden parameters
-    class, with otherwise same behaviour as pylatex.baseclasses.Options
+    class, with otherwise same behaviour as
+    `pylatex.base_classes.command.Options`
     """
 
-    __doc__ = pylatex.base_classes.Options.__doc__
+    __doc__ += pylatex.base_classes.Options.__doc__
 
 
 class SpecialOptions(pylatex.base_classes.SpecialOptions, Parameters):
