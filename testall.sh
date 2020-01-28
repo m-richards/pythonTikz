@@ -43,7 +43,6 @@ while getopts ":p:cdh" opt; do
 done
 
 #hack to get pythonpath and modules to behave (used to work without this)
-current_ppath=$PYTHONPATH # copy so as to not permanantly edit path
 export PYTHONPATH=$PYTHONPATH:$PWD
 
 # Run the examples and tests
@@ -100,16 +99,15 @@ fi
 
 
 if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" != 3.3.* && "$python_version_long" != 3.4.* ]]; then
-    echo -e '\e[32mChecking for errors in docs and docstrings\e[0m'
+    echo -e '\e[32mChecking for errors in docs and docstrings: Examples\e[0m'
     cd docs
     set -e
     ./create_doc_files.sh -p "$python"
     make clean
     set +e
+    echo -e '\e[32mChecking for errors in docs and docstrings: Codebase\e[0m'
     if ! $python "$(command -v sphinx-build)" -b html -d build/doctrees/ source build/html -nW; then
 		echo -e '\e[31mSphinx Build Tests Failed. Tests Aborted. \e[0m'
         exit 1
     fi
 fi
-
-export PYTHONPATH=$current_ppath # restore path to old value
