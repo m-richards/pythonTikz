@@ -1,4 +1,4 @@
-pylatex/_version.py export-subst
+pythontikz/_version.py export-subst
 
 
 *.txt text eol=lf 

@@ -48,9 +48,13 @@ venv*
 .venv*
 
 # Ignore generated doc files
+doc_building/source/examples
+doc_building/source/pythontikz
+doc_building/source/_static/examples
 docs/source/examples
-docs/source/pylatex
+docs/source/pythontikz
 docs/source/_static/examples
+
 
 docs/gh-pages
 

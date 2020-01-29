@@ -42,8 +42,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = "v"
-    cfg.parentdir_prefix = "PyLaTeX-"
-    cfg.versionfile_source = "pylatex/_version.py"
+    cfg.parentdir_prefix = "pythonTikz-"
+    cfg.versionfile_source = "pythontikz/_version.py"
     cfg.verbose = False
     return cfg
 
