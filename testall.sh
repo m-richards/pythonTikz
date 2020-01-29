@@ -81,7 +81,7 @@ fi
 
 
 count=0
-echo -e '\e[32mTesting example scripts'"$f"'\e[0m'
+echo -e '\e[32mTesting example scripts\e[0m'
 for f in "$main_folder"/examples/*.py; do
     echo -e '\e[32m\t '"$f"'\e[0m'
     if ! $python "$(command -v coverage)" run "$f"; then
@@ -134,11 +134,11 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
 
     # check old docs match the newly build docs
     cd ..
-    if diff docs/ docs_old -r ; then # same
+    if diff docs/ docs_old -r -x '*.png'; then # same
       exitVal=0
-      echo -e '\e[32mBuilt Docs have not changed since last version. \e[0m'
+      echo -e '\e[32mBuilt docs have not changed since last version. \e[0m'
     else
-      echo -e '\e[33mBuilt Docs have changed. This error can safely be ignored
+      echo -e '\e[33mBuilt docs have changed. This error can safely be ignored
         locally; running this script has now updated the cached gh
         pages docs.
 
