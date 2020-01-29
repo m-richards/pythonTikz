@@ -1,4 +1,3 @@
 include *.md
 recursive-include pythontikz *.py
 include versioneer.py
-include pythontikz/_version.py
