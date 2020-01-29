@@ -1,4 +1,6 @@
 -e .[all]
+# keeping this temporarily while I figure out how it works
 -e git+https://github.com/JelteF/sphinx.git@better-autodoc-skip-member#egg=sphinx
--e git+https://github.com/JelteF/sphinx_rtd_theme.git@master#egg=sphinx-rtd-theme
--e git+https://github.com/JelteF/flake8-putty.git@master#egg=flake8-putty
+
+sphinx_rtd_theme
+

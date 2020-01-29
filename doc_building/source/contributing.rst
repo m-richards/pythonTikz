@@ -40,17 +40,20 @@ You need your own fork of the `Github repository
 then need to clone your version of the repo using the normal way, something
 like this::
 
-    git clone git@github.com:YourUserName/pythontikz
+    git clone https://github.com/YourUserName/pythonTikz
     cd pythontikz
 	
 It is also fairly likely you will need a fork of the parent library
 `<https://github.com/JelteF/PyLaTeX>`_ if you need to modify any of the
-underlying base classes. pythontikz is designed to operate as a wrapper
-sitting on top of this library to reduce maintenance and avoid duplication of
-code.
+underlying base classes (you can download a local copy in the same -
+see its own contributing documentation for details).  pythonTikz
+is designed to operate as a wrapper sitting on top of this library to reduce
+maintenance and avoid duplication of code.
 
-This doesn't mean that you should make changes and submit pull requests to
-PyLaTeX. Instead, make your changes in your local pythontikz fork and adjust
+This doesn't however mean that you should make changes and submit pull
+requests to PyLaTeX (unless of course your changes are more general than
+pythonTikz, in which case you should probably be contributing there).
+Instead, make your changes in your local pythontikz fork and adjust
 the inheritance chain accordingly.
 
 Make your own branch for your specific feature or fix (don't do this just on
