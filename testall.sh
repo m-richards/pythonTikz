@@ -134,7 +134,7 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
 
     # check old docs match the newly build docs
     cd ..
-    if diff docs/ docs_old -r -x '*.png'; then # same
+    if diff docs/ docs_old -r -x '*.png' > /dev/null; then # same
       exitVal=0
       echo -e '\e[32mBuilt docs have not changed since last version. \e[0m'
     else
