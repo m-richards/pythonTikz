@@ -21,6 +21,8 @@ Regardless of operating system, you will however need a LaTeX distribution
 
 Note that TeXLive need not be used, MikTeX or other LaTeX distributions should
 work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)
+
+
 Linux dependencies
 ~~~~~~~~~~~~~~~~~~
 
@@ -29,7 +31,6 @@ For Ubuntu and other Debian based systems::
     sudo apt-get install python3 python3-dev virtualenv \
         texlive-pictures texlive-science texlive-latex-extra \
         imagemagick
-
 
 
 Getting the source code

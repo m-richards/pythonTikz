@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-dependencies">Linux dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#getting-the-source-code">Getting the source code</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-environment-setup">Python environment setup</a></li>
 </ul>
@@ -158,14 +159,15 @@ Linux OS. I develop on windows and use WSL to run the integration tests.</p>
 <p>Regardless of operating system, you will however need a LaTeX distribution
 (obviously) so that pdflatex or latexmk can be run.</p>
 <p>Note that TeXLive need not be used, MikTeX or other LaTeX distributions should
-work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)
-Linux dependencies
-~~~~~~~~~~~~~~~~~~</p>
+work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)</p>
+<div class="section" id="linux-dependencies">
+<h3>Linux dependencies<a class="headerlink" href="#linux-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>For Ubuntu and other Debian based systems:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-get install python3 python3-dev virtualenv <span class="se">\</span>
     texlive-pictures texlive-science texlive-latex-extra <span class="se">\</span>
     imagemagick
 </pre></div>
+</div>
 </div>
 <div class="section" id="getting-the-source-code">
 <h3>Getting the source code<a class="headerlink" href="#getting-the-source-code" title="Permalink to this headline">¶</a></h3>

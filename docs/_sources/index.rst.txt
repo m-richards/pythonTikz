@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-pythonTikZ
-==========
+pythonTikZ - `(Github repository) <https://github.com/m-richards/pythonTikz>`_
+==============================================================================
 pythonTikZ is a Python library creating TikZ graphics in LaTeX. 
 The library began in concept as a fork of PyLaTeX, which still
 forms a basis for the package. Its goal is to provide a higher
