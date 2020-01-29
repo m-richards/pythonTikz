@@ -1,4 +1,3 @@
 include *.md
-recursive-include pylatex *.py
-recursive-include python2_source/pylatex *.py
+recursive-include pythontikz *.py
 include versioneer.py
