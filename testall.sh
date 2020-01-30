@@ -147,7 +147,7 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
         and not run "testall.sh" prior to pushing, so the docs have not be
         updated. Integration tests will now fail.
         \e[0m'
-      exitVal=1
+      exitVal=3
     fi
     rm docs_old -r
 
