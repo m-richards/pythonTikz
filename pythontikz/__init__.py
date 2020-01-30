@@ -9,13 +9,13 @@ A library for creating TikZ pictures from python.
 from .document import Document
 from pylatex.package import Package
 from pylatex.utils import NoEscape
-from .tikz import TikZ, Axis, Plot, TikZNode, TikZDraw, TikZCoordinate,\
-    TikZPolarCoordinate, TikZArc, TikZPathList, TikZPath, TikZUserPath, \
-    TikZOptions, TikZNodeAnchor, \
-    TikZScope, TikZCoordinateVariable, TikZCalcScalar, TikZLibrary, \
-    TikZCoordinateBase, _TikZCoordinateImplicitCalculation, \
-    _TikZCoordinateHandle
-
+from .common import (TikZ, TikZOptions, TikZLibrary, TikZScope, Plot, Axis,
+                     TikZNodeAnchor)
+from .positions import (TikZCoordinate, TikZPolarCoordinate,
+                        TikZCoordinateVariable, TikZCoordinateBase,
+                        TikZCalcScalar, _TikZCoordinateHandle,
+                        _TikZCoordinateImplicitCalculation, TikZNode, )
+from .paths import (TikZPath, TikZPathList, TikZUserPath, TikZDraw, TikZArc)
 from .base_classes import Command, UnsafeCommand
 
 
