@@ -68,7 +68,7 @@ if [ "$python_version" = '2' ]; then
 fi
 
 echo -e '\e[32mTesting tests directory\e[0m'
-if ! coverage run --source="$main_folder"/pythontikz -m pytest tests/*; then
+if ! coverage run --source="$main_folder"/pythontikz -m pytest -v tests/*; then
   echo -e '\e[32mCoverage Report:\e[0m'
   coverage report;
 	echo -e '\e[31mUnit Tests Failed. Tests Aborted. \e[0m'

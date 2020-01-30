@@ -135,11 +135,13 @@ class TikzRectCoord(BaseTikzCoord):
 
         # prevent comparison between relative and non relative
         # by returning False
-        if (other_relative != self.relative):
+        if other_relative != self.relative:
             return False
 
+        tol = 1e-6
+
         # return comparison result
-        return (other_x == self._x and other_y == self._y)
+        return abs(other_x - self._x) < tol and abs(other_y - self._y) < tol
 
     def _arith_check(self, other):
         if isinstance(other, tuple):
