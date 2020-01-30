@@ -13,7 +13,7 @@ from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,
                         TikzDraw,
                         TikzScope, TikzOptions, TikzLibrary,
                         TikzPolCoord, TikzArc,
-                        TikzCalcCoord, TikZCalcScalar, Plot, Axis)
+                        TikzCalcCoord, TikzCalcScalar, Plot, Axis)
 
 from pythontikz.positions import _TikzCalcImplicitCoord
 
@@ -57,7 +57,7 @@ def test_tikz():
     repr(hh)
 
     # coordinate handle checks
-    s = TikZCalcScalar(value=3.4)
+    s = TikzCalcScalar(value=3.4)
     s.dumps()
     repr(s)
     # scalar multiplication of TikzCoordinateHandle

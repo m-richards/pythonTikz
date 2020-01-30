@@ -12,11 +12,11 @@ from .base_classes import Command
 import re
 import math
 
-from .common import TikzLibrary, TikZObject
+from .common import TikzLibrary, TikzObject
 from .base_classes import LatexObject
 
 
-class TikzNode(TikZObject):
+class TikzNode(TikzObject):
     """A class that represents a TiKZ node."""
 
     _possible_anchors = ['north', 'south', 'east', 'west']
@@ -27,7 +27,7 @@ class TikzNode(TikZObject):
         ----
         handle: str
             Node identifier
-        options: list or `~.TikZOptions`
+        options: list or `~.TikzOptions`
             List of options
         at: TikzRectCoord
             Coordinate where node is placed
@@ -64,7 +64,7 @@ class BaseTikzCoord(LatexObject, ABC):
 
 
 class TikzRectCoord(BaseTikzCoord):
-    r"""Extension of `~.TikZCoordinateBase`. Forms a General Purpose
+    r"""Extension of `~.BaseTikzCoord`. Forms a General Purpose
     Coordinate Class, representing a tuple of points specified, as opposed
     to the node shortcut command \coordinate.
     """
@@ -105,7 +105,7 @@ class TikzRectCoord(BaseTikzCoord):
 
     @classmethod
     def from_str(cls, coordinate):
-        """Build a TikZCoordinate object from a string."""
+        """Build a TikzCoordinate object from a string."""
 
         m = cls._coordinate_str_regex.match(coordinate)
 
@@ -218,7 +218,7 @@ class TikzPolCoord(TikzRectCoord):
         return ret_str + '({}:{})'.format(self._angle, self._radius)
 
 
-class _TikZCalcCoordHandle(BaseTikzCoord):
+class _TikzCalcCoordHandle(BaseTikzCoord):
     r"""Class to represent the syntax of using coordinate handle defined with
      \coordinate as opposed to defining the coordinate.
 
@@ -259,7 +259,7 @@ class _TikZCalcCoordHandle(BaseTikzCoord):
         return self.__sub__(other)
 
     def __mul__(self, other):
-        if isinstance(other, (float, int, TikZCalcScalar)) is False:
+        if isinstance(other, (float, int, TikzCalcScalar)) is False:
             raise TypeError("Coordinates can only be multiplied by scalars")
         return _TikzCalcImplicitCoord(other, "*", self)
 
@@ -282,7 +282,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
         This handle is for the inline re-referencing of the same
         coordinate using the label text supplied at definition.
         """
-        return _TikZCalcCoordHandle(self.handle)
+        return _TikzCalcCoordHandle(self.handle)
 
     def dumps(self):
         """Return string representation of the node."""
@@ -302,10 +302,10 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
         return ' '.join(ret_str) + ";"  # avoid space on end
 
     def __add__(self, other, error_text="addition"):
-        raise TypeError("TikZCoordinateVariable does not support the operation"
+        raise TypeError("TikzCalcCoord does not support the operation"
                         " '{}' as it represents the variable "
                         "definition. \n The handle returned by "
-                        "TikZCoordinateVariable.get_handle() does support"
+                        "TikzCalcCoord.get_handle() does support"
                         "arithmetic operators.".format(error_text))
 
     def __radd__(self, other):
@@ -324,7 +324,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
         return self.__mul__(other)
 
 
-class TikZCalcScalar(LatexObject):
+class TikzCalcScalar(LatexObject):
     """Wrapper for multiplication scalar in calc expressions e.g.
     ($ 4*(3,2.2) $)
     Written explicitly as a seperate class to enable dumps support.
@@ -409,9 +409,9 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         """Attempt to process item as a scalar, returns result as boolean"""
         if isinstance(item, (float, int)):
             self._last_item_type = "scalar"
-            self._arg_list.append(TikZCalcScalar(item))
+            self._arg_list.append(TikzCalcScalar(item))
             return True
-        elif isinstance(item, TikZCalcScalar):
+        elif isinstance(item, TikzCalcScalar):
             self._last_item_type = "scalar"
             self._arg_list.append(item)
             return True
@@ -423,10 +423,10 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
             # relatively easy error to make so ensure error is descriptive
             if isinstance(item, TikzCalcCoord):
                 raise TypeError(
-                    "TikZCoordinateVariable is invalid in an arithmetic "
+                    "TikzCalcCoord is invalid in an arithmetic "
                     "operation as it represents coordinate definition. "
                     "Instead, "
-                    "TikZCoordinateVariable.get_handle() should be used.")
+                    "TikzCalcCoord.get_handle() should be used.")
             # if we have nested, we expand to have single instance
             if isinstance(item, _TikzCalcImplicitCoord):
                 for i in item._arg_list:
@@ -470,9 +470,8 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         elif isinstance(point, TikzNode):
             _item = '({})'.format(point.handle)
         else:
-            raise TypeError('Only str, tuple, TikZCoordinate, '
-                            'TikZCoordinateVariable'
-                            'TikZNode or TikZNodeAnchor types are allowed,'
+            raise TypeError('Only str, tuple and  Tikz Positional '
+                            'classes are allowed,'
                             ' got: {}'.format(type(point)))
         # add, finally
         self._arg_list.append(_item)

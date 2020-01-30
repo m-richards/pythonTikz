@@ -57,7 +57,7 @@ class TikzScope(Environment):
     _latex_name = 'scope'
 
 
-class TikZObject(Container):
+class TikzObject(Container):
     """Abstract Class that some TikZ Objects inherits from."""
 
     def __init__(self, options=None):
@@ -68,7 +68,7 @@ class TikZObject(Container):
             Options pertaining to the object
         """
 
-        super(TikZObject, self).__init__()
+        super(TikzObject, self).__init__()
         self.options = options
 
     def dumps(self):

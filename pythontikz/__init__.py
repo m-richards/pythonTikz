@@ -13,7 +13,7 @@ from .common import (TikzPicture, TikzOptions, TikzLibrary, TikzScope, Plot,
                      Axis, TikzAnchor)
 from .positions import (TikzRectCoord, TikzPolCoord,
                         TikzCalcCoord, BaseTikzCoord,
-                        TikZCalcScalar, _TikZCalcCoordHandle,
+                        TikzCalcScalar, _TikzCalcCoordHandle,
                         _TikzCalcImplicitCoord, TikzNode, )
 from .paths import (TikzPath, TikzPathList, TikzUserPath, TikzDraw, TikzArc)
 from .base_classes import Command, UnsafeCommand

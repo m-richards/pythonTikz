@@ -7,10 +7,11 @@ This example shows TikZ drawing capabilities.
 """
 
 # begin-doc-include
-from pythontikz import (Document, TikzPicture, TikzNode, TikzDraw, TikzRectCoord,
+from pythontikz import (Document, TikzPicture, TikzNode, TikzDraw,
+                        TikzRectCoord,
                         TikzPolCoord, TikzCalcCoord,
                         TikzUserPath, TikzOptions, NoEscape, TikzScope,
-                        TikzArc, TikZLibrary, Plot)
+                        TikzArc, TikzLibrary)
 
 if __name__ == '__main__':
     # create document
@@ -18,8 +19,8 @@ if __name__ == '__main__':
 
     # can manually add tikz libraries to document
     # (some are detected automatically, like calc)
-    doc.preamble.append(TikZLibrary("arrows.meta"))
-    doc.preamble.append(TikZLibrary("decorations.markings"))
+    doc.preamble.append(TikzLibrary("arrows.meta"))
+    doc.preamble.append(TikzLibrary("decorations.markings"))
 
     # add our sample drawings
     with doc.create(TikzPicture()) as pic:

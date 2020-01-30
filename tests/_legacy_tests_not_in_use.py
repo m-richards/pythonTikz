@@ -11,9 +11,9 @@ changed.
 from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,
                         TikzAnchor, TikzUserPath, TikzPathList, TikzPath,
                         TikzDraw,
-                        TikzScope, TikzOptions, TikZLibrary,
+                        TikzScope, TikzOptions, TikzLibrary,
                         TikzPolCoord, TikzArc,
-                        TikzCalcCoord, TikZCalcScalar, Plot, Axis)
+                        TikzCalcCoord, TikzCalcScalar, Plot, Axis)
 
 from pythontikz.positions import _TikzCalcImplicitCoord
 
@@ -120,7 +120,7 @@ def test_tikz():
             pass
 
     # coordinate handle checks
-    s = TikZCalcScalar(value=3.4)
+    s = TikzCalcScalar(value=3.4)
     s.dumps()
     repr(s)
     # scalar multiplication of TikzCoordinateHandle
@@ -220,7 +220,7 @@ def test_tikz():
     dr = TikzDraw(path=None, options=None)
     repr(dr)
 
-    tl = TikZLibrary(name='', options=None)
+    tl = TikzLibrary(name='', options=None)
     repr(tl)
 
     a = TikzArc(start_ang=0, finish_ang=300, radius=3,
