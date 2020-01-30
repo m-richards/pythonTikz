@@ -12,7 +12,7 @@ from .base_classes import Command
 import re
 import math
 
-from .common import TikZLibrary, TikZObject
+from .common import TikzLibrary, TikZObject
 from .base_classes import LatexObject
 
 
@@ -274,7 +274,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
     coordinate handle (as opposed to the initial definition)
     """
 
-    packages = [TikZLibrary('calc')]
+    packages = [TikzLibrary('calc')]
 
     def get_handle(self):
         """Retrieves the associated coordinate handle accessor. # noqa: D401

@@ -8,7 +8,7 @@ This module implements the classes used to show plots.
 from .base_classes import LatexObject, Command
 import re
 
-from .common import TikZLibrary, TikZObject, TikzAnchor
+from .common import TikzLibrary, TikZObject, TikzAnchor
 from .positions import (TikzRectCoord, BaseTikzCoord, TikzNode,
                         )
 
@@ -207,14 +207,14 @@ class TikzPath(TikZObject):
         ----
         path: TikzPathList
             A list of the nodes, path types in the path
-        options: TikZOptions
+        options: TikzOptions
             A list of options for the command
         """
         super(TikzPath, self).__init__(options=options)
 
         additional_path_types = None
         if options is not None and 'use Hobby shortcut' in options:
-            self.packages.add(TikZLibrary('hobby'))
+            self.packages.add(TikzLibrary('hobby'))
             additional_path_types = [".."]
 
         # if already a TikZPathList, additional paths should have already been

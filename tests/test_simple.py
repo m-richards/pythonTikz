@@ -9,16 +9,19 @@ changed.
 """
 import pytest
 from pytest import raises
-from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,
-                        TikzAnchor, TikzUserPath, TikzPathList, TikzPath,
-                        TikzDraw,
-                        TikzScope, TikzOptions, TikZLibrary,
-                        TikzPolCoord, TikzArc,
-                        TikzCalcCoord, TikZCalcScalar, Plot, Axis)
-from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
-                                  TikzNode, TikZCalcScalar)
+# from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,  # noqa: F401
+#                         TikzAnchor, TikzUserPath, TikzPathList,  # noqa: F401
+#                         TikzPath, TikzDraw,  # noqa: F401
+#                         TikzScope, TikzOptions, TikZLibrary,  # noqa: F401
+#                         TikzPolCoord, TikzArc,  # noqa: F401
+#                         TikzCalcCoord, TikZCalcScalar, Plot, Axis, # noqa: F401
+#     )
+from pythontikz.positions import (TikzRectCoord, TikzPolCoord,
+                                  # TikzCalcCoord,  TikzNode,  # noqa: F401
+                                  # TikZCalcScalar  # noqa: F401
+                                  )
 
-from pythontikz.positions import _TikzCalcImplicitCoord
+from pythontikz.positions import _TikzCalcImplicitCoord  # noqa: F401
 from contextlib import contextmanager
 
 
@@ -36,7 +39,7 @@ class TestRectangularCoords(object):
         (rec_11 + (1, 1), TikzRectCoord(2, 2)),
         (rec_11 - (-1, 5), TikzRectCoord(2, -4)),
         (TikzRectCoord.from_str("(1,1)"), rec_11)
-        ]
+    ]
 
     @pytest.mark.parametrize('expected,actual', equality_cases)
     def test_rect_equality_checks(self, expected, actual):
@@ -46,7 +49,7 @@ class TestRectangularCoords(object):
         (lambda: TikzRectCoord(0, 0) + 2, raises(TypeError)),
         (lambda: TikzRectCoord.from_str("(0,0"), raises(ValueError)),
         (lambda: TikzRectCoord.from_str("(x=0,y=0)"), raises(ValueError)),
-         ]
+    ]
 
     @pytest.mark.parametrize("case,expectation", fail_cases)
     def test_rect_fail(self, case, expectation):
@@ -65,6 +68,7 @@ class TestRectangularCoords(object):
 
 pol1 = TikzPolCoord(180, 1)
 pol2 = TikzPolCoord(90, 1)
+
 
 class TestPolarCoords(object):
     equality_cases = [
@@ -95,14 +99,3 @@ class TestPolarCoords(object):
     @pytest.mark.parametrize("expected,actual", dumps_cases)
     def test_dumps(self, expected, actual):
         assert expected.dumps() == actual
-
-
-
-    # def test_node(self):
-    #     pass
-    #
-    # def test_dumps(self):
-    #     pass
-
-
-    pass

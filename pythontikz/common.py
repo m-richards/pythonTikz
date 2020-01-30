@@ -20,7 +20,7 @@ class TikzOptions(Options):
         self._positional_args.append(option)
 
 
-class TikZLibrary(Package):
+class TikzLibrary(Package):
     """Wrapper for package command for inclusion of tikz libraries. Allows
     automatic detection of some tikz libraries.
     """

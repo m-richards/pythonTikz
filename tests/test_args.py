@@ -11,7 +11,7 @@ changed.
 from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,
                         TikzAnchor, TikzUserPath, TikzPathList, TikzPath,
                         TikzDraw,
-                        TikzScope, TikzOptions, TikZLibrary,
+                        TikzScope, TikzOptions, TikzLibrary,
                         TikzPolCoord, TikzArc,
                         TikzCalcCoord, TikZCalcScalar, Plot, Axis)
 
@@ -64,7 +64,6 @@ def test_tikz():
     z = s * hh
     repr(z)
 
-
     a = TikzAnchor(node_handle=None, anchor_name=None)
     repr(a)
 
@@ -115,7 +114,7 @@ def test_tikz():
     dr = TikzDraw(path=None, options=None)
     repr(dr)
 
-    tl = TikZLibrary(name='', options=None)
+    tl = TikzLibrary(name='', options=None)
     repr(tl)
 
     a = TikzArc(start_ang=0, finish_ang=300, radius=3,
@@ -131,4 +130,4 @@ def test_tikz():
     repr(d1)
 
     impl = _TikzCalcImplicitCoord(c, '+', c)
-
+    repr(impl)
