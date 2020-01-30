@@ -6,6 +6,8 @@ This module the TikZ classes which keep track of positions, namely
 ..  :copyright: (c) 2020 by Matthew Richards.
     :license: MIT, see License for more details.
 """
+from abc import ABC
+
 from .base_classes import Command
 import re
 import math
@@ -14,7 +16,7 @@ from .common import TikZLibrary, TikZObject
 from .base_classes import LatexObject
 
 
-class TikZNode(TikZObject):
+class TikzNode(TikZObject):
     """A class that represents a TiKZ node."""
 
     _possible_anchors = ['north', 'south', 'east', 'west']
@@ -27,16 +29,16 @@ class TikZNode(TikZObject):
             Node identifier
         options: list or `~.TikZOptions`
             List of options
-        at: TikZCoordinate
+        at: TikzRectCoord
             Coordinate where node is placed
         text: str
             Body text of the node
         """
-        super(TikZNode, self).__init__(options=options)
+        super(TikzNode, self).__init__(options=options)
 
         self.handle = handle
 
-        if isinstance(at, (TikZCoordinate, type(None))):
+        if isinstance(at, (TikzRectCoord, type(None))):
             self._node_position = at
         else:
             raise TypeError(
@@ -46,9 +48,12 @@ class TikZNode(TikZObject):
         self._node_text = text
 
 
-class TikZCoordinateBase(LatexObject):
+class BaseTikzCoord(LatexObject, ABC):
     """Marker abstract class from which all coordinate classes inherit. Allows
     for cleaner use of isinstance regarding all coordinate objects.
+
+    Note this intentionally breaks the naming convention of Tikz<**>Coord
+    as it not to be used.
 
     This should be a private class, but sphinx throws a reference target not
     found error if it is.
@@ -58,7 +63,7 @@ class TikZCoordinateBase(LatexObject):
     """
 
 
-class TikZCoordinate(TikZCoordinateBase):
+class TikzRectCoord(BaseTikzCoord):
     r"""Extension of `~.TikZCoordinateBase`. Forms a General Purpose
     Coordinate Class, representing a tuple of points specified, as opposed
     to the node shortcut command \coordinate.
@@ -121,7 +126,7 @@ class TikZCoordinate(TikZCoordinateBase):
             other_relative = False
             other_x = float(other[0])
             other_y = float(other[1])
-        elif isinstance(other, TikZCoordinate):
+        elif isinstance(other, TikzRectCoord):
             other_relative = other.relative
             other_x = other._x
             other_y = other._y
@@ -138,12 +143,12 @@ class TikZCoordinate(TikZCoordinateBase):
 
     def _arith_check(self, other):
         if isinstance(other, tuple):
-            other_coord = TikZCoordinate(*other)
-        elif isinstance(other, TikZCoordinate):
+            other_coord = TikzRectCoord(*other)
+        elif isinstance(other, TikzRectCoord):
             if other.relative is True or self.relative is True:
                 raise ValueError('refusing to add relative coordinates')
             other_coord = other
-        elif isinstance(other, TikZCoordinateBase):
+        elif isinstance(other, BaseTikzCoord):
             return False
         else:
             raise TypeError('can only add tuple or TiKZCoordinate types')
@@ -155,8 +160,8 @@ class TikZCoordinate(TikZCoordinateBase):
         # hope that operation is implemented in reverse
         if other_coord is False:
             return other + self
-        return TikZCoordinate(self._x + other_coord._x,
-                              self._y + other_coord._y)
+        return TikzRectCoord(self._x + other_coord._x,
+                             self._y + other_coord._y)
 
     def __radd__(self, other):
         return self.__add__(other)
@@ -165,8 +170,8 @@ class TikZCoordinate(TikZCoordinateBase):
         other_coord = self._arith_check(other)
         if other_coord is False:
             return other - self
-        return TikZCoordinate(self._x - other_coord._x,
-                              self._y - other_coord._y)
+        return TikzRectCoord(self._x - other_coord._x,
+                             self._y - other_coord._y)
 
     def __rsub__(self, other):
         return self.__sub__(other)
@@ -179,7 +184,7 @@ class TikZCoordinate(TikZCoordinateBase):
                          math.pow(self._y - other_coord._y, 2))
 
 
-class TikZPolarCoordinate(TikZCoordinate):
+class TikzPolCoord(TikzRectCoord):
     """Class representing the Tikz polar coordinate specification"""
 
     _coordinate_str_regex = re.compile(r'(\+\+)?\(\s*(-?[0-9]+(\.[0-9]+)?)\s*'
@@ -201,7 +206,7 @@ class TikZPolarCoordinate(TikZCoordinate):
         self._angle = float(angle)
         x = radius * math.cos(math.radians(angle))
         y = radius * math.sin(math.radians(angle))
-        super(TikZPolarCoordinate, self).__init__(x, y, relative=relative)
+        super(TikzPolCoord, self).__init__(x, y, relative=relative)
 
     def __repr__(self):
         if self.relative:
@@ -211,7 +216,7 @@ class TikZPolarCoordinate(TikZCoordinate):
         return ret_str + '({}:{})'.format(self._angle, self._radius)
 
 
-class _TikZCoordinateHandle(TikZCoordinateBase):
+class _TikZCalcCoordHandle(BaseTikzCoord):
     r"""Class to represent the syntax of using coordinate handle defined with
      \coordinate as opposed to defining the coordinate.
 
@@ -231,22 +236,22 @@ class _TikZCoordinateHandle(TikZCoordinateBase):
 
     def __add__(self, other):
         if isinstance(other, tuple):
-            other = TikZCoordinate(*other)
-        if isinstance(other, TikZCoordinateBase) is False:
+            other = TikzRectCoord(*other)
+        if isinstance(other, BaseTikzCoord) is False:
             raise TypeError("Only can add coordinates with other"
                             " coordinate types")
-        return _TikZCoordinateImplicitCalculation(self, "+", other)
+        return _TikzCalcImplicitCoord(self, "+", other)
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __sub__(self, other):
         if isinstance(other, tuple):
-            other = TikZCoordinate(*other)
-        if isinstance(other, TikZCoordinateBase) is False:
+            other = TikzRectCoord(*other)
+        if isinstance(other, BaseTikzCoord) is False:
             raise TypeError("Only can subtract coordinates with other"
                             " coordinate types")
-        return _TikZCoordinateImplicitCalculation(self, "-", other)
+        return _TikzCalcImplicitCoord(self, "-", other)
 
     def __rsub__(self, other):
         return self.__sub__(other)
@@ -254,13 +259,13 @@ class _TikZCoordinateHandle(TikZCoordinateBase):
     def __mul__(self, other):
         if isinstance(other, (float, int, TikZCalcScalar)) is False:
             raise TypeError("Coordinates can only be multiplied by scalars")
-        return _TikZCoordinateImplicitCalculation(other, "*", self)
+        return _TikzCalcImplicitCoord(other, "*", self)
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
 
-class TikZCoordinateVariable(TikZCoordinateBase, TikZNode):
+class TikzCalcCoord(BaseTikzCoord, TikzNode):
     r"""Represents the \coordinate syntax for defining a coordinate handle in
     TikZ. This itself is a shortcut for a special case of node. Use
     get_handle method to retrieve object corresponding to use of the
@@ -275,7 +280,7 @@ class TikZCoordinateVariable(TikZCoordinateBase, TikZNode):
         This handle is for the inline re-referencing of the same
         coordinate using the label text supplied at definition.
         """
-        return _TikZCoordinateHandle(self.handle)
+        return _TikZCalcCoordHandle(self.handle)
 
     def dumps(self):
         """Return string representation of the node."""
@@ -341,7 +346,7 @@ class TikZCalcScalar(LatexObject):
         return str(round(self._value, 2))
 
 
-class _TikZCoordinateImplicitCalculation(TikZCoordinateBase):
+class _TikzCalcImplicitCoord(BaseTikzCoord):
     r"""Class representing an implicit coordinate that would be defined in
     TikZ using \coordinate. Supports addition/ subtraction of coordinates as
     can be done in the TikZ calc library.
@@ -355,7 +360,7 @@ class _TikZCoordinateImplicitCalculation(TikZCoordinateBase):
         """
         Args
         ----
-        args: TikZCoordinateBase or str
+        args: BaseTikzCoord or str
             A list of coordinate elements
         """
         self._last_item_type = None
@@ -414,14 +419,14 @@ class _TikZCoordinateImplicitCalculation(TikZCoordinateBase):
 
         for item in args:
             # relatively easy error to make so ensure error is descriptive
-            if isinstance(item, TikZCoordinateVariable):
+            if isinstance(item, TikzCalcCoord):
                 raise TypeError(
                     "TikZCoordinateVariable is invalid in an arithmetic "
                     "operation as it represents coordinate definition. "
                     "Instead, "
                     "TikZCoordinateVariable.get_handle() should be used.")
             # if we have nested, we expand to have single instance
-            if isinstance(item, _TikZCoordinateImplicitCalculation):
+            if isinstance(item, _TikzCalcImplicitCoord):
                 for i in item._arg_list:
                     self._parse_next_item(i)
                 continue
@@ -453,14 +458,14 @@ class _TikZCoordinateImplicitCalculation(TikZCoordinateBase):
     def _add_point(self, point):
         if isinstance(point, str):
             try:
-                _item = TikZCoordinate.from_str(point)
+                _item = TikzRectCoord.from_str(point)
             except ValueError:
                 raise ValueError('Illegal point string: "{}"'.format(point))
-        elif isinstance(point, TikZCoordinateBase):
+        elif isinstance(point, BaseTikzCoord):
             _item = point
         elif isinstance(point, tuple):
-            _item = TikZCoordinate(*point)
-        elif isinstance(point, TikZNode):
+            _item = TikzRectCoord(*point)
+        elif isinstance(point, TikzNode):
             _item = '({})'.format(point.handle)
         else:
             raise TypeError('Only str, tuple, TikZCoordinate, '
@@ -472,33 +477,33 @@ class _TikZCoordinateImplicitCalculation(TikZCoordinateBase):
         self._last_item_type = 'point'
 
     def __add__(self, other):
-        if isinstance(other, _TikZCoordinateImplicitCalculation):
+        if isinstance(other, _TikzCalcImplicitCoord):
             args = list(self._arg_list)  # list.copy on python >3.3
             args.append("+")
             args.extend(other._arg_list)
-            return _TikZCoordinateImplicitCalculation(*args)
+            return _TikzCalcImplicitCoord(*args)
 
-        elif isinstance(other, TikZCoordinateBase):
+        elif isinstance(other, BaseTikzCoord):
             args = list(self._arg_list)  # list.copy on python >3.3
             args.extend(['+', other])
-            return _TikZCoordinateImplicitCalculation(*args)
+            return _TikzCalcImplicitCoord(*args)
 
         raise TypeError("Addition/ Subtraction unsupported for types"
                         " {} and {}".format(type(self), type(other)))
 
     def __sub__(self, other):
-        if isinstance(other, _TikZCoordinateImplicitCalculation):
+        if isinstance(other, _TikzCalcImplicitCoord):
             print(other.dumps(), "./")
             args = list(self._arg_list)  # list.copy on python >3.3
             args.append("-")
             args.extend(other._arg_list)
-            return _TikZCoordinateImplicitCalculation(*args)
+            return _TikzCalcImplicitCoord(*args)
 
-        elif isinstance(other, TikZCoordinateBase):
+        elif isinstance(other, BaseTikzCoord):
             print(other, "./")
             args = list(self._arg_list)  # list.copy on python >3.3
             args.extend(["-", other])  # python 3.4 compat
-            return _TikZCoordinateImplicitCalculation(*args)
+            return _TikzCalcImplicitCoord(*args)
 
         raise TypeError("Addition/ Subtraction unsupported for types"
                         " {} and {}".format(type(self), type(other)))

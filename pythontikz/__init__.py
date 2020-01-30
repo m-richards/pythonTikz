@@ -9,16 +9,21 @@ A library for creating TikZ pictures from python.
 from .document import Document
 from pylatex.package import Package
 from pylatex.utils import NoEscape
-from .common import (TikZ, TikZOptions, TikZLibrary, TikZScope, Plot, Axis,
-                     TikZNodeAnchor)
-from .positions import (TikZCoordinate, TikZPolarCoordinate,
-                        TikZCoordinateVariable, TikZCoordinateBase,
-                        TikZCalcScalar, _TikZCoordinateHandle,
-                        _TikZCoordinateImplicitCalculation, TikZNode, )
-from .paths import (TikZPath, TikZPathList, TikZUserPath, TikZDraw, TikZArc)
+from .common import (TikzPicture, TikzOptions, TikZLibrary, TikzScope, Plot, Axis,
+                     TikzAnchor)
+from .positions import (TikzRectCoord, TikzPolCoord,
+                        TikzCalcCoord, BaseTikzCoord,
+                        TikZCalcScalar, _TikZCalcCoordHandle,
+                        _TikzCalcImplicitCoord, TikzNode, )
+from .paths import (TikzPath, TikzPathList, TikzUserPath, TikzDraw, TikzArc)
 from .base_classes import Command, UnsafeCommand
 
 
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
+
+# Backwards compatible names for the existing TikZ classes
+Tikz=TikzPicture
+TikzNodeAnchor=TikzAnchor
+TikzCoordinate=TikzRectCoord

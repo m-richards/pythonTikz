@@ -8,12 +8,12 @@ This module implements the classes used to show plots.
 from .base_classes import LatexObject, Command
 import re
 
-from .common import TikZLibrary, TikZObject, TikZNodeAnchor
-from .positions import (TikZCoordinate, TikZCoordinateBase, TikZNode,
+from .common import TikZLibrary, TikZObject, TikzAnchor
+from .positions import (TikzRectCoord, BaseTikzCoord, TikzNode,
                         )
 
 
-class TikZUserPath(LatexObject):
+class TikzUserPath(LatexObject):
     """Represents a possible TikZ path."""
 
     def __init__(self, path_type, options=None):
@@ -25,7 +25,7 @@ class TikZUserPath(LatexObject):
         options: Options
             List of options to add
         """
-        super(TikZUserPath, self).__init__()
+        super(TikzUserPath, self).__init__()
         self.path_type = path_type
         self.options = options
 
@@ -40,7 +40,7 @@ class TikZUserPath(LatexObject):
         return ret_str
 
 
-class TikZPathList(LatexObject):
+class TikzPathList(LatexObject):
     """Represents a path drawing."""
 
     _base_legal_path_types = ['--', '-|', '|-', 'to',
@@ -83,7 +83,7 @@ class TikZPathList(LatexObject):
         elif self._last_item_type in ('point', 'arc'):
             # point after point is permitted, doesnt draw
 
-            if isinstance(item, TikZNode):
+            if isinstance(item, TikzNode):
                 # Note that we drop the preceding backslash since that is
                 # not part of inline syntax. trailing ";" dropped as well
                 # since TikZPath will add this from its own dumps
@@ -127,10 +127,10 @@ class TikZPathList(LatexObject):
     def _add_path(self, path):
         if isinstance(path, str):
             if path in self._legal_path_types:
-                _path = TikZUserPath(path)
+                _path = TikzUserPath(path)
             else:
                 raise ValueError('Illegal user path type: "{}"'.format(path))
-        elif isinstance(path, TikZUserPath):
+        elif isinstance(path, TikzUserPath):
             _path = path
         else:
             raise TypeError('Only string or TikZUserPath types are allowed')
@@ -146,16 +146,16 @@ class TikZPathList(LatexObject):
     def _add_point(self, point):
         if isinstance(point, str):
             try:
-                _item = TikZCoordinate.from_str(point)
+                _item = TikzRectCoord.from_str(point)
             except ValueError:
                 raise ValueError('Illegal point string: "{}"'.format(point))
-        elif isinstance(point, TikZCoordinateBase):
+        elif isinstance(point, BaseTikzCoord):
             _item = point
         elif isinstance(point, tuple):
-            _item = TikZCoordinate(*point)
-        elif isinstance(point, TikZNode):
+            _item = TikzRectCoord(*point)
+        elif isinstance(point, TikzNode):
             _item = '({})'.format(point.handle)
-        elif isinstance(point, TikZNodeAnchor):
+        elif isinstance(point, TikzAnchor):
             _item = point.dumps()
         else:
             raise TypeError('Only str, tuple, TikZCoordinate,'
@@ -168,13 +168,13 @@ class TikZPathList(LatexObject):
     def _add_arc_spec(self, arc):
         if isinstance(arc, str):
             try:
-                _arc = TikZArc.from_str(arc)
+                _arc = TikzArc.from_str(arc)
             except ValueError:
                 raise ValueError('Illegal arc string: "{}"'.format(arc))
-        elif isinstance(arc, TikZArc):
+        elif isinstance(arc, TikzArc):
             _arc = arc
         elif isinstance(arc, tuple):
-            _arc = TikZArc(*arc)
+            _arc = TikzArc(*arc)
         else:
             raise TypeError('Only str, tuple or TikZArc'
                             'arc allowed to follow arc specifier,'
@@ -198,19 +198,19 @@ class TikZPathList(LatexObject):
         return ' '.join(ret_str)
 
 
-class TikZPath(TikZObject):
+class TikzPath(TikZObject):
     r"""The TikZ \path command."""
 
     def __init__(self, path=None, options=None):
         """
         Args
         ----
-        path: TikZPathList
+        path: TikzPathList
             A list of the nodes, path types in the path
         options: TikZOptions
             A list of options for the command
         """
-        super(TikZPath, self).__init__(options=options)
+        super(TikzPath, self).__init__(options=options)
 
         additional_path_types = None
         if options is not None and 'use Hobby shortcut' in options:
@@ -219,13 +219,13 @@ class TikZPath(TikZObject):
 
         # if already a TikZPathList, additional paths should have already been
         # supplied
-        if isinstance(path, TikZPathList):
+        if isinstance(path, TikzPathList):
             self.path = path
         elif isinstance(path, list):
-                self.path = TikZPathList(
+                self.path = TikzPathList(
                     *path, additional_path_types=additional_path_types)
         elif path is None:
-            self.path = TikZPathList(
+            self.path = TikzPathList(
                 additional_path_types=additional_path_types)
         else:
             raise TypeError(
@@ -244,7 +244,7 @@ class TikZPath(TikZObject):
         return ' '.join(ret_str) + ';'
 
 
-class TikZDraw(TikZPath):
+class TikzDraw(TikzPath):
     """A draw command is just a path command with the draw option."""
 
     def __init__(self, path=None, options=None):
@@ -256,7 +256,7 @@ class TikZDraw(TikZPath):
         options: TikZOptions
             A list of options for the command
         """
-        super(TikZDraw, self).__init__(path=path, options=options)
+        super(TikzDraw, self).__init__(path=path, options=options)
 
     def dumps(self):
         r"""Return a representation for the command. Override
@@ -268,7 +268,7 @@ class TikZDraw(TikZPath):
         return ' '.join(ret_str) + ";"
 
 
-class TikZArc(LatexObject):
+class TikzArc(LatexObject):
     """A class to represent the tikz specification for arcs
     i.e. (ang1: ang2: rad)
     """

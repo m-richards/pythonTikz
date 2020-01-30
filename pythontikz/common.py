@@ -9,7 +9,7 @@ from .base_classes import LatexObject, Environment, Command, Options, Container
 from . import Package
 
 
-class TikZOptions(Options):
+class TikzOptions(Options):
     """Options class, do not escape."""
 
     escape = False
@@ -28,7 +28,7 @@ class TikZLibrary(Package):
     _latex_name = 'usetikzlibrary'
 
 
-class TikZ(Environment):
+class TikzPicture(Environment):
     """Basic TikZ container class."""
 
     _latex_name = 'tikzpicture'
@@ -51,7 +51,7 @@ class Axis(Environment):
         super().__init__(options=options, data=data)
 
 
-class TikZScope(Environment):
+class TikzScope(Environment):
     """TikZ Scope Environment."""
 
     _latex_name = 'scope'
@@ -93,7 +93,7 @@ class TikZObject(Container):
         """Return an anchor point of the node, if it exists."""
 
         if anchor_name in self._possible_anchors:
-            return TikZNodeAnchor(self.handle, anchor_name)
+            return TikzAnchor(self.handle, anchor_name)
         else:
             try:
                 anchor = int(anchor_name.split('_')[1])
@@ -101,7 +101,7 @@ class TikZObject(Container):
                 anchor = None
 
             if anchor is not None:
-                return TikZNodeAnchor(self.handle, str(anchor))
+                return TikzAnchor(self.handle, str(anchor))
 
         raise ValueError('Invalid anchor name: "{}"'.format(anchor_name))
 
@@ -186,7 +186,7 @@ class Plot(LatexObject):
         return string
 
 
-class TikZNodeAnchor(LatexObject):
+class TikzAnchor(LatexObject):
     """Representation of a node's anchor point."""
 
     def __init__(self, node_handle, anchor_name):
