@@ -211,7 +211,7 @@ def auto_change_docstring(app, what, name, obj, options, lines):
 
 
 def autodoc_allow_most_inheritance(app, what, name, obj, namespace, skip,
-                                   options):
+                                   options=None):
     cls = namespace.split('.')[-1]
 
     members = {

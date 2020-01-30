@@ -37,7 +37,18 @@ expected (which in turn should be valid TikZ).
 Installation
 ------------
 pythonTikZ works on Python 3.6+
-To be completed
+Currently it also will work on earlier versions of Python 3, but this is not
+a continuing commitment, use of f-strings are expected in future development.
+PyLaTeX however does support a wider array of python versions, perhaps the
+limited support of pythonTikz will be reviewed at a later date.
+
+Currently one can install from the repository directly using pip::
+
+   pip install git+https://github.com/m-richards/pythonTikz.git
+
+Currently, the package is not PyPi, however this should change as the project
+progresses.
+
 
 Support
 -------

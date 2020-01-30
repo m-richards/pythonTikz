@@ -174,17 +174,20 @@ work fine (I build with pdflatex using MikTeX on windows, but TeXLive on WSL)</p
 <p>You need your own fork of the <a class="reference external" href="https://github.com/m-richards/pythonTikz">Github repository</a> by using the Github fork button. You will
 then need to clone your version of the repo using the normal way, something
 like this:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone git@github.com:YourUserName/pythontikz
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/YourUserName/pythonTikz
 <span class="nb">cd</span> pythontikz
 </pre></div>
 </div>
 <p>It is also fairly likely you will need a fork of the parent library
 <a class="reference external" href="https://github.com/JelteF/PyLaTeX">https://github.com/JelteF/PyLaTeX</a> if you need to modify any of the
-underlying base classes. pythontikz is designed to operate as a wrapper
-sitting on top of this library to reduce maintenance and avoid duplication of
-code.</p>
-<p>This doesn&#8217;t mean that you should make changes and submit pull requests to
-PyLaTeX. Instead, make your changes in your local pythontikz fork and adjust
+underlying base classes (you can download a local copy in the same -
+see its own contributing documentation for details).  pythonTikz
+is designed to operate as a wrapper sitting on top of this library to reduce
+maintenance and avoid duplication of code.</p>
+<p>This doesn&#8217;t however mean that you should make changes and submit pull
+requests to PyLaTeX (unless of course your changes are more general than
+pythonTikz, in which case you should probably be contributing there).
+Instead, make your changes in your local pythontikz fork and adjust
 the inheritance chain accordingly.</p>
 <p>Make your own branch for your specific feature or fix (don&#8217;t do this just on
 master):</p>
