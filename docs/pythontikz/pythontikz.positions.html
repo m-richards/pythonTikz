@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pythontikz.positions &mdash; pythonTikZ 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pythonTikZ 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="API reference" href="../api.html"/>
+        <link rel="next" title="Change Log" href="../changelog.html"/>
+        <link rel="prev" title="pythontikz.paths" href="pythontikz.paths.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pythonTikZ
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Library usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.base_classes.command.html">pythontikz.base_classes.command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.common.html">pythontikz.common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.document.html">pythontikz.document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.paths.html">pythontikz.paths</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pythontikz.positions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pythonTikZ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+        <li><a href="../api.html">API reference</a> &raquo;</li>
+      
+    <li>pythontikz.positions</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="../_sources/pythontikz/pythontikz.positions.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-pythontikz.positions"></span><div class="section" id="pythontikz-positions">
+<h1>pythontikz.positions<a class="headerlink" href="#pythontikz-positions" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>This module the TikZ classes which keep track of positions, namely</dt>
+<dd>coordinates and nodes</dd>
+</dl>
+<dl class="class">
+<dt id="pythontikz.positions.TikZNode">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZNode</code><span class="sig-paren">(</span><em>handle=None</em>, <em>options=None</em>, <em>at=None</em>, <em>text=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZObject" title="pythontikz.common.TikZObject"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.common.TikZObject</span></code></a></p>
+<p>A class that represents a TiKZ node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>handle</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Node identifier</li>
+<li><strong>options</strong> (list or <a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZOptions" title="pythontikz.common.TikZOptions"><code class="xref py py-obj docutils literal"><span class="pre">TikZOptions</span></code></a>) &#8211; List of options</li>
+<li><strong>at</strong> (<a class="reference internal" href="#pythontikz.positions.TikZCoordinate" title="pythontikz.positions.TikZCoordinate"><em>TikZCoordinate</em></a>) &#8211; Coordinate where node is placed</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Body text of the node</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pythontikz.positions.TikZNode.get_anchor_point">
+<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.positions.TikZNode.get_anchor_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an anchor point of the node, if it exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.positions.TikZCoordinateBase">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZCoordinateBase</code><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinateBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinateBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
+<p>Marker abstract class from which all coordinate classes inherit. Allows
+for cleaner use of isinstance regarding all coordinate objects.</p>
+<p>This should be a private class, but sphinx throws a reference target not
+found error if it is.</p>
+<p>This should be an abstract class with ABC but could not implement this in
+a python 2/3 friendly way that also worked with the 3to2 conversion.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.positions.TikZCoordinate">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZCoordinate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>relative=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythontikz.positions.TikZCoordinateBase" title="pythontikz.positions.TikZCoordinateBase"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.positions.TikZCoordinateBase</span></code></a></p>
+<p>Extension of <a class="reference internal" href="#pythontikz.positions.TikZCoordinateBase" title="pythontikz.positions.TikZCoordinateBase"><code class="xref py py-obj docutils literal"><span class="pre">TikZCoordinateBase</span></code></a>. Forms a General Purpose
+Coordinate Class, representing a tuple of points specified, as opposed
+to the node shortcut command coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) &#8211; X coordinate</li>
+<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) &#8211; Y coordinate</li>
+<li><strong>relative</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Coordinate is relative or absolute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="pythontikz.positions.TikZCoordinate.from_str">
+<em class="property">classmethod </em><code class="descname">from_str</code><span class="sig-paren">(</span><em>coordinate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinate.from_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinate.from_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a TikZCoordinate object from a string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.positions.TikZCoordinate.distance_to">
+<code class="descname">distance_to</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinate.distance_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinate.distance_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Euclidean distance between two coordinates.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.positions.TikZPolarCoordinate">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZPolarCoordinate</code><span class="sig-paren">(</span><em>angle</em>, <em>radius</em>, <em>relative=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZPolarCoordinate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZPolarCoordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythontikz.positions.TikZCoordinate" title="pythontikz.positions.TikZCoordinate"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.positions.TikZCoordinate</span></code></a></p>
+<p>Class representing the Tikz polar coordinate specification</p>
+<dl class="docutils">
+<dt>angle: float or int</dt>
+<dd>angle in degrees</dd>
+<dt>radius: float or int, non-negative</dt>
+<dd>radius from orig</dd>
+<dt>relative: bool</dt>
+<dd>Coordinate is relative or absolute</dd>
+</dl>
+<dl class="method">
+<dt id="pythontikz.positions.TikZPolarCoordinate.distance_to">
+<code class="descname">distance_to</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.positions.TikZPolarCoordinate.distance_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Euclidean distance between two coordinates.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.positions.TikZPolarCoordinate.from_str">
+<code class="descname">from_str</code><span class="sig-paren">(</span><em>coordinate</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.positions.TikZPolarCoordinate.from_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a TikZCoordinate object from a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.positions.TikZCoordinateVariable">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZCoordinateVariable</code><span class="sig-paren">(</span><em>handle=None</em>, <em>options=None</em>, <em>at=None</em>, <em>text=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinateVariable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinateVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythontikz.positions.TikZCoordinateBase" title="pythontikz.positions.TikZCoordinateBase"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.positions.TikZCoordinateBase</span></code></a>, <a class="reference internal" href="#pythontikz.positions.TikZNode" title="pythontikz.positions.TikZNode"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.positions.TikZNode</span></code></a></p>
+<p>Represents the coordinate syntax for defining a coordinate handle in
+TikZ. This itself is a shortcut for a special case of node. Use
+get_handle method to retrieve object corresponding to use of the
+coordinate handle (as opposed to the initial definition)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>handle</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Node identifier</li>
+<li><strong>options</strong> (list or <a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZOptions" title="pythontikz.common.TikZOptions"><code class="xref py py-obj docutils literal"><span class="pre">TikZOptions</span></code></a>) &#8211; List of options</li>
+<li><strong>at</strong> (<a class="reference internal" href="#pythontikz.positions.TikZCoordinate" title="pythontikz.positions.TikZCoordinate"><em>TikZCoordinate</em></a>) &#8211; Coordinate where node is placed</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Body text of the node</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pythontikz.positions.TikZCoordinateVariable.get_handle">
+<code class="descname">get_handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCoordinateVariable.get_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCoordinateVariable.get_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the associated coordinate handle accessor. # noqa: D401</p>
+<p>This handle is for the inline re-referencing of the same
+coordinate using the label text supplied at definition.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.positions.TikZCoordinateVariable.get_anchor_point">
+<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.positions.TikZCoordinateVariable.get_anchor_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an anchor point of the node, if it exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.positions.TikZCalcScalar">
+<em class="property">class </em><code class="descclassname">pythontikz.positions.</code><code class="descname">TikZCalcScalar</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/positions.html#TikZCalcScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.positions.TikZCalcScalar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
+<p>Wrapper for multiplication scalar in calc expressions e.g.
+($ 4*(3,2.2) $)
+Written explicitly as a seperate class to enable dumps support.
+Simpler than trying to deal with casting floats and strings
+without having other string parsing cause issues.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) &#8211; The scalar operator to be applied to the successor coordinate.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="Change Log" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pythontikz.paths.html" class="btn btn-neutral" title="pythontikz.paths" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matthew Richards.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

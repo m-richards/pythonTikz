@@ -1,4 +1,4 @@
-.. automodule:: pythontikz.tikz
+.. automodule:: pythontikz.paths
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pythontikz.common &mdash; pythonTikZ 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pythonTikZ 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="API reference" href="../api.html"/>
+        <link rel="next" title="pythontikz.document" href="pythontikz.document.html"/>
+        <link rel="prev" title="pythontikz.base_classes.command" href="pythontikz.base_classes.command.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pythonTikZ
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Library usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.base_classes.command.html">pythontikz.base_classes.command</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pythontikz.common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.document.html">pythontikz.document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.paths.html">pythontikz.paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.positions.html">pythontikz.positions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">pythonTikZ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+        <li><a href="../api.html">API reference</a> &raquo;</li>
+      
+    <li>pythontikz.common</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="../_sources/pythontikz/pythontikz.common.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-pythontikz.common"></span><div class="section" id="pythontikz-common">
+<h1>pythontikz.common<a class="headerlink" href="#pythontikz-common" title="Permalink to this headline">¶</a></h1>
+<p>This module implements the classes used to show plots.</p>
+<dl class="class">
+<dt id="pythontikz.common.TikZOptions">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZOptions</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.base_classes.command.Options</span></code></a></p>
+<p>Options class, do not escape.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>*args</strong> &#8211; Positional parameters</li>
+<li><strong>**kwargs</strong> &#8211; Keyword parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pythontikz.common.TikZOptions.append_positional">
+<code class="descname">append_positional</code><span class="sig-paren">(</span><em>option</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZOptions.append_positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZOptions.append_positional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new positional option.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.TikZLibrary">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZLibrary</code><span class="sig-paren">(</span><em>name</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZLibrary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZLibrary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.package.html#pylatex.package.Package" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.package.Package</span></code></a></p>
+<p>Wrapper for package command for inclusion of tikz libraries. Allows
+automatic detection of some tikz libraries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Name of the package.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code></a> or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; Options of the package.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.TikZ">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZ</code><span class="sig-paren">(</span><em>*</em>, <em>options=None</em>, <em>arguments=None</em>, <em>start_arguments=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.containers.html#pylatex.base_classes.containers.Environment" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.containers.Environment</span></code></a></p>
+<p>Basic TikZ container class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (str or list or  <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; Options to be added to the <code class="docutils literal"><span class="pre">\begin</span></code> command</li>
+<li><strong>arguments</strong> (str or list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a>) &#8211; Arguments to be added to the <code class="docutils literal"><span class="pre">\begin</span></code> command</li>
+<li><strong>start_arguments</strong> (str or list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a>) &#8211; Arguments to be added before the options</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pythontikz.common.TikZ.omit_if_empty">
+<code class="descname">omit_if_empty</code><em class="property"> = False</em><a class="headerlink" href="#pythontikz.common.TikZ.omit_if_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.Axis">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">Axis</code><span class="sig-paren">(</span><em>options=None</em>, <em>*</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#Axis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.Axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.containers.html#pylatex.base_classes.containers.Environment" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.containers.Environment</span></code></a></p>
+<p>PGFPlots axis container class, this contains plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (str, list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; Options to format the axis environment.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pythontikz.common.Axis.omit_if_empty">
+<code class="descname">omit_if_empty</code><em class="property"> = False</em><a class="headerlink" href="#pythontikz.common.Axis.omit_if_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.TikZScope">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZScope</code><span class="sig-paren">(</span><em>*</em>, <em>options=None</em>, <em>arguments=None</em>, <em>start_arguments=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZScope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZScope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.containers.html#pylatex.base_classes.containers.Environment" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.containers.Environment</span></code></a></p>
+<p>TikZ Scope Environment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (str or list or  <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; Options to be added to the <code class="docutils literal"><span class="pre">\begin</span></code> command</li>
+<li><strong>arguments</strong> (str or list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a>) &#8211; Arguments to be added to the <code class="docutils literal"><span class="pre">\begin</span></code> command</li>
+<li><strong>start_arguments</strong> (str or list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Arguments" title="pythontikz.base_classes.command.Arguments"><code class="xref py py-obj docutils literal"><span class="pre">Arguments</span></code></a>) &#8211; Arguments to be added before the options</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pythontikz.common.TikZScope.omit_if_empty">
+<code class="descname">omit_if_empty</code><em class="property"> = False</em><a class="headerlink" href="#pythontikz.common.TikZScope.omit_if_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.TikZObject">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZObject</code><span class="sig-paren">(</span><em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.containers.html#pylatex.base_classes.containers.Container" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.containers.Container</span></code></a></p>
+<p>Abstract Class that some TikZ Objects inherits from.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; Options pertaining to the object</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pythontikz.common.TikZObject.get_anchor_point">
+<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZObject.get_anchor_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZObject.get_anchor_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an anchor point of the node, if it exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.Plot">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">Plot</code><span class="sig-paren">(</span><em>name=None</em>, <em>func=None</em>, <em>coordinates=None</em>, <em>error_bar=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
+<p>A class representing a PGFPlot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Name of the plot.</li>
+<li><strong>func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; A function that should be plotted.</li>
+<li><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; A list of exact coordinates tat should be plotted.</li>
+<li><strong>options</strong> (str, list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pythontikz.common.TikZNodeAnchor">
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">TikZNodeAnchor</code><span class="sig-paren">(</span><em>node_handle</em>, <em>anchor_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#TikZNodeAnchor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.TikZNodeAnchor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
+<p>Representation of a node&#8217;s anchor point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node_handle</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Node&#8217;s identifier</li>
+<li><strong>anchor_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Name of the anchor</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pythontikz.document.html" class="btn btn-neutral float-right" title="pythontikz.document" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pythontikz.base_classes.command.html" class="btn btn-neutral" title="pythontikz.base_classes.command" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matthew Richards.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
