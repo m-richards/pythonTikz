@@ -6,8 +6,8 @@ project adheres to `Semantic Versioning <http://semver.org/>`_.
 
 .. highlight:: bash
 
-Unreleased
------------------------------------
+Unreleased (Alpha Github only builds)
+-------------------------------------
 ..  #_ - `docs <../latest/>`__
   
 See these docs for changes that have not yet been released and are
@@ -15,8 +15,6 @@ only present in the development version.
 This version might not be stable, but to install it use::
 
     pip install git+https://github.com/m-richards/pythonTikz.git
-	
-(This might not work yet)
 
 Added
 ~~~~~
