@@ -10,8 +10,7 @@ This example shows TikZ drawing capabilities.
 from pythontikz import (Document, TikZ, TikZNode, TikZDraw, TikZCoordinate,
                         TikZPolarCoordinate, TikZCoordinateVariable,
                         TikZUserPath, TikZOptions, NoEscape, TikZScope,
-                        TikZArc)
-from pythontikz.tikz import TikZLibrary
+                        TikZArc, TikZLibrary, Plot)
 
 if __name__ == '__main__':
     # create document

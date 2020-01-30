@@ -15,7 +15,7 @@ from pythontikz import (TikZ, TikZCoordinate, TikZNode,
                         TikZPolarCoordinate, TikZArc,
                         TikZCoordinateVariable, TikZCalcScalar, Plot, Axis)
 
-from pythontikz.tikz import _TikZCoordinateImplicitCalculation
+from pythontikz.positions import _TikZCoordinateImplicitCalculation
 
 
 def test_tikz():
