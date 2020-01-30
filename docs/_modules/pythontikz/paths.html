@@ -145,12 +145,12 @@
 <span class="kn">from</span> <span class="nn">.base_classes</span> <span class="kn">import</span> <span class="n">LatexObject</span><span class="p">,</span> <span class="n">Command</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="n">TikZLibrary</span><span class="p">,</span> <span class="n">TikZObject</span><span class="p">,</span> <span class="n">TikZNodeAnchor</span>
-<span class="kn">from</span> <span class="nn">.positions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">TikZCoordinate</span><span class="p">,</span> <span class="n">TikZCoordinateBase</span><span class="p">,</span> <span class="n">TikZNode</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="n">TikzLibrary</span><span class="p">,</span> <span class="n">TikzObject</span><span class="p">,</span> <span class="n">TikzAnchor</span>
+<span class="kn">from</span> <span class="nn">.positions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">,</span>
                         <span class="p">)</span>
 
 
-<div class="viewcode-block" id="TikZUserPath"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZUserPath">[docs]</a><span class="k">class</span> <span class="nc">TikZUserPath</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzUserPath"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzUserPath">[docs]</a><span class="k">class</span> <span class="nc">TikzUserPath</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a possible TikZ path.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_type</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -162,7 +162,7 @@
 <span class="sd">        options: Options</span>
 <span class="sd">            List of options to add</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TikZUserPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TikzUserPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_type</span> <span class="o">=</span> <span class="n">path_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
 
@@ -177,7 +177,7 @@
         <span class="k">return</span> <span class="n">ret_str</span></div>
 
 
-<div class="viewcode-block" id="TikZPathList"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZPathList">[docs]</a><span class="k">class</span> <span class="nc">TikZPathList</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzPathList"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzPathList">[docs]</a><span class="k">class</span> <span class="nc">TikzPathList</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a path drawing.&quot;&quot;&quot;</span>
 
     <span class="n">_base_legal_path_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="s1">&#39;-|&#39;</span><span class="p">,</span> <span class="s1">&#39;|-&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span>
@@ -220,10 +220,10 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;arc&#39;</span><span class="p">):</span>
             <span class="c1"># point after point is permitted, doesnt draw</span>
 
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikZNode</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">):</span>
                 <span class="c1"># Note that we drop the preceding backslash since that is</span>
                 <span class="c1"># not part of inline syntax. trailing &quot;;&quot; dropped as well</span>
-                <span class="c1"># since TikZPath will add this from its own dumps</span>
+                <span class="c1"># since TikzPath will add this from its own dumps</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">dumps</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">return</span>
             <span class="k">try</span><span class="p">:</span>
@@ -249,7 +249,7 @@
                                  <span class="s1">&#39;come after a path descriptor, got </span><span class="si">{}</span><span class="s1">&#39;</span>
                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span>
 
-        <span class="c1"># not path.arc is path specifier &quot;arc&quot;, not a TikZArcSpecifier</span>
+        <span class="c1"># not path.arc is path specifier &quot;arc&quot;, not a TikzArc</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path.arc&#39;</span><span class="p">:</span>
             <span class="c1"># only allow arc specifier after arc path</span>
             <span class="c1"># note this will throw exceptions if incorrect</span>
@@ -264,39 +264,39 @@
     <span class="k">def</span> <span class="nf">_add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legal_path_types</span><span class="p">:</span>
-                <span class="n">_path</span> <span class="o">=</span> <span class="n">TikZUserPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">_path</span> <span class="o">=</span> <span class="n">TikzUserPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal user path type: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikZUserPath</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikzUserPath</span><span class="p">):</span>
             <span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only string or TikZUserPath types are allowed&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only string or TikzUserPath types are allowed&#39;</span><span class="p">)</span>
 
         <span class="c1"># add</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;path&#39;</span>
         <span class="c1"># if path is an arc, need to know since then we expect</span>
-        <span class="c1"># following to be a TikZArc not a point</span>
+        <span class="c1"># following to be a TikzArc not a point</span>
         <span class="k">if</span> <span class="n">_path</span><span class="o">.</span><span class="n">path_type</span> <span class="o">==</span> <span class="s2">&quot;arc&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">+=</span> <span class="s2">&quot;.arc&quot;</span>
 
     <span class="k">def</span> <span class="nf">_add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">_item</span> <span class="o">=</span> <span class="n">TikZCoordinate</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal point string: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikZCoordinateBase</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">):</span>
             <span class="n">_item</span> <span class="o">=</span> <span class="n">point</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikZCoordinate</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikZNode</span><span class="p">):</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">):</span>
             <span class="n">_item</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikZNodeAnchor</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikzAnchor</span><span class="p">):</span>
             <span class="n">_item</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple, TikZCoordinate,&#39;</span>
-                            <span class="s1">&#39;TikZNode or TikZNodeAnchor types are allowed,&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple or  Tikz positional &#39;</span>
+                            <span class="s1">&#39;classes are allowed,&#39;</span>
                             <span class="s1">&#39; got: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span>
         <span class="c1"># add, finally</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
@@ -305,15 +305,15 @@
     <span class="k">def</span> <span class="nf">_add_arc_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arc</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">_arc</span> <span class="o">=</span> <span class="n">TikZArc</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="n">arc</span><span class="p">)</span>
+                <span class="n">_arc</span> <span class="o">=</span> <span class="n">TikzArc</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="n">arc</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal arc string: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arc</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span> <span class="n">TikZArc</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span> <span class="n">TikzArc</span><span class="p">):</span>
             <span class="n">_arc</span> <span class="o">=</span> <span class="n">arc</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="n">_arc</span> <span class="o">=</span> <span class="n">TikZArc</span><span class="p">(</span><span class="o">*</span><span class="n">arc</span><span class="p">)</span>
+            <span class="n">_arc</span> <span class="o">=</span> <span class="n">TikzArc</span><span class="p">(</span><span class="o">*</span><span class="n">arc</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple or TikZArc&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple or TikzArc&#39;</span>
                             <span class="s1">&#39;arc allowed to follow arc specifier,&#39;</span>
                             <span class="s1">&#39; got: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">arc</span><span class="p">)))</span>
         <span class="c1"># add, finally</span>
@@ -335,38 +335,38 @@
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TikZPath"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZPath">[docs]</a><span class="k">class</span> <span class="nc">TikZPath</span><span class="p">(</span><span class="n">TikZObject</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzPath"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzPath">[docs]</a><span class="k">class</span> <span class="nc">TikzPath</span><span class="p">(</span><span class="n">TikzObject</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The TikZ \path command.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args</span>
 <span class="sd">        ----</span>
-<span class="sd">        path: TikZPathList</span>
+<span class="sd">        path: TikzPathList</span>
 <span class="sd">            A list of the nodes, path types in the path</span>
-<span class="sd">        options: TikZOptions</span>
+<span class="sd">        options: TikzOptions</span>
 <span class="sd">            A list of options for the command</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TikZPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TikzPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
         <span class="n">additional_path_types</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;use Hobby shortcut&#39;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">TikZLibrary</span><span class="p">(</span><span class="s1">&#39;hobby&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s1">&#39;hobby&#39;</span><span class="p">))</span>
             <span class="n">additional_path_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;..&quot;</span><span class="p">]</span>
 
-        <span class="c1"># if already a TikZPathList, additional paths should have already been</span>
+        <span class="c1"># if already a TikzPathList, additional paths should have already been</span>
         <span class="c1"># supplied</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikZPathList</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikzPathList</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikZPathList</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikzPathList</span><span class="p">(</span>
                     <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">additional_path_types</span><span class="o">=</span><span class="n">additional_path_types</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikZPathList</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikzPathList</span><span class="p">(</span>
                 <span class="n">additional_path_types</span><span class="o">=</span><span class="n">additional_path_types</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s1">&#39;argument &quot;path&quot; can only be of types list or TikZPathList&#39;</span><span class="p">)</span>
+                <span class="s1">&#39;argument &quot;path&quot; can only be of types list or TikzPathList&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Append a path element to the current list.&quot;&quot;&quot;</span>
@@ -381,19 +381,19 @@
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span></div>
 
 
-<div class="viewcode-block" id="TikZDraw"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZDraw">[docs]</a><span class="k">class</span> <span class="nc">TikZDraw</span><span class="p">(</span><span class="n">TikZPath</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzDraw"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzDraw">[docs]</a><span class="k">class</span> <span class="nc">TikzDraw</span><span class="p">(</span><span class="n">TikzPath</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A draw command is just a path command with the draw option.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args</span>
 <span class="sd">        ----</span>
-<span class="sd">        path: `~.TikZPathList` or List</span>
+<span class="sd">        path: `~.TikzPathList` or List</span>
 <span class="sd">            A list of the nodes, path types in the path</span>
-<span class="sd">        options: TikZOptions</span>
+<span class="sd">        options: TikzOptions</span>
 <span class="sd">            A list of options for the command</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TikZDraw</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return a representation for the command. Override</span>
@@ -405,7 +405,7 @@
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span></div>
 
 
-<div class="viewcode-block" id="TikZArc"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZArc">[docs]</a><span class="k">class</span> <span class="nc">TikZArc</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzArc"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzArc">[docs]</a><span class="k">class</span> <span class="nc">TikzArc</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class to represent the tikz specification for arcs</span>
 <span class="sd">    i.e. (ang1: ang2: rad)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -447,8 +447,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="TikZArc.from_str"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikZArc.from_str">[docs]</a>    <span class="k">def</span> <span class="nf">from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arc</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Build a TikZArcSpecifier object from a string.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TikzArc.from_str"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzArc.from_str">[docs]</a>    <span class="k">def</span> <span class="nf">from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a TikzArc object from a string.&quot;&quot;&quot;</span>
         <span class="n">m</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_str_verif_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">arc</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

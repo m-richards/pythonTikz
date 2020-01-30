@@ -149,8 +149,8 @@
 <h1>pythontikz.paths<a class="headerlink" href="#pythontikz-paths" title="Permalink to this headline">¶</a></h1>
 <p>This module implements the classes used to show plots.</p>
 <dl class="class">
-<dt id="pythontikz.paths.TikZUserPath">
-<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikZUserPath</code><span class="sig-paren">(</span><em>path_type</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZUserPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZUserPath" title="Permalink to this definition">¶</a></dt>
+<dt id="pythontikz.paths.TikzUserPath">
+<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikzUserPath</code><span class="sig-paren">(</span><em>path_type</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzUserPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzUserPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
 <p>Represents a possible TikZ path.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -168,8 +168,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="pythontikz.paths.TikZPathList">
-<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikZPathList</code><span class="sig-paren">(</span><em>*args</em>, <em>additional_path_types=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZPathList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZPathList" title="Permalink to this definition">¶</a></dt>
+<dt id="pythontikz.paths.TikzPathList">
+<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikzPathList</code><span class="sig-paren">(</span><em>*args</em>, <em>additional_path_types=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzPathList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzPathList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
 <p>Represents a path drawing.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -183,58 +183,58 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="pythontikz.paths.TikZPath">
-<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikZPath</code><span class="sig-paren">(</span><em>path=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZPath" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZObject" title="pythontikz.common.TikZObject"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.common.TikZObject</span></code></a></p>
+<dt id="pythontikz.paths.TikzPath">
+<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikzPath</code><span class="sig-paren">(</span><em>path=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikzObject" title="pythontikz.common.TikzObject"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.common.TikzObject</span></code></a></p>
 <p>The TikZ path command.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<a class="reference internal" href="#pythontikz.paths.TikZPathList" title="pythontikz.paths.TikZPathList"><em>TikZPathList</em></a>) &#8211; A list of the nodes, path types in the path</li>
-<li><strong>options</strong> (<a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZOptions" title="pythontikz.common.TikZOptions"><em>TikZOptions</em></a>) &#8211; A list of options for the command</li>
+<li><strong>path</strong> (<a class="reference internal" href="#pythontikz.paths.TikzPathList" title="pythontikz.paths.TikzPathList"><em>TikzPathList</em></a>) &#8211; A list of the nodes, path types in the path</li>
+<li><strong>options</strong> (<a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikzOptions" title="pythontikz.common.TikzOptions"><em>TikzOptions</em></a>) &#8211; A list of options for the command</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pythontikz.paths.TikZPath.get_anchor_point">
-<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.paths.TikZPath.get_anchor_point" title="Permalink to this definition">¶</a></dt>
+<dt id="pythontikz.paths.TikzPath.get_anchor_point">
+<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.paths.TikzPath.get_anchor_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an anchor point of the node, if it exists.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="pythontikz.paths.TikZDraw">
-<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikZDraw</code><span class="sig-paren">(</span><em>path=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZDraw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZDraw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pythontikz.paths.TikZPath" title="pythontikz.paths.TikZPath"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.paths.TikZPath</span></code></a></p>
+<dt id="pythontikz.paths.TikzDraw">
+<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikzDraw</code><span class="sig-paren">(</span><em>path=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzDraw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzDraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pythontikz.paths.TikzPath" title="pythontikz.paths.TikzPath"><code class="xref py py-class docutils literal"><span class="pre">pythontikz.paths.TikzPath</span></code></a></p>
 <p>A draw command is just a path command with the draw option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<a class="reference internal" href="#pythontikz.paths.TikZPathList" title="pythontikz.paths.TikZPathList"><code class="xref py py-obj docutils literal"><span class="pre">TikZPathList</span></code></a> or List) &#8211; A list of the nodes, path types in the path</li>
-<li><strong>options</strong> (<a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikZOptions" title="pythontikz.common.TikZOptions"><em>TikZOptions</em></a>) &#8211; A list of options for the command</li>
+<li><strong>path</strong> (<a class="reference internal" href="#pythontikz.paths.TikzPathList" title="pythontikz.paths.TikzPathList"><code class="xref py py-obj docutils literal"><span class="pre">TikzPathList</span></code></a> or List) &#8211; A list of the nodes, path types in the path</li>
+<li><strong>options</strong> (<a class="reference internal" href="pythontikz.common.html#pythontikz.common.TikzOptions" title="pythontikz.common.TikzOptions"><em>TikzOptions</em></a>) &#8211; A list of options for the command</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pythontikz.paths.TikZDraw.get_anchor_point">
-<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.paths.TikZDraw.get_anchor_point" title="Permalink to this definition">¶</a></dt>
+<dt id="pythontikz.paths.TikzDraw.get_anchor_point">
+<code class="descname">get_anchor_point</code><span class="sig-paren">(</span><em>anchor_name</em><span class="sig-paren">)</span><a class="headerlink" href="#pythontikz.paths.TikzDraw.get_anchor_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an anchor point of the node, if it exists.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="pythontikz.paths.TikZArc">
-<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikZArc</code><span class="sig-paren">(</span><em>start_ang</em>, <em>finish_ang</em>, <em>radius</em>, <em>force_far_direction=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZArc" title="Permalink to this definition">¶</a></dt>
+<dt id="pythontikz.paths.TikzArc">
+<em class="property">class </em><code class="descclassname">pythontikz.paths.</code><code class="descname">TikzArc</code><span class="sig-paren">(</span><em>start_ang</em>, <em>finish_ang</em>, <em>radius</em>, <em>force_far_direction=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzArc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzArc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
 <p>A class to represent the tikz specification for arcs
 i.e. (ang1: ang2: rad)</p>
@@ -247,9 +247,9 @@ i.e. (ang1: ang2: rad)</p>
 <dd>forces arc to go in the longer direction around circumference</dd>
 </dl>
 <dl class="classmethod">
-<dt id="pythontikz.paths.TikZArc.from_str">
-<em class="property">classmethod </em><code class="descname">from_str</code><span class="sig-paren">(</span><em>arc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikZArc.from_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikZArc.from_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a TikZArcSpecifier object from a string.</p>
+<dt id="pythontikz.paths.TikzArc.from_str">
+<em class="property">classmethod </em><code class="descname">from_str</code><span class="sig-paren">(</span><em>arc</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/paths.html#TikzArc.from_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.paths.TikzArc.from_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a TikzArc object from a string.</p>
 </dd></dl>
 
 </dd></dl>
