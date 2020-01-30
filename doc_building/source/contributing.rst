@@ -106,6 +106,16 @@ There are two things that are needed for every pull request:
    didn't break anything.
 2. Follow the **PEP8** style guide and make sure it passes pyflakes (this is
    also tested with the ``testall.sh`` script).
+3. Have a look at the coverage results locally before pushing your PR. This
+   is really easy to do and shows quite clearly whether your new changes
+   leave holes in what the testt cover. From the base directory::
+
+    coverage run --source=pythontikz -m pytest tests/*
+    coverage report
+    coverage html
+
+   This generates a nice easy to read breakdown of the coverage in ``htmlcov/``
+   . Start by looking at ``index.html``.
 
 These are also tested for by Travis, but please test them yourself as well.
 

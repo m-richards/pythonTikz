@@ -9,6 +9,7 @@
 
 # Default values
 python="python"
+main_folder=.
 
 # Check if a command line argument was provided as an input argument.
 while getopts ":p:cdh" opt; do
@@ -17,7 +18,7 @@ while getopts ":p:cdh" opt; do
       python=$OPTARG
       ;;
     c)
-      clean=TRUE
+      clean_flag=TRUE
       ;;
     d)
       nodoc=TRUE
@@ -43,7 +44,7 @@ while getopts ":p:cdh" opt; do
 done
 
 #hack to get pythonpath and modules to behave (used to work without this)
-export PYTHONPATH=$PYTHONPATH:$PWD
+#export PYTHONPATH=$PYTHONPATH:$PWD (doing a pip install -e . removes this need)
 
 # Run the examples and tests
 python_version=$($python --version |& sed 's|Python \(.\).*|\1|g' | head -n 1)
@@ -64,27 +65,26 @@ fi
 if [ "$python_version" = '2' ]; then
 	echo -e '\e[31mPython 2 is unsupported. Tests Aborted. \e[0m'
     exit 1
-else
-    main_folder=.
 fi
 
 echo -e '\e[32mTesting tests directory\e[0m'
-if ! $python "$(command -v nosetests)" --with-coverage tests/*; then
-	echo -e '\e[31mNose Unit Tests Failed. Tests Aborted. \e[0m'
+if ! coverage run --source="$main_folder"/pythontikz -m pytest tests/*; then
+  echo -e '\e[32mCoverage Report:\e[0m'
+  coverage report;
+	echo -e '\e[31mUnit Tests Failed. Tests Aborted. \e[0m'
     exit 1
 fi
+echo -e '\e[32mCoverage Report:\e[0m'
+coverage report;
 mv .coverage{,.tests}
-
-if [ "$python_version" = '2' ]; then
-    cd ..
-fi
 
 
 count=0
 echo -e '\e[32mTesting example scripts\e[0m'
 for f in "$main_folder"/examples/*.py; do
     echo -e '\e[32m\t '"$f"'\e[0m'
-    if ! $python "$(command -v coverage)" run "$f"; then
+    # primitive check that file doesn't crash check
+    if ! coverage run --source=pythontikz "$f"; then
 		echo -e '\e[31mTesting '"$f"' Failed. Tests Aborted. \e[0m'
         exit 1
     fi
@@ -94,7 +94,7 @@ done
 
 coverage combine
 
-if [ "$clean" = 'TRUE' ]; then
+if [ "$clean_flag" = 'TRUE' ]; then
     rm -- *.pdf *.log *.aux *.tex *.fls *.fdb_latexmk > /dev/null
 fi
 
@@ -140,11 +140,12 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     else
       echo -e '\e[33mBuilt docs have changed. This error can safely be ignored
         locally; running this script has now updated the cached gh
-        pages docs.
+        pages docs [Rerunning this script again without changes will not
+        throw this error].
 
         If this triggers on integration, you have changed the documentation
-        and not run this prior to pushing, so the docs have not be updated.
-        Integration tests will now fail.
+        and not run "testall.sh" prior to pushing, so the docs have not be
+        updated. Integration tests will now fail.
         \e[0m'
       exitVal=1
     fi
