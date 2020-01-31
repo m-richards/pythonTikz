@@ -6,4 +6,8 @@ pythontikz/_version.py export-subst
 *.py text eol=lf
 *.rst text eol=lf
 *.html text eol=lf
+*.js text eol=lf
+*.inv text eol=lf
+*.png text eol=lf
+
 Makefile text eol=lf
