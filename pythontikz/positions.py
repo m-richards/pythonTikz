@@ -169,7 +169,7 @@ class TikzRectCoord(BaseTikzCoord):
         return self.__add__(other)
 
     def __sub__(self, second, first=None):
-        """Performs first - second, optional arg for rsubs"""
+        """First - second, optional arg for rsubs"""
         first = self if first is None else first
         second_coord = self._arith_check(second)
         if second_coord is False:
@@ -255,9 +255,9 @@ class _TikzCalcCoordHandle(BaseTikzCoord):
         return self.__add__(other)
 
     def __sub__(self, second, first=None):
-        """Performs first - second, optional param for rsubs use"""
+        """First - second, optional param for rsubs use"""
         if first is None:
-            first=self
+            first = self
         if isinstance(second, tuple):
             second = TikzRectCoord(*second)
         if isinstance(second, BaseTikzCoord) is False:
@@ -464,10 +464,8 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         else:
             raise TypeError('Only string type operators are allowed')
 
-
         self._arg_list.append(operator)
         self._last_item_type = 'operator'
-
 
     def _add_point_wrapper(self, point, error_to_raise: Exception) -> bool:
         try:
@@ -526,6 +524,7 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
 
         raise TypeError("Addition/ Subtraction unsupported for types"
                         " {} and {}".format(type(self), type(other)))
+
     @classmethod
     def negate_signs(cls, input_list: list) -> list:
         """Swap + and - (for recursive subtraction)"""

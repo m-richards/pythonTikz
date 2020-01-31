@@ -8,23 +8,13 @@ still exist. An error from this file means that the public API has been
 changed.
 """
 import pytest
-from pylatex import Math
 from pytest import raises
-# from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,  # noqa: F401
-#                         TikzAnchor, TikzUserPath, TikzPathList,  # noqa: F401
-#                         TikzPath, TikzDraw,  # noqa: F401
-#                         TikzScope, TikzOptions, TikZLibrary,  # noqa: F401
-#                         TikzPolCoord, TikzArc,  # noqa: F401
-#                         TikzCalcCoord, TikZCalcScalar, Plot, Axis, # noqa: F401
-#     )
 from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
                                   TikzCalcScalar, _TikzCalcImplicitCoord,
                                   TikzNode
-                                  # TikzCalcCoord,  TikzNode,  # noqa: F401
-                                  # TikZCalcScalar  # noqa: F401
                                   )
 
-from pythontikz.positions import _TikzCalcImplicitCoord  # noqa: F401
+
 from contextlib import contextmanager
 
 
@@ -123,14 +113,11 @@ class TestPolarCoords(object):
         assert expected.dumps() == actual
 
 
-
 calc1 = TikzCalcCoord(handle='h', at=rec_11, text='$(x_1, y_1)$')
 h1 = calc1.get_handle()
 
 
 class TestCalcCoords(object):
-
-
     equality_cases = [
         (pol1 + pol1, TikzRectCoord(-2, 0)),
         (pol1 - pol1, TikzPolCoord(0, 0)),
@@ -145,13 +132,13 @@ class TestCalcCoords(object):
     ###############
     fail_cases = [
         (lambda: calc1 + calc1, raises(TypeError)),
-        (lambda: (3,4) + calc1, raises(TypeError)),
+        (lambda: (3, 4) + calc1, raises(TypeError)),
         (lambda: calc1 - calc1, raises(TypeError)),
         (lambda: calc1 * calc1, raises(TypeError)),
         (lambda: pol1 * calc1, raises(TypeError)),
         (lambda: pol1 + calc1, raises(TypeError)),
         (lambda: pol1 - calc1, raises(TypeError)),
-        (lambda: calc1*4, raises(TypeError)),
+        (lambda: calc1 * 4, raises(TypeError)),
         (lambda: h1 - 41, raises(TypeError)),
         (lambda: h1 - (3, 2), does_not_raise()),
         (lambda: h1 + (3, 2), does_not_raise()),
@@ -179,16 +166,17 @@ class TestCalcCoords(object):
     dumps_cases = [
         (calc1, r"\coordinate (h) at (1.0,1.0) {$(x_1, y_1)$};"),
         (h1, "(h)"),
-        (h1 + h1 + rec_11+ h1, r"($ (h) + (h) + (1.0,1.0) + (h) $)"),
+        (h1 + h1 + rec_11 + h1, r"($ (h) + (h) + (1.0,1.0) + (h) $)"),
         (h1 * TikzCalcScalar(5.3), r"($ 5.3*(h) $)"),
         (TikzCalcScalar(5.3) * h1, r"($ 5.3*(h) $)"),
-        (h1-rec_11, r"($ (h) - (1.0,1.0) $)"),
-        (rec_11-h1, r"($ (1.0,1.0) - (h) $)"),
+        (h1 - rec_11, r"($ (h) - (1.0,1.0) $)"),
+        (rec_11 - h1, r"($ (1.0,1.0) - (h) $)"),
     ]
 
     @pytest.mark.parametrize("expected,actual", dumps_cases)
     def test_dumps(self, expected, actual):
         assert expected.dumps() == actual
+
 
 impl = _TikzCalcImplicitCoord(h1, '+', rec_11)
 
@@ -196,18 +184,18 @@ impl = _TikzCalcImplicitCoord(h1, '+', rec_11)
 class TestCalcImplicitCoords(object):
     """Note that some of this has already been tested in the above case
     for operations on handles. We test the omissions. Most of these
-    are unlikely to occur for end users as this class isn't exposed directly"""
-
+    are unlikely to occur for end users as this class isn't exposed directly
+    """
 
     fail_cases = [
-        (lambda: impl -42, raises(TypeError)),
-        (lambda: impl +42, raises(TypeError)),
+        (lambda: impl - 42, raises(TypeError)),
+        (lambda: impl + 42, raises(TypeError)),
     ]
+
     @pytest.mark.parametrize("case,expectation", fail_cases)
     def test_fail(self, case, expectation):
         with expectation:
             case()
-
 
     fail_cases2 = [
         ((rec_11, '^', rec_11), raises(ValueError)),  # not +/-
@@ -223,22 +211,22 @@ class TestCalcImplicitCoords(object):
         ((rec_11, '*', rec_11), raises(ValueError)),
         ((rec_11, '*', 3), does_not_raise()),
 
-
     ]
+
     @pytest.mark.parametrize("case,expectation", fail_cases2)
     def test_fail_implicit_coord_args(self, case, expectation):
         with expectation:
             _TikzCalcImplicitCoord(*case)
+
     impl2 = _TikzCalcImplicitCoord(h1, '+', rec_11, '-', rec_11)
     dumps_cases = [
         (impl, "($ (h) + (1.0,1.0) $)"),
-        (impl+rec_11, "($ (h) + (1.0,1.0) + (1.0,1.0) $)"),
-        (impl-rec_11, "($ (h) + (1.0,1.0) - (1.0,1.0) $)"),
-        (impl+impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
-        (impl+impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
-        (impl-impl2, "($ (h) + (1.0,1.0) - (h) - (1.0,1.0) + (1.0,1.0) $)"),
+        (impl + rec_11, "($ (h) + (1.0,1.0) + (1.0,1.0) $)"),
+        (impl - rec_11, "($ (h) + (1.0,1.0) - (1.0,1.0) $)"),
+        (impl + impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
+        (impl + impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
+        (impl - impl2, "($ (h) + (1.0,1.0) - (h) - (1.0,1.0) + (1.0,1.0) $)"),
         (3 * h1 + impl, "($ 3*(h) + (h) + (1.0,1.0) $)"),
-
 
     ]
 
@@ -251,5 +239,4 @@ def test_node():
     with raises(TypeError):
         TikzNode(at='(1,1)')
     with raises(TypeError):
-        TikzNode(at=(1,2))
-
+        TikzNode(at=(1, 2))
