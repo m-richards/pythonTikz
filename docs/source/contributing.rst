@@ -84,10 +84,13 @@ the dependencies.
 
 Some tips before starting
 -------------------------
-1. Look at the code that is already there when creating something new, and
+1. Make sure your install hasn't broken anything before you start. You should
+   be able to run ``testall.sh`` with no issues before you get started on your
+   changes
+2. Look at the code that is already there when creating something new, and
    also make sure it isn't part of
    `PyLaTeX <https://jeltef.github.io/PyLaTeX/current/>`_.
-2. To learn how to squash commits, read this `blog
+3. To learn how to squash commits, read this `blog
    <http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html>`_.
    Ignore the word of caution (saying that interactive rebases after changes
    are pushed are bad), since this is directed to the case that other people
@@ -106,6 +109,16 @@ There are two things that are needed for every pull request:
    didn't break anything.
 2. Follow the **PEP8** style guide and make sure it passes pyflakes (this is
    also tested with the ``testall.sh`` script).
+3. Have a look at the coverage results locally before pushing your PR. This
+   is really easy to do and shows quite clearly whether your new changes
+   leave holes in what the testt cover. From the base directory::
+
+    coverage run --source=pythontikz -m pytest -v tests/*
+    coverage report
+    coverage html
+
+   This generates a nice easy to read breakdown of the coverage in ``htmlcov/``
+   . Start by looking at ``index.html``.
 
 These are also tested for by Travis, but please test them yourself as well.
 

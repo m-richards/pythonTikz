@@ -223,6 +223,10 @@ running:</p>
 <div class="section" id="some-tips-before-starting">
 <h2>Some tips before starting<a class="headerlink" href="#some-tips-before-starting" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
+<li><p class="first">Make sure your install hasn&#8217;t broken anything before you start. You should
+be able to run <code class="docutils literal"><span class="pre">testall.sh</span></code> with no issues before you get started on your
+changes</p>
+</li>
 <li><p class="first">Look at the code that is already there when creating something new, and
 also make sure it isn&#8217;t part of
 <a class="reference external" href="https://jeltef.github.io/PyLaTeX/current/">PyLaTeX</a>.</p>
@@ -241,11 +245,24 @@ in a new commit.</p>
 <div class="section" id="some-rules">
 <h2>Some rules<a class="headerlink" href="#some-rules" title="Permalink to this headline">¶</a></h2>
 <p>There are two things that are needed for every pull request:</p>
-<ol class="arabic simple">
-<li>Run the <code class="docutils literal"><span class="pre">testall.sh</span></code> script before making a pull request to check if you
-didn&#8217;t break anything.</li>
-<li>Follow the <strong>PEP8</strong> style guide and make sure it passes pyflakes (this is
-also tested with the <code class="docutils literal"><span class="pre">testall.sh</span></code> script).</li>
+<ol class="arabic">
+<li><p class="first">Run the <code class="docutils literal"><span class="pre">testall.sh</span></code> script before making a pull request to check if you
+didn&#8217;t break anything.</p>
+</li>
+<li><p class="first">Follow the <strong>PEP8</strong> style guide and make sure it passes pyflakes (this is
+also tested with the <code class="docutils literal"><span class="pre">testall.sh</span></code> script).</p>
+</li>
+<li><p class="first">Have a look at the coverage results locally before pushing your PR. This
+is really easy to do and shows quite clearly whether your new changes
+leave holes in what the testt cover. From the base directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>coverage run --source<span class="o">=</span>pythontikz -m pytest -v tests/*
+coverage report
+coverage html
+</pre></div>
+</div>
+<p>This generates a nice easy to read breakdown of the coverage in <code class="docutils literal"><span class="pre">htmlcov/</span></code>
+. Start by looking at <code class="docutils literal"><span class="pre">index.html</span></code>.</p>
+</li>
 </ol>
 <p>These are also tested for by Travis, but please test them yourself as well.</p>
 <p>Depending on your type of changes some other things are needed as well.</p>

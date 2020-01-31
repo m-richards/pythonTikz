@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pythontikz.positions &mdash; pythonTikZ 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pythonTikZ 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pythonTikZ
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Library usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">How to contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">pythonTikZ</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+        <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>pythontikz.positions</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pythontikz.positions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module the TikZ classes which keep track of positions, namely</span>
+<span class="sd">    coordinates and nodes</span>
+
+<span class="sd">..  :copyright: (c) 2020 by Matthew Richards.</span>
+<span class="sd">    :license: MIT, see License for more details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">from</span> <span class="nn">.base_classes</span> <span class="kn">import</span> <span class="n">Command</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="n">TikzLibrary</span><span class="p">,</span> <span class="n">TikzObject</span>
+<span class="kn">from</span> <span class="nn">.base_classes</span> <span class="kn">import</span> <span class="n">LatexObject</span>
+
+
+<div class="viewcode-block" id="TikzNode"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzNode">[docs]</a><span class="k">class</span> <span class="nc">TikzNode</span><span class="p">(</span><span class="n">TikzObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class that represents a TiKZ node.&quot;&quot;&quot;</span>
+
+    <span class="n">_possible_anchors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">,</span> <span class="s1">&#39;south&#39;</span><span class="p">,</span> <span class="s1">&#39;east&#39;</span><span class="p">,</span> <span class="s1">&#39;west&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        handle: str</span>
+<span class="sd">            Node identifier</span>
+<span class="sd">        options: list or `~.TikzOptions`</span>
+<span class="sd">            List of options</span>
+<span class="sd">        at: TikzRectCoord</span>
+<span class="sd">            Coordinate where node is placed</span>
+<span class="sd">        text: str</span>
+<span class="sd">            Body text of the node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TikzNode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">handle</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_node_position</span> <span class="o">=</span> <span class="n">at</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s1">&#39;at parameter must be an object of the&#39;</span>
+                <span class="s1">&#39;TikzCoordinate class&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_text</span> <span class="o">=</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="BaseTikzCoord"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.BaseTikzCoord">[docs]</a><span class="k">class</span> <span class="nc">BaseTikzCoord</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Marker abstract class from which all coordinate classes inherit. Allows</span>
+<span class="sd">    for cleaner use of isinstance regarding all coordinate objects.</span>
+
+<span class="sd">    Note this intentionally breaks the naming convention of Tikz&lt;**&gt;Coord</span>
+<span class="sd">    as it not to be used.</span>
+
+<span class="sd">    This should be a private class, but sphinx throws a reference target not</span>
+<span class="sd">    found error if it is.</span>
+
+<span class="sd">    This should be an abstract class with ABC but could not implement this in</span>
+<span class="sd">    a python 2/3 friendly way that also worked with the 3to2 conversion.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="TikzRectCoord"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzRectCoord">[docs]</a><span class="k">class</span> <span class="nc">TikzRectCoord</span><span class="p">(</span><span class="n">BaseTikzCoord</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Extension of `~.BaseTikzCoord`. Forms a General Purpose</span>
+<span class="sd">    Coordinate Class, representing a tuple of points specified, as opposed</span>
+<span class="sd">    to the node shortcut command \coordinate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_coordinate_str_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\+\+)?\(\s*(-?[0-9]+(\.[0-9]+)?)\s*&#39;</span>
+                                       <span class="sa">r</span><span class="s1">&#39;,\s*(-?[0-9]+(\.[0-9]+)?)\s*\)&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        x: float or int</span>
+<span class="sd">            X coordinate</span>
+<span class="sd">        y: float or int</span>
+<span class="sd">            Y coordinate</span>
+<span class="sd">        relative: bool</span>
+<span class="sd">            Coordinate is relative or absolute</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relative</span> <span class="o">=</span> <span class="n">relative</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_stop</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span><span class="p">:</span>
+            <span class="n">ret_str</span> <span class="o">=</span> <span class="s1">&#39;++&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ret_str</span> <span class="o">+</span> <span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return representation.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TikzRectCoord.from_str"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzRectCoord.from_str">[docs]</a>    <span class="k">def</span> <span class="nf">from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a TikzCoordinate object from a string.&quot;&quot;&quot;</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_coordinate_str_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">coordinate</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid coordinate string&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;++&#39;</span><span class="p">:</span>
+            <span class="n">relative</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">relative</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span> <span class="n">relative</span><span class="o">=</span><span class="n">relative</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="c1"># if comparing to a tuple, assume it to be an absolute coordinate.</span>
+            <span class="n">other_relative</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">other_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">other_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TikzRectCoord</span><span class="p">):</span>
+            <span class="n">other_relative</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">relative</span>
+            <span class="n">other_x</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_x</span>
+            <span class="n">other_y</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;can only compare tuple and TikzRectCoord types&#39;</span><span class="p">)</span>
+
+        <span class="c1"># prevent comparison between relative and non relative</span>
+        <span class="c1"># by returning False</span>
+        <span class="k">if</span> <span class="n">other_relative</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+        <span class="c1"># return comparison result</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">other_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">other_y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+
+    <span class="k">def</span> <span class="nf">_arith_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">other_coord</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">*</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TikzRectCoord</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">relative</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;refusing to add relative coordinates&#39;</span><span class="p">)</span>
+            <span class="n">other_coord</span> <span class="o">=</span> <span class="n">other</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;can only add tuple or TiKZCoordinate types&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">other_coord</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">other_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arith_check</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="c1"># we have a legal type but can&#39;t use other coord syntax</span>
+        <span class="c1"># hope that operation is implemented in reverse</span>
+        <span class="k">if</span> <span class="n">other_coord</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">other</span> <span class="o">+</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="n">other_coord</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="n">other_coord</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;First - second, optional arg for rsubs&quot;&quot;&quot;</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">first</span>
+        <span class="n">second_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arith_check</span><span class="p">(</span><span class="n">second</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">second_coord</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">second</span><span class="o">.</span><span class="fm">__rsub__</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">second_coord</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span>
+                             <span class="n">first</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">second_coord</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arith_check</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="c1"># note that other should never return the exception flag False</span>
+        <span class="c1"># as every class which extends BaseTikzCoord should also</span>
+        <span class="c1"># support subtraction with rectangular coords. If not, the defautlt</span>
+        <span class="c1"># exception should suffice</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="n">other</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TikzRectCoord.distance_to"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzRectCoord.distance_to">[docs]</a>    <span class="k">def</span> <span class="nf">distance_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Euclidean distance between two coordinates.&quot;&quot;&quot;</span>
+
+        <span class="n">other_coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arith_check</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">-</span> <span class="n">other_coord</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                         <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">-</span> <span class="n">other_coord</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="TikzPolCoord"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzPolCoord">[docs]</a><span class="k">class</span> <span class="nc">TikzPolCoord</span><span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing the Tikz polar coordinate specification&quot;&quot;&quot;</span>
+
+    <span class="n">_coordinate_str_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\+\+)?\(\s*(-?[0-9]+(\.[0-9]+)?)\s*&#39;</span>
+                                       <span class="sa">r</span><span class="s1">&#39;:\s*([0-9]+(\.[0-9]+)?)\s*\)&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        angle: float or int</span>
+<span class="sd">            angle in degrees</span>
+<span class="sd">        radius: float or int, non-negative</span>
+<span class="sd">            radius from orig</span>
+<span class="sd">        relative: bool</span>
+<span class="sd">            Coordinate is relative or absolute</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Radius must be positive&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TikzPolCoord</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="n">relative</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative</span><span class="p">:</span>
+            <span class="n">ret_str</span> <span class="o">=</span> <span class="s1">&#39;++&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ret_str</span> <span class="o">+</span> <span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">_TikzCalcCoordHandle</span><span class="p">(</span><span class="n">BaseTikzCoord</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class to represent the syntax of using coordinate handle defined with</span>
+<span class="sd">     \coordinate as opposed to defining the coordinate.</span>
+
+<span class="sd">    Perhaps this can avoid being a seperate class, but the clear solution</span>
+<span class="sd">    would be to make init return a tuple,  - the comand defn reference and</span>
+<span class="sd">    the handle, which is also confusing. Still not happy with how this works.</span>
+
+<span class="sd">    Perhaps a conditional dumps could work somehow (Note boolean flag on first</span>
+<span class="sd">    call to dumps is not safe though).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="n">handle</span>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">*</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only can add coordinates with other&quot;</span>
+                            <span class="s2">&quot; coordinate types&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;First - second, optional param for rsubs use&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">second</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">second</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">*</span><span class="n">second</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">second</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only can subtract coordinates with other&quot;</span>
+                            <span class="s2">&quot; coordinate types&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="n">first</span><span class="o">=</span><span class="n">other</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">TikzCalcScalar</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Coordinates can only be multiplied by scalars&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TikzCalcCoord"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzCalcCoord">[docs]</a><span class="k">class</span> <span class="nc">TikzCalcCoord</span><span class="p">(</span><span class="n">BaseTikzCoord</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Represents the \coordinate syntax for defining a coordinate handle in</span>
+<span class="sd">    TikZ. This itself is a shortcut for a special case of node. Use</span>
+<span class="sd">    get_handle method to retrieve object corresponding to use of the</span>
+<span class="sd">    coordinate handle (as opposed to the initial definition)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">packages</span> <span class="o">=</span> <span class="p">[</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s1">&#39;calc&#39;</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="TikzCalcCoord.get_handle"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzCalcCoord.get_handle">[docs]</a>    <span class="k">def</span> <span class="nf">get_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieves the associated coordinate handle accessor. # noqa: D401</span>
+
+<span class="sd">        This handle is for the inline re-referencing of the same</span>
+<span class="sd">        coordinate using the label text supplied at definition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_TikzCalcCoordHandle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string representation of the node.&quot;&quot;&quot;</span>
+
+        <span class="n">ret_str</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s1">&#39;coordinate&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">dumps</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_position</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_node_position</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;{{</span><span class="si">{text}</span><span class="s1">}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_node_text</span><span class="p">))</span>
+        <span class="c1"># note text can be empty in / coordinate</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span>  <span class="c1"># avoid space on end</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">error_text</span><span class="o">=</span><span class="s2">&quot;addition&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;TikzCalcCoord does not support the operation&quot;</span>
+                        <span class="s2">&quot; &#39;</span><span class="si">{}</span><span class="s2">&#39; as it represents the variable &quot;</span>
+                        <span class="s2">&quot;definition. </span><span class="se">\n</span><span class="s2"> The handle returned by &quot;</span>
+                        <span class="s2">&quot;TikzCalcCoord.get_handle() does support &quot;</span>
+                        <span class="s2">&quot;arithmetic operators.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error_text</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">error_text</span><span class="o">=</span><span class="s2">&quot;subtraction&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">error_text</span><span class="o">=</span><span class="s2">&quot;multiplication&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TikzCalcScalar"><a class="viewcode-back" href="../../pythontikz/pythontikz.positions.html#pythontikz.positions.TikzCalcScalar">[docs]</a><span class="k">class</span> <span class="nc">TikzCalcScalar</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for multiplication scalar in calc expressions e.g.</span>
+<span class="sd">    ($ 4*(3,2.2) $)</span>
+<span class="sd">    Written explicitly as a seperate class to enable dumps support.</span>
+<span class="sd">    Simpler than trying to deal with casting floats and strings</span>
+<span class="sd">    without having other string parsing cause issues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        value: float or int</span>
+<span class="sd">            The scalar operator to be applied to the successor coordinate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represent the Scalar as a string in LaTeX syntax valid for a calc</span>
+<span class="sd">        calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+<span class="k">class</span> <span class="nc">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="n">BaseTikzCoord</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class representing an implicit coordinate that would be defined in</span>
+<span class="sd">    TikZ using \coordinate. Supports addition/ subtraction of coordinates as</span>
+<span class="sd">    can be done in the TikZ calc library.</span>
+
+<span class="sd">    Should never be directly instantiated by user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_legal_operators</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        args: BaseTikzCoord or str</span>
+<span class="sd">            A list of coordinate elements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># parse list and verify legality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_arg_list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_next_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="c1"># assume first item is a point</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_scalar</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_point_wrapper</span><span class="p">(</span>
+                <span class="n">item</span><span class="p">,</span> <span class="n">error_to_raise</span><span class="o">=</span><span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s1">&#39;First element of operator list must &#39;</span>
+                    <span class="s1">&#39;be a or coordinate or scalar, got</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">))))</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;point&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s2">&quot;point,multiplication&quot;</span>
+                <span class="k">return</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_operator</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only a valid operator can follow a point&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;multiplication&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_scalar</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+                    <span class="k">return</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Point multiplication must be followed by a &#39;</span>
+                    <span class="s1">&#39;scalar to be legal&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># starts with scalar</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_point_wrapper</span><span class="p">(</span>
+                    <span class="n">item</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Scalar multiplication must be followed &quot;</span>
+                                     <span class="s2">&quot;by a point to be legal.&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;operator&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_point_wrapper</span><span class="p">(</span>
+                <span class="n">item</span><span class="p">,</span> <span class="n">error_to_raise</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;only a point descriptor can come after an operator&#39;</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;scalar&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s2">&quot;scalar,multiplication&quot;</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Multiplication symbol * must follow scalar&quot;</span>
+                                 <span class="s2">&quot; in calc syntax.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to process item as a scalar, returns result as boolean&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s2">&quot;scalar&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzCalcScalar</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzCalcScalar</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s2">&quot;scalar&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_parse_arg_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="c1"># relatively easy error to make so ensure error is descriptive</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzCalcCoord</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s2">&quot;TikzCalcCoord is invalid in an arithmetic &quot;</span>
+                    <span class="s2">&quot;operation as it represents coordinate definition. &quot;</span>
+                    <span class="s2">&quot;Instead, &quot;</span>
+                    <span class="s2">&quot;TikzCalcCoord.get_handle() should be used.&quot;</span><span class="p">)</span>
+            <span class="c1"># if we have nested, we expand to have single instance</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_arg_list</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_parse_next_item</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parse_next_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legal_operators</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal user operator type: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operator</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only string type operators are allowed&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;operator&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_add_point_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">error_to_raise</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="c1"># not a point, do something</span>
+            <span class="k">raise</span> <span class="n">error_to_raise</span>
+
+    <span class="k">def</span> <span class="nf">_add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal point string: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">):</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">):</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">_TikzCalcCoordHandle</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple and  Tikz Positional &#39;</span>
+                            <span class="s1">&#39;classes are allowed,&#39;</span>
+                            <span class="s1">&#39; got: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">point</span><span class="p">)))</span>
+        <span class="c1"># add, finally</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;point&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_arg_list</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">other</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Addition/ Subtraction unsupported for types&quot;</span>
+                        <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">negate_signs</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_arg_list</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">_TikzCalcImplicitCoord</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Addition/ Subtraction unsupported for types&quot;</span>
+                        <span class="s2">&quot; </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">negate_signs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">input_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Swap + and - (for recursive subtraction)&quot;&quot;&quot;</span>
+        <span class="n">input_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># in case input is used</span>
+        <span class="k">if</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_legal_operators</span><span class="p">:</span>
+            <span class="n">input_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>
+        <span class="n">out_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                    <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+                    <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_list</span>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return representation of the implicit unevaluated coordinates.&quot;&quot;&quot;</span>
+
+        <span class="n">ret_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">ret_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LatexObject</span><span class="p">):</span>
+                <span class="n">ret_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">dumps</span><span class="p">())</span>
+
+        <span class="n">ret_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ret_list</span><span class="p">:</span>
+            <span class="c1"># Asterisk in this context is for a calc line,</span>
+            <span class="c1"># which means spaces are invalid, so string them</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+                <span class="n">ret_str</span> <span class="o">=</span> <span class="n">ret_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret_str</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;($ </span><span class="si">{}</span><span class="s2">$)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matthew Richards.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

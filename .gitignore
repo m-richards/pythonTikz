@@ -14,6 +14,7 @@ bin
 var
 sdist
 develop-eggs
+htmlcov
 .installed.cfg
 lib
 lib64
@@ -64,3 +65,8 @@ coverage.xml
 .idea/
 .virtualenv/
 .coverage.*
+
+
+#Tex extras
+.log
+.aux

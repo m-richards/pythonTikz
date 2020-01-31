@@ -7,11 +7,11 @@ This example shows TikZ drawing capabilities.
 """
 
 # begin-doc-include
-from pythontikz import (Document, TikZ, TikZNode, TikZDraw, TikZCoordinate,
-                        TikZPolarCoordinate, TikZCoordinateVariable,
-                        TikZUserPath, TikZOptions, NoEscape, TikZScope,
-                        TikZArc)
-from pythontikz.tikz import TikZLibrary
+from pythontikz import (Document, TikzPicture, TikzNode, TikzDraw,
+                        TikzRectCoord,
+                        TikzPolCoord, TikzCalcCoord,
+                        TikzUserPath, TikzOptions, NoEscape, TikzScope,
+                        TikzArc, TikzLibrary)
 
 if __name__ == '__main__':
     # create document
@@ -19,11 +19,11 @@ if __name__ == '__main__':
 
     # can manually add tikz libraries to document
     # (some are detected automatically, like calc)
-    doc.preamble.append(TikZLibrary("arrows.meta"))
-    doc.preamble.append(TikZLibrary("decorations.markings"))
+    doc.preamble.append(TikzLibrary("arrows.meta"))
+    doc.preamble.append(TikzLibrary("decorations.markings"))
 
     # add our sample drawings
-    with doc.create(TikZ()) as pic:
+    with doc.create(TikzPicture()) as pic:
 
         # options for our node
         node_kwargs = {'align': 'center',
@@ -31,9 +31,9 @@ if __name__ == '__main__':
                        'fill': 'black!20'}
 
         # create our test node
-        box = TikZNode(text='My block',
+        box = TikzNode(text='My block',
                        handle='box',
-                       options=TikZOptions('draw',
+                       options=TikzOptions('draw',
                                            'rounded corners',
                                            **node_kwargs))
 
@@ -41,27 +41,27 @@ if __name__ == '__main__':
         pic.append(box)
 
         # draw a few paths
-        pic.append(TikZDraw([TikZCoordinate(0, -6),
+        pic.append(TikzDraw([TikzRectCoord(0, -6),
                              'rectangle',
-                             TikZCoordinate(2, -8)],
-                            options=TikZOptions(fill='red')))
+                             TikzRectCoord(2, -8)],
+                            options=TikzOptions(fill='red')))
 
         # show use of anchor, relative coordinate
-        pic.append(TikZDraw([box.west,
+        pic.append(TikzDraw([box.west,
                              '--',
                              '++(-1,0)']))
 
         # demonstrate the use of the with syntax
-        with pic.create(TikZDraw()) as path:
+        with pic.create(TikzDraw()) as path:
 
             # start at an anchor of the node
             path.append(box.east)
 
             # necessary here because 'in' is a python keyword
             path_options = {'in': 90, 'out': 0}
-            path.append(TikZUserPath('edge',
-                                     TikZOptions('-latex', **path_options)))
-            path.append(TikZCoordinate(1, 0, relative=True))
+            path.append(TikzUserPath('edge',
+                                     TikzOptions('-latex', **path_options)))
+            path.append(TikzRectCoord(1, 0, relative=True))
 
         # Demonstrate use of arc syntax and \coordinate variables with
         # TikZ Scopes. Example is drawing an integration contour diagram
@@ -69,28 +69,28 @@ if __name__ == '__main__':
 
         # define a coordinate so that we can reposition the origin easily
         # after the latex is produced
-        orig = TikZCoordinateVariable(handle="orig", at=TikZCoordinate(5, -3))
+        orig = TikzCalcCoord(handle="orig", at=TikzRectCoord(5, -3))
         orig_handle = orig.get_handle()  # handle label to coordinate
         pic.append(orig)  # add definition of coordinate
 
         # demonstrate use of tikz scopes
-        scope_options = TikZOptions(
+        scope_options = TikzOptions(
             NoEscape("decoration={markings," "\n" r"mark=between positions 0.1"
                      r" and 0.9 step 0.25 with {\arrow[very thick]{>}},}"
                      "\n"), shift=orig_handle, scale=2)
 
-        with doc.create(TikZScope(options=scope_options)) as scope:
-            draw_options = TikZOptions(fill="gray!10", postaction="decorate", )
+        with doc.create(TikzScope(options=scope_options)) as scope:
+            draw_options = TikzOptions(fill="gray!10", postaction="decorate", )
             rad = 1
             sing_rad = 0.25
             # angle constants
             s = 0
             f = 180
             scope.append(
-                TikZDraw([TikZPolarCoordinate(angle=s, radius=rad),
-                          'arc', TikZArc(s, f, rad),
-                          '--', TikZPolarCoordinate(f, sing_rad),
-                          'arc', TikZArc(f, s, sing_rad),
+                TikzDraw([TikzPolCoord(angle=s, radius=rad),
+                          'arc', TikzArc(s, f, rad),
+                          '--', TikzPolCoord(f, sing_rad),
+                          'arc', TikzArc(f, s, sing_rad),
                           '--', 'cycle'],  # close shape with cycle
                          options=draw_options))
 
@@ -99,19 +99,19 @@ if __name__ == '__main__':
         # (Add an axis to diagram):
 
         rad = 3.5
-        draw_options = TikZOptions("very thick", "->")
+        draw_options = TikzOptions("very thick", "->")
         # can handle addition/ subtraction between coordinate handle
         # & explicit coordinate object.
 
         # can also use node in draw inline context
-        pic.append(TikZDraw([orig_handle + TikZCoordinate(-rad, 0), '--',
-                            orig_handle + TikZCoordinate(rad, 0),
-                            TikZNode(text=NoEscape("{$\Re$}"),
-                                     options=['above'])],
+        pic.append(TikzDraw([orig_handle + TikzRectCoord(-rad, 0), '--',
+                             orig_handle + TikzRectCoord(rad, 0),
+                             TikzNode(text=NoEscape("{$\Re$}"),
+                                      options=['above'])],
                             options=draw_options))
-        pic.append(TikZDraw([orig_handle + TikZCoordinate(0, -rad), '--',
-                            orig_handle + TikZCoordinate(0, rad),
-                            TikZNode(text=NoEscape("{$\Im$}"),
-                                     options=['right'])],
+        pic.append(TikzDraw([orig_handle + TikzRectCoord(0, -rad), '--',
+                             orig_handle + TikzRectCoord(0, rad),
+                             TikzNode(text=NoEscape("{$\Im$}"),
+                                      options=['right'])],
                             options=draw_options))
     doc.generate_pdf('tikzdraw', clean_tex=False)
