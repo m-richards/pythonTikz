@@ -28,9 +28,9 @@ class Document(Environment):
     """
 
     def __init__(self, default_filepath='default_filepath', *,
-                 documentclass='article', document_options=None, fontenc='T1',
-                 inputenc='utf8', font_size="normalsize", lmodern=True,
-                 textcomp=True, microtype=None, page_numbers=True, indent=None,
+                 documentclass='article', document_options=None, fontenc=None,
+                 inputenc=None, font_size=None, lmodern=None,
+                 textcomp=None, microtype=None, page_numbers=None, indent=None,
                  geometry_options=None, data=None):
         r"""
         Args
@@ -65,6 +65,14 @@ class Document(Environment):
         data: list
             Initial content of the document.
         """
+        # preserve old default values for non standalone
+        if documentclass != 'standalone':
+            fontenc = 'T1' if fontenc is None else fontenc
+            inputenc = 'utf8' if inputenc is None else inputenc
+            lmodern = True if lmodern is None else lmodern
+            textcomp = True if textcomp is None else textcomp
+            page_numbers = True if page_numbers is None else page_numbers
+            font_size = 'normalsize' if font_size is None else font_size
 
         self.default_filepath = default_filepath
 
@@ -123,8 +131,8 @@ class Document(Environment):
         # No colors have been added to the document yet
         self.color = False
         self.meta_data = False
-
-        self.append(Command(command=font_size))
+        if font_size is not None:
+            self.append(Command(command=font_size))
 
     def _propagate_packages(self):
         r"""Propogate packages.
@@ -135,7 +143,7 @@ class Document(Environment):
 
         super()._propagate_packages()
 
-        for item in (self.preamble):
+        for item in self.preamble:
             if isinstance(item, LatexObject):
                 if isinstance(item, Container):
                     item._propagate_packages()
@@ -241,8 +249,22 @@ class Document(Environment):
                 raise
             except subprocess.CalledProcessError as e:
                 # For all other errors print the output and raise the error
-                print(e.output.decode())
-                raise
+                # try to catch windows 'perl.exe' not found so that we can
+                # try pdflatex instead rather than just crashing
+                output = str(e.output.decode())
+                import re
+                import sys
+                output = re.sub(r'\s+', '', output)
+                if "couldnotfindthescriptengine'perl.exe'" in output:
+                    print("ERROR: Compiler latexmk failed since the dependency"
+                          " 'perl.exe' was not found. Trying alternative "
+                          "compilers. Specify the compiler in future to avoid"
+                          " this check if not using latexmk.",
+                          file=sys.stderr)
+                    continue
+                else:
+                    print(e.output.decode())
+                    raise e
             else:
                 if not silent:
                     print(output.decode())
@@ -275,7 +297,7 @@ class Document(Environment):
 
         else:
             # Notify user that none of the compilers worked.
-            raise(CompilerError(
+            raise (CompilerError(
                 'No LaTex compiler was found\n'
                 'Either specify a LaTex compiler '
                 'or make sure you have latexmk or pdfLaTex installed.'
