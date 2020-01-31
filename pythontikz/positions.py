@@ -179,9 +179,10 @@ class TikzRectCoord(BaseTikzCoord):
 
     def __rsub__(self, other):
         other = self._arith_check(other)
-        if other is False:
-            raise TypeError('Unsupported Operand Exception for types'
-                            f'{type(self)} and {type(other)}')
+        # note that other should never return the exception flag False
+        # as every class which extends BaseTikzCoord should also
+        # support subtraction with rectangular coords. If not, the defautlt
+        # exception should suffice
         return self.__sub__(first=other, second=self)
 
     def distance_to(self, other):
@@ -487,7 +488,7 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         elif isinstance(point, tuple):
             _item = TikzRectCoord(*point)
         elif isinstance(point, TikzNode):
-            _item = '({})'.format(point.handle)
+            _item = _TikzCalcCoordHandle(point.handle)
         else:
             raise TypeError('Only str, tuple and  Tikz Positional '
                             'classes are allowed,'
@@ -498,13 +499,13 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
 
     def __add__(self, other):
         if isinstance(other, _TikzCalcImplicitCoord):
-            args = list(self._arg_list)  # list.copy on python >3.3
+            args = self._arg_list.copy()
             args.append("+")
             args.extend(other._arg_list)
             return _TikzCalcImplicitCoord(*args)
 
         elif isinstance(other, BaseTikzCoord):
-            args = list(self._arg_list)  # list.copy on python >3.3
+            args = self._arg_list.copy()
             args.extend(['+', other])
             return _TikzCalcImplicitCoord(*args)
 
@@ -513,18 +514,34 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
 
     def __sub__(self, other):
         if isinstance(other, _TikzCalcImplicitCoord):
-            args = list(self._arg_list)  # list.copy on python >3.3
-            args.append("-")
-            args.extend(other._arg_list)
+            args = self._arg_list.copy()
+
+            args.extend(self.negate_signs(other._arg_list))
             return _TikzCalcImplicitCoord(*args)
 
         elif isinstance(other, BaseTikzCoord):
-            args = list(self._arg_list)  # list.copy on python >3.3
-            args.extend(["-", other])  # python 3.4 compat
+            args = self._arg_list.copy()
+            args.extend(["-", other])
             return _TikzCalcImplicitCoord(*args)
 
         raise TypeError("Addition/ Subtraction unsupported for types"
                         " {} and {}".format(type(self), type(other)))
+    @classmethod
+    def negate_signs(cls, input_list: list) -> list:
+        """Swap + and - (for recursive subtraction)"""
+        input_list = input_list.copy()  # in case input is used
+        if input_list[0] not in cls._legal_operators:
+            input_list.insert(0, '+')
+        out_list = []
+        for i in input_list:
+            if isinstance(i, str):
+                if i == '-':
+                    out_list.append('+')
+                elif i == '+':
+                    out_list.append('-')
+            else:
+                out_list.append(i)
+        return out_list
 
     def dumps(self):
         """Return representation of the implicit unevaluated coordinates."""

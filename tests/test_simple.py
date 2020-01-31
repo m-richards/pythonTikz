@@ -190,32 +190,66 @@ class TestCalcCoords(object):
     def test_dumps(self, expected, actual):
         assert expected.dumps() == actual
 
+impl = _TikzCalcImplicitCoord(h1, '+', rec_11)
+
+
 class TestCalcImplicitCoords(object):
     """Note that some of this has already been tested in the above case
     for operations on handles. We test the omissions. Most of these
     are unlikely to occur for end users as this class isn't exposed directly"""
 
-    def test_misc(self):
-        pass
-    impl = _TikzCalcImplicitCoord(rec_11, '+', rec_11)
-        ###############
+
     fail_cases = [
-        ((rec_11, '^', rec_11), raises(ValueError)), # not +/-
-        ((3.2, '+', rec_11), raises(ValueError)), # scalar needs * to follow
-        ((calc1, '+', rec_11), raises(TypeError)), # can't use calc directly
-        ((rec_11, '+', "+"), raises(ValueError)), # invalid post operator
-        ((impl, '+', "+"), raises(ValueError)), # check nesting of class
-        ((rec_11, '+', 3), raises(ValueError)), # check not string illegal
-        ((rec_11, 3, rec_11), raises(ValueError)), # check not string illegal
+        (lambda: impl -42, raises(TypeError)),
+        (lambda: impl +42, raises(TypeError)),
+    ]
+    @pytest.mark.parametrize("case,expectation", fail_cases)
+    def test_fail(self, case, expectation):
+        with expectation:
+            case()
+
+
+    fail_cases2 = [
+        ((rec_11, '^', rec_11), raises(ValueError)),  # not +/-
+        ((3.2, '+', rec_11), raises(ValueError)),  # scalar needs * to follow
+        ((calc1, '+', rec_11), raises(TypeError)),  # can't use calc directly
+        ((rec_11, '+', "+"), raises(ValueError)),  # invalid post operator
+        ((impl, '+', "+"), raises(ValueError)),  # check nesting of class
+        ((rec_11, '+', 3), raises(ValueError)),  # check not string illegal
+        ((rec_11, 3, rec_11), raises(ValueError)),  # check not string illegal
+        ((rec_11, '+', TikzNode(at=rec_11)), does_not_raise()),
         # These cases can't arise unless done explicitly (operations won't
         # trigger them)
         ((rec_11, '*', rec_11), raises(ValueError)),
         ((rec_11, '*', 3), does_not_raise()),
 
-    ]
 
-    @pytest.mark.parametrize("case,expectation", fail_cases)
-    def test_fail(self, case, expectation):
+    ]
+    @pytest.mark.parametrize("case,expectation", fail_cases2)
+    def test_fail_implicit_coord_args(self, case, expectation):
         with expectation:
             _TikzCalcImplicitCoord(*case)
+    impl2 = _TikzCalcImplicitCoord(h1, '+', rec_11, '-', rec_11)
+    dumps_cases = [
+        (impl, "($ (h) + (1.0,1.0) $)"),
+        (impl+rec_11, "($ (h) + (1.0,1.0) + (1.0,1.0) $)"),
+        (impl-rec_11, "($ (h) + (1.0,1.0) - (1.0,1.0) $)"),
+        (impl+impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
+        (impl+impl, "($ (h) + (1.0,1.0) + (h) + (1.0,1.0) $)"),
+        (impl-impl2, "($ (h) + (1.0,1.0) - (h) - (1.0,1.0) + (1.0,1.0) $)"),
+        (3 * h1 + impl, "($ 3*(h) + (h) + (1.0,1.0) $)"),
+
+
+    ]
+
+    @pytest.mark.parametrize("expected,actual", dumps_cases)
+    def test_dumps(self, expected, actual):
+        assert expected.dumps() == actual
+
+
+def test_node():
+    with raises(TypeError):
+        TikzNode(at='(1,1)')
+    with raises(TypeError):
+        TikzNode(at=(1,2))
 
