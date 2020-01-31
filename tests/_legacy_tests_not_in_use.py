@@ -18,7 +18,7 @@ from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,
 from pythontikz.positions import _TikzCalcImplicitCoord
 
 
-def test_tikz():
+def _test_tikz():
     # PGFPlots
     t = TikzPicture(data=None)
     repr(t)

@@ -8,6 +8,7 @@ still exist. An error from this file means that the public API has been
 changed.
 """
 import pytest
+from pylatex import Math
 from pytest import raises
 # from pythontikz import (TikzPicture, TikzRectCoord, TikzNode,  # noqa: F401
 #                         TikzAnchor, TikzUserPath, TikzPathList,  # noqa: F401
@@ -16,7 +17,9 @@ from pytest import raises
 #                         TikzPolCoord, TikzArc,  # noqa: F401
 #                         TikzCalcCoord, TikZCalcScalar, Plot, Axis, # noqa: F401
 #     )
-from pythontikz.positions import (TikzRectCoord, TikzPolCoord,
+from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
+                                  TikzCalcScalar, _TikzCalcImplicitCoord,
+                                  TikzNode
                                   # TikzCalcCoord,  TikzNode,  # noqa: F401
                                   # TikZCalcScalar  # noqa: F401
                                   )
@@ -34,28 +37,44 @@ rec_11 = TikzRectCoord(1, 1)
 
 
 class TestRectangularCoords(object):
+
+    def test_misc(self):
+        x, y = TikzRectCoord(3, -4)
+        assert x == 3 and y == -4
+        a = TikzRectCoord.from_str('++(3,4)')
+        assert a.relative is True
+        assert a != TikzRectCoord(3, 4)
+
+    ###############
     equality_cases = [
         (rec_11 + rec_11, TikzRectCoord(2, 2)),
         (rec_11 + (1, 1), TikzRectCoord(2, 2)),
         (rec_11 - (-1, 5), TikzRectCoord(2, -4)),
+        ((-1, 5) - rec_11, TikzRectCoord(-2, 4)),
+        (rec_11, (1, 1)),
         (TikzRectCoord.from_str("(1,1)"), rec_11)
     ]
 
     @pytest.mark.parametrize('expected,actual', equality_cases)
-    def test_rect_equality_checks(self, expected, actual):
+    def test_equality_checks(self, expected, actual):
         assert expected == actual
 
+    ###############
     fail_cases = [
         (lambda: TikzRectCoord(0, 0) + 2, raises(TypeError)),
         (lambda: TikzRectCoord.from_str("(0,0"), raises(ValueError)),
         (lambda: TikzRectCoord.from_str("(x=0,y=0)"), raises(ValueError)),
+        (lambda: rec_11 == 47.5, raises(TypeError)),
+        (lambda: TikzRectCoord(0, 0, relative=True) + rec_11, raises(
+            ValueError)),
     ]
 
     @pytest.mark.parametrize("case,expectation", fail_cases)
-    def test_rect_fail(self, case, expectation):
+    def test_fail_cases(self, case, expectation):
         with expectation:
             case()
 
+    ###############
     dumps_cases = [
         (TikzRectCoord(0, 5), '(0.0,5.0)'),
         (TikzRectCoord(0, 5) - (1, 2), '(-1.0,3.0)')
@@ -82,9 +101,11 @@ class TestPolarCoords(object):
     def test_equality_checks(self, expected, actual):
         assert expected == actual
 
+    ###############
     fail_cases = [
-        (lambda: TikzPolCoord(0, 0) + 2, raises(TypeError)),
+        (lambda: TikzPolCoord(0, 0, relative=True) + 2, raises(TypeError)),
         (lambda: TikzPolCoord.from_str("(180,0)"), raises(ValueError)),
+        (lambda: TikzPolCoord(0, -5), raises(ValueError)),
     ]
 
     @pytest.mark.parametrize("case,expectation", fail_cases)
@@ -92,6 +113,7 @@ class TestPolarCoords(object):
         with expectation:
             case()
 
+    ###############
     dumps_cases = [
         (TikzPolCoord(0, 5), '(0.0:5.0)'),
     ]
@@ -99,3 +121,101 @@ class TestPolarCoords(object):
     @pytest.mark.parametrize("expected,actual", dumps_cases)
     def test_dumps(self, expected, actual):
         assert expected.dumps() == actual
+
+
+
+calc1 = TikzCalcCoord(handle='h', at=rec_11, text='$(x_1, y_1)$')
+h1 = calc1.get_handle()
+
+
+class TestCalcCoords(object):
+
+
+    equality_cases = [
+        (pol1 + pol1, TikzRectCoord(-2, 0)),
+        (pol1 - pol1, TikzPolCoord(0, 0)),
+        (pol2 - (-1, 2), TikzRectCoord(1, -1)),
+        (TikzPolCoord.from_str('(180:1)'), pol1),
+    ]
+
+    @pytest.mark.parametrize('expected,actual', equality_cases)
+    def test_equality_checks(self, expected, actual):
+        assert expected == actual
+
+    ###############
+    fail_cases = [
+        (lambda: calc1 + calc1, raises(TypeError)),
+        (lambda: (3,4) + calc1, raises(TypeError)),
+        (lambda: calc1 - calc1, raises(TypeError)),
+        (lambda: calc1 * calc1, raises(TypeError)),
+        (lambda: pol1 * calc1, raises(TypeError)),
+        (lambda: pol1 + calc1, raises(TypeError)),
+        (lambda: pol1 - calc1, raises(TypeError)),
+        (lambda: calc1*4, raises(TypeError)),
+        (lambda: h1 - 41, raises(TypeError)),
+        (lambda: h1 - (3, 2), does_not_raise()),
+        (lambda: h1 + (3, 2), does_not_raise()),
+        (lambda: h1 + 7, raises(TypeError)),
+        (lambda: h1 + pol1, does_not_raise()),
+        (lambda: h1 - pol1, does_not_raise()),
+        (lambda: h1 * 5.3, does_not_raise()),
+        (lambda: (3, 4) + h1, does_not_raise()),
+        (lambda: (3, 4) - h1, does_not_raise()),
+        (lambda: 5.3 * h1, does_not_raise()),
+        (lambda: h1 * pol1, raises(TypeError)),
+
+    ]
+
+    @pytest.mark.parametrize("case,expectation", fail_cases)
+    def test_fail(self, case, expectation):
+        with expectation:
+            case()
+
+    ###############
+    # Note these dumps tests are important, since
+    # they check that operations are well defined on coordinate handles
+    # (easier than defining equality on implicit expressions just for this
+    # purpose)
+    dumps_cases = [
+        (calc1, r"\coordinate (h) at (1.0,1.0) {$(x_1, y_1)$};"),
+        (h1, "(h)"),
+        (h1 + h1 + rec_11+ h1, r"($ (h) + (h) + (1.0,1.0) + (h) $)"),
+        (h1 * TikzCalcScalar(5.3), r"($ 5.3*(h) $)"),
+        (TikzCalcScalar(5.3) * h1, r"($ 5.3*(h) $)"),
+        (h1-rec_11, r"($ (h) - (1.0,1.0) $)"),
+        (rec_11-h1, r"($ (1.0,1.0) - (h) $)"),
+    ]
+
+    @pytest.mark.parametrize("expected,actual", dumps_cases)
+    def test_dumps(self, expected, actual):
+        assert expected.dumps() == actual
+
+class TestCalcImplicitCoords(object):
+    """Note that some of this has already been tested in the above case
+    for operations on handles. We test the omissions. Most of these
+    are unlikely to occur for end users as this class isn't exposed directly"""
+
+    def test_misc(self):
+        pass
+    impl = _TikzCalcImplicitCoord(rec_11, '+', rec_11)
+        ###############
+    fail_cases = [
+        ((rec_11, '^', rec_11), raises(ValueError)), # not +/-
+        ((3.2, '+', rec_11), raises(ValueError)), # scalar needs * to follow
+        ((calc1, '+', rec_11), raises(TypeError)), # can't use calc directly
+        ((rec_11, '+', "+"), raises(ValueError)), # invalid post operator
+        ((impl, '+', "+"), raises(ValueError)), # check nesting of class
+        ((rec_11, '+', 3), raises(ValueError)), # check not string illegal
+        ((rec_11, 3, rec_11), raises(ValueError)), # check not string illegal
+        # These cases can't arise unless done explicitly (operations won't
+        # trigger them)
+        ((rec_11, '*', rec_11), raises(ValueError)),
+        ((rec_11, '*', 3), does_not_raise()),
+
+    ]
+
+    @pytest.mark.parametrize("case,expectation", fail_cases)
+    def test_fail(self, case, expectation):
+        with expectation:
+            _TikzCalcImplicitCoord(*case)
+

@@ -48,7 +48,9 @@ def test_tikz():
     repr(f)
 
     g = TikzPolCoord(angle=225, radius=1, relative=False)
+    g2 = TikzPolCoord(angle=225, radius=1, relative=True)
     repr(g)
+    repr(g2)
 
     h = TikzCalcCoord(handle='handle', options=None, at=c, text=None)
     hh = h.get_handle()

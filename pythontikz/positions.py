@@ -131,7 +131,7 @@ class TikzRectCoord(BaseTikzCoord):
             other_x = other._x
             other_y = other._y
         else:
-            raise TypeError('can only compare tuple and TiKZCoordinate types')
+            raise TypeError('can only compare tuple and TikzRectCoord types')
 
         # prevent comparison between relative and non relative
         # by returning False
@@ -168,15 +168,21 @@ class TikzRectCoord(BaseTikzCoord):
     def __radd__(self, other):
         return self.__add__(other)
 
-    def __sub__(self, other):
-        other_coord = self._arith_check(other)
-        if other_coord is False:
-            return other - self
-        return TikzRectCoord(self._x - other_coord._x,
-                             self._y - other_coord._y)
+    def __sub__(self, second, first=None):
+        """Performs first - second, optional arg for rsubs"""
+        first = self if first is None else first
+        second_coord = self._arith_check(second)
+        if second_coord is False:
+            return second.__rsub__(first)
+        return TikzRectCoord(first._x - second_coord._x,
+                             first._y - second_coord._y)
 
     def __rsub__(self, other):
-        return self.__sub__(other)
+        other = self._arith_check(other)
+        if other is False:
+            raise TypeError('Unsupported Operand Exception for types'
+                            f'{type(self)} and {type(other)}')
+        return self.__sub__(first=other, second=self)
 
     def distance_to(self, other):
         """Euclidean distance between two coordinates."""
@@ -247,16 +253,19 @@ class _TikzCalcCoordHandle(BaseTikzCoord):
     def __radd__(self, other):
         return self.__add__(other)
 
-    def __sub__(self, other):
-        if isinstance(other, tuple):
-            other = TikzRectCoord(*other)
-        if isinstance(other, BaseTikzCoord) is False:
+    def __sub__(self, second, first=None):
+        """Performs first - second, optional param for rsubs use"""
+        if first is None:
+            first=self
+        if isinstance(second, tuple):
+            second = TikzRectCoord(*second)
+        if isinstance(second, BaseTikzCoord) is False:
             raise TypeError("Only can subtract coordinates with other"
                             " coordinate types")
-        return _TikzCalcImplicitCoord(self, "-", other)
+        return _TikzCalcImplicitCoord(first, "-", second)
 
     def __rsub__(self, other):
-        return self.__sub__(other)
+        return self.__sub__(first=other, second=self)
 
     def __mul__(self, other):
         if isinstance(other, (float, int, TikzCalcScalar)) is False:
@@ -305,7 +314,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
         raise TypeError("TikzCalcCoord does not support the operation"
                         " '{}' as it represents the variable "
                         "definition. \n The handle returned by "
-                        "TikzCalcCoord.get_handle() does support"
+                        "TikzCalcCoord.get_handle() does support "
                         "arithmetic operators.".format(error_text))
 
     def __radd__(self, other):
@@ -382,13 +391,28 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
                     'be a or coordinate or scalar, got{}'.format(type(item))))
 
         elif self._last_item_type == 'point':
+            if item == "*":
+                self._arg_list.append(item)
+                self._last_item_type = "point,multiplication"
+                return
             try:
                 self._add_operator(item)
             except (TypeError, ValueError):
                 raise ValueError("Only a valid operator can follow a point")
+        elif 'multiplication' in self._last_item_type:
+            if self._last_item_type.startswith('point'):
+                if self._add_scalar(item):
+                    return
+                raise ValueError(
+                    'Point multiplication must be followed by a '
+                    'scalar to be legal')
+            else:  # starts with scalar
+                self._add_point_wrapper(
+                    item, ValueError("Scalar multiplication must be followed "
+                                     "by a point to be legal.")
+                )
+
         elif self._last_item_type == 'operator':
-            if self._add_scalar(item):
-                return
             self._add_point_wrapper(
                 item, error_to_raise=ValueError(
                     'only a point descriptor can come after an operator'))
@@ -396,14 +420,11 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         elif self._last_item_type == 'scalar':
             if item == "*":
                 self._arg_list.append(item)
-                self._last_item_type = "multiplication_operator"
+                self._last_item_type = "scalar,multiplication"
+                return
             else:
                 raise ValueError("Multiplication symbol * must follow scalar"
                                  " in calc syntax.")
-        elif self._last_item_type == 'multiplication_operator':
-            self._add_point_wrapper(item,
-                                    ValueError("Scalar must be followed by a"
-                                               " point to be legal."))
 
     def _add_scalar(self, item) -> bool:
         """Attempt to process item as a scalar, returns result as boolean"""
@@ -494,14 +515,12 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
 
     def __sub__(self, other):
         if isinstance(other, _TikzCalcImplicitCoord):
-            print(other.dumps(), "./")
             args = list(self._arg_list)  # list.copy on python >3.3
             args.append("-")
             args.extend(other._arg_list)
             return _TikzCalcImplicitCoord(*args)
 
         elif isinstance(other, BaseTikzCoord):
-            print(other, "./")
             args = list(self._arg_list)  # list.copy on python >3.3
             args.extend(["-", other])  # python 3.4 compat
             return _TikzCalcImplicitCoord(*args)
