@@ -455,7 +455,7 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
                 continue
             self._parse_next_item(item)
 
-    def _add_operator(self, operator, parse_only=False):
+    def _add_operator(self, operator):
         if isinstance(operator, str):
             if operator not in self._legal_operators:
                 raise ValueError('Illegal user operator type: "{}"'
@@ -463,12 +463,10 @@ class _TikzCalcImplicitCoord(BaseTikzCoord):
         else:
             raise TypeError('Only string type operators are allowed')
 
-        if parse_only is False:
-            self._arg_list.append(operator)
-            self._last_item_type = 'operator'
 
-        else:
-            return operator
+        self._arg_list.append(operator)
+        self._last_item_type = 'operator'
+
 
     def _add_point_wrapper(self, point, error_to_raise: Exception) -> bool:
         try:
