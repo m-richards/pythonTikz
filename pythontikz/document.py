@@ -9,15 +9,15 @@ This module implements the class that deals with the full document.
 import os
 import subprocess
 import errno
-from .base_classes import Environment, Command, Container, LatexObject, \
-    UnsafeCommand
+from .base_classes import Command, Container, LatexObject
+import pylatex
 from pylatex import Package
 from pylatex.errors import CompilerError
-from pylatex.utils import dumps_list, rm_temp_dir, NoEscape
+from pylatex.utils import rm_temp_dir
 import pylatex.config as cf
 
 
-class Document(Environment):
+class Document(pylatex.Document):
     r"""
     A class that contains a full LaTeX document.
 
@@ -150,32 +150,7 @@ class Document(Environment):
                 for p in item.packages:
                     self.packages.add(p)
 
-    def dumps(self):
-        """Represent the document as a string in LaTeX syntax.
 
-        Returns
-        -------
-        str
-        """
-
-        head = self.documentclass.dumps() + '%\n'
-        head += self.dumps_packages() + '%\n'
-        head += dumps_list(self.variables) + '%\n'
-        head += dumps_list(self.preamble) + '%\n'
-
-        return head + '%\n' + super().dumps()
-
-    def generate_tex(self, filepath=None):
-        """Generate a .tex file for the document.
-
-        Args
-        ----
-        filepath: str
-            The name of the file (without .tex), if this is not supplied the
-            default filepath attribute is used as the path.
-        """
-
-        super().generate_tex(self._select_filepath(filepath))
 
     def generate_pdf(self, filepath=None, *, clean=True, clean_tex=True,
                      compiler=None, compiler_args=None, silent=True):
@@ -304,114 +279,3 @@ class Document(Environment):
             ))
 
         os.chdir(cur_dir)
-
-    def _select_filepath(self, filepath):
-        """Make a choice between ``filepath`` and ``self.default_filepath``.
-
-        Args
-        ----
-        filepath: str
-            the filepath to be compared with ``self.default_filepath``
-
-        Returns
-        -------
-        str
-            The selected filepath
-        """
-
-        if filepath is None:
-            return self.default_filepath
-        else:
-            if os.path.basename(filepath) == '':
-                filepath = os.path.join(filepath, os.path.basename(
-                    self.default_filepath))
-            return filepath
-
-    def change_page_style(self, style):
-        r"""Alternate page styles of the current page.
-
-        Args
-        ----
-        style: str
-            value to set for the page style of the current page
-        """
-
-        self.append(Command("thispagestyle", arguments=style))
-
-    def change_document_style(self, style):
-        r"""Alternate page style for the entire document.
-
-        Args
-        ----
-        style: str
-            value to set for the document style
-        """
-
-        self.append(Command("pagestyle", arguments=style))
-
-    def add_color(self, name, model, description):
-        r"""Add a color that can be used throughout the document.
-
-        Args
-        ----
-        name: str
-            Name to set for the color
-        model: str
-            The color model to use when defining the color
-        description: str
-            The values to use to define the color
-        """
-
-        if self.color is False:
-            self.packages.append(Package("color"))
-            self.color = True
-
-        self.preamble.append(Command("definecolor", arguments=[name,
-                                                               model,
-                                                               description]))
-
-    def change_length(self, parameter, value):
-        r"""Change the length of a certain parameter to a certain value.
-
-        Args
-        ----
-        parameter: str
-            The name of the parameter to change the length for
-        value: str
-            The value to set the parameter to
-        """
-
-        self.preamble.append(UnsafeCommand('setlength',
-                                           arguments=[parameter, value]))
-
-    def set_variable(self, name, value):
-        r"""Add a variable which can be used inside the document.
-
-        Variables are defined before the preamble. If a variable with that name
-        has already been set, the new value will override it for future uses.
-        This is done by appending ``\renewcommand`` to the document.
-
-        Args
-        ----
-        name: str
-            The name to set for the variable
-        value: str
-            The value to set for the variable
-        """
-
-        name_arg = "\\" + name
-        variable_exists = False
-
-        for variable in self.variables:
-            if name_arg == variable.arguments._positional_args[0]:
-                variable_exists = True
-                break
-
-        if variable_exists:
-            renew = Command(command="renewcommand",
-                            arguments=[NoEscape(name_arg), value])
-            self.append(renew)
-        else:
-            new = Command(command="newcommand",
-                          arguments=[NoEscape(name_arg), value])
-            self.variables.append(new)
