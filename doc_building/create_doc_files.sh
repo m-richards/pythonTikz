@@ -59,7 +59,9 @@ for f in ../examples/*.py; do
     echo ------------------- >> $rst
     # Compiling examples to png
     cd source/_static/examples
-    $python ../../../$f > /dev/null
+    echo $PWD
+    echo $python ../../../$f
+    $python ../../../$f #> /dev/null
     rst=../../../$rst
     for pdf in ${name}*.pdf; do
         convert $pdf ${pdf}.png
