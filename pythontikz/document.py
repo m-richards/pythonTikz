@@ -150,8 +150,6 @@ class Document(pylatex.Document):
                 for p in item.packages:
                     self.packages.add(p)
 
-
-
     def generate_pdf(self, filepath=None, *, clean=True, clean_tex=True,
                      compiler=None, compiler_args=None, silent=True):
         """Generate a pdf file from the document.
