@@ -15,7 +15,7 @@ import warnings
 
 
 def _warning(message, category, filename, lineno, file=None, line=None):
-    return f"{category.__name__ if category else None} {message}"
+    return f"{category.__name__ if category else None} {message}" # pragma: no cover
 
 
 warnings.formatwarning = _warning

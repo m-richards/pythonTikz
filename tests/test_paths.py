@@ -8,18 +8,15 @@ still exist. An error from this file means that the public API has been
 changed.
 """
 import pytest
+from pylatex import NoEscape
 from pytest import raises
-
-from pythontikz import TikzUserPath, TikzOptions, TikzPathList, TikzArc
+from pythontikz.common import TikzOptions
+from pythontikz.paths import TikzUserPath, TikzPathList, TikzArc, TikzDraw
 from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
-                                  TikzCalcScalar, _TikzCalcImplicitCoord,
-                                  TikzNode
-                                  )
+                                  TikzNode)
 
 
 from contextlib import contextmanager
-from io import StringIO
-import sys
 
 
 @contextmanager
@@ -51,8 +48,17 @@ pol2 = TikzPolCoord(90, 1)
 
 class TestPathList(object):
 
-    def test_warning_case(self):
-        with pytest.warns(UserWarning):
+    @pytest.fixture()
+    def redirect_stderr(self):
+        default_std_err = sys.stderr
+        redirected_stderr = StringIO()
+        sys.stderr = redirected_stderr
+        yield self.redirect_stderr
+        sys.stderr = default_std_err
+
+
+    def test_warning_case(self, redirect_stderr):
+        with pytest.warns(UserWarning) as unused:
             a = TikzPathList('(0, 1)', '--', '(2, 0)', TikzRectCoord(0,0), (3,0))
 
     ###############
@@ -87,9 +93,9 @@ class TestPathList(object):
          '(0.0,1.0) arc (0.0:300.0:2.0)'),
     ]
 
-    @pytest.mark.parametrize("expected,actual", dumps_cases)
-    def test_dumps(self, expected, actual):
-        assert expected.dumps() == actual
+    @pytest.mark.parametrize("actual,expected", dumps_cases)
+    def test_dumps(self, actual, expected):
+        assert actual.dumps() == expected
 
     ###############
     fail_cases = [
@@ -110,6 +116,53 @@ class TestPathList(object):
             case()
 
 
+class TestTikzDraw(object):
+    r"""Tests a number of cases of dumps to ensure that the otherwise tested
+    components are being assembled correctly. Additionally tests the parent
+    TikzPath as there is only a minor difference between teh classes, namely
+    the dumps method supplying \draw instead of \path
+
+    Unfortunately, parameterised tests don't work with this class (perhaps
+    due to the use of recursive repr?)
+    """
+
+    def test_misc(self):
+        orig_handle = (0, 0)
+        rad = 1
+        draw_options = TikzOptions("very thick", "->")
+
+        a = TikzDraw([orig_handle + TikzRectCoord(-rad, 0), '--',
+                  orig_handle + TikzRectCoord(rad, 0),
+                  TikzNode(text=NoEscape(r"{$\Re$}"),
+                           options=['above'])],
+                 options=draw_options)
+        b = (r'\draw[very thick,->] (-1.0,0.0) -- (1.0,0.0)' 
+            r' node[above] {{$\Re$}};')
+        assert a.dumps() ==b
 
 
+###############
+    h = TikzCalcCoord(handle='h', at=TikzRectCoord(0, 3))
+    h = h.get_handle()
+    dumps_cases = [
+        (
+            [rec_11, 'arc', "(300:200:2)", '--', pol1],
+            None,
+            r'\draw (1.0,1.0) arc (300.0:200.0:2.0) -- (180.0:1.0);'
+        ),
+        (
+            [rec_11, 'rectangle', h, '-|', pol1, TikzNode(text='$x_1$',
+                                                          options='above')],
+            TikzOptions("very thick", "->", 'fill=black'),
+            (r'\draw[very thick,->,fill=black] (1.0,1.0) rectangle (h) -|'
+             ' (180.0:1.0) node[above] {$x_1$};')
+        ),
+
+
+    ]
+    #
+    @pytest.mark.parametrize("path,options,expected", dumps_cases)
+    def test_dumps(self, path, options, expected):
+        actual = TikzDraw(path=path, options=options)
+        assert actual.dumps() == expected
 
