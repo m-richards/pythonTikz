@@ -1,0 +1,4 @@
+[run]
+omit = 
+	# omit generated files
+	pythontikz/_version.py

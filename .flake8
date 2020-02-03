@@ -1,0 +1,56 @@
+[flake8]
+# Tool generated files that are okay to violate pep
+exclude = pythontikz/_version.py, versioneer.py
+ignore = 
+	# W503:=line break before binary operator. 
+	# W503 and W504 are contradictory, allowing the operator to start a line
+	# means consecutive operators are nicely lined up.
+	W503,
+	
+	# D105: Docstrings are not needed for magic methods.
+	D105,
+	
+	# D202: A blank line after a function doc string should always be okay.
+	D202,
+	
+	# D203: Class docstrings should not be preceded by an empty line.
+	D203,
+	
+	# E226: Whitespace around arithmetic operators is not mandatory, sometimes no
+	# whitespace makes precedence clearer.
+	
+	E226,
+	# D205:= 1 blank line required between summary line and description
+	D205,
+	
+	# D400:= First line should end with a period
+	D400,
+	
+	# D413:= Missing blank line after last section (This just puts extra space 
+	# at the end of a docstring for no benefit)
+	
+	D413,
+	# D414:= Section has no content
+	#,D414
+	
+	
+
+# Note per-file-ignores is whitespace sensitive.
+per-file-ignores =
+    # Stuff is exported in the __init__ files so ignore unused imports
+    */__init__.py:F401
+
+    # __init__ methods should describe arguments only
+    #/def __init__/:D205,D400,D401
+
+    # Empty __init__ doesn't need argument description
+    #/def __init__\(self\)/:D102,D107
+
+    # No docstrings are needed in tests
+    */tests/*.py:D1
+    tests/*.py:D1
+
+    # Examples only need module docstrings
+    */examples/*.py:D101,D102,D103
+    examples/*.py :D101,D102,D103
+
