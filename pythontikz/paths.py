@@ -11,6 +11,14 @@ import re
 from .common import TikzLibrary, TikzObject, TikzAnchor
 from .positions import (TikzRectCoord, BaseTikzCoord, TikzNode,
                         )
+import warnings
+
+
+def _warning(message, category, filename, lineno, file=None, line=None):
+    return f"{category.__name__ if category else None} {message}"
+
+
+warnings.formatwarning = _warning
 
 
 class TikzUserPath(LatexObject):
@@ -51,7 +59,7 @@ class TikzPathList(LatexObject):
         """
         Args
         ----
-        args: list
+        *args: Variable length argument list of strings
             A list of path elements
         """
         self._last_item_type = None
@@ -69,7 +77,6 @@ class TikzPathList(LatexObject):
         self._parse_next_item(item)
 
     def _parse_next_item(self, item):
-
         # assume first item is a point
         if self._last_item_type is None:
             try:
@@ -91,6 +98,11 @@ class TikzPathList(LatexObject):
                 return
             try:
                 self._add_point(item)
+                warnings.warn('TikzPath contains no path '
+                              'specifier between successive coordinates. '
+                              f'"{self.dumps()}" is legal '
+                              'TikZ but is unlikely to produce the desired '
+                              'result.\n')
                 return
             except (ValueError, TypeError):
                 # not a point, try path
@@ -125,6 +137,8 @@ class TikzPathList(LatexObject):
             self._parse_next_item(item)
 
     def _add_path(self, path):
+        """Attempts to add input argument as a path type specifier,
+        raises and appropriate exception if invalid."""
         if isinstance(path, str):
             if path in self._legal_path_types:
                 _path = TikzUserPath(path)
@@ -205,7 +219,7 @@ class TikzPath(TikzObject):
         """
         Args
         ----
-        path: TikzPathList
+        path: TikzPathList or list
             A list of the nodes, path types in the path
         options: TikzOptions
             A list of options for the command
@@ -222,8 +236,8 @@ class TikzPath(TikzObject):
         if isinstance(path, TikzPathList):
             self.path = path
         elif isinstance(path, list):
-                self.path = TikzPathList(
-                    *path, additional_path_types=additional_path_types)
+            self.path = TikzPathList(
+                *path, additional_path_types=additional_path_types)
         elif path is None:
             self.path = TikzPathList(
                 additional_path_types=additional_path_types)

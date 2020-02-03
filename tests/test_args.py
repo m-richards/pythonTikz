@@ -84,7 +84,7 @@ def test_tikz():
     up = TikzUserPath(path_type="edge", options=TikzOptions('bend right'))
     repr(up)
 
-    pl = TikzPathList('(0, 1)', '--', '(2, 0)')
+    pl = TikzPathList('(0, 1)', '--')
     pl.append((0.5, 0))
     repr(pl)
 
