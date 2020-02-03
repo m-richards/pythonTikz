@@ -26,8 +26,8 @@ def test_tikz():
     a = Axis(data=None, options=None)
     repr(a)
 
-    p = Plot(name=None, func=None, coordinates=None, error_bar=None,
-             options=None)
+    p = Plot(name=None, func=None, coordinates=None, error_bar_deltas=None,
+             options=None, use_auto_format=False)
     repr(p)
 
     opt = TikzOptions(None)

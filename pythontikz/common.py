@@ -125,8 +125,9 @@ class Plot(LatexObject):
                  name=None,
                  func=None,
                  coordinates=None,
-                 error_bar=None,
-                 options=None):
+                 error_bar_deltas=None,
+                 options=None,
+                 use_auto_format=True):
         """
         Args
         ----
@@ -136,15 +137,22 @@ class Plot(LatexObject):
             A function that should be plotted.
         coordinates: list
             A list of exact coordinates tat should be plotted.
-
+        error_bar_deltas: list
+            A list of (x,y) pairs for each coordinate indicating the +/-
+            error amount.
         options: str, list or `~.Options`
+        use_auto_format: bool
+            Boolean for whether pgfplot is called as addplot or addplot+
+            which controls whether unspecified options are set automatically.
+            Set pdfplots manual for details.
         """
 
         self.name = name
         self.func = func
         self.coordinates = coordinates
-        self.error_bar = error_bar
+        self.error_bar_deltas = error_bar_deltas
         self.options = options
+        self.use_auto_format = use_auto_format
 
         super().__init__()
 
@@ -155,20 +163,20 @@ class Plot(LatexObject):
         -------
         str
         """
-
-        string = Command('addplot', options=self.options).dumps()
+        com_name = 'addplot+' if self.use_auto_format else 'addplot'
+        string = Command(com_name, options=self.options).dumps()
 
         if self.coordinates is not None:
             string += ' coordinates {%\n'
 
-            if self.error_bar is None:
+            if self.error_bar_deltas is None:
                 for x, y in self.coordinates:
                     # ie: "(rot,y)"
                     string += '(' + str(x) + ',' + str(y) + ')%\n'
 
             else:
                 for (x, y), (e_x, e_y) in zip(self.coordinates,
-                                              self.error_bar):
+                                              self.error_bar_deltas):
                     # ie: "(rot,y) +- (e_x,e_y)"
                     string += '(' + str(x) + ',' + str(y) + \
                               ') +- (' + str(e_x) + ',' + str(e_y) + ')%\n'
