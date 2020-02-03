@@ -59,7 +59,7 @@ class TikzPathList(LatexObject):
         """
         Args
         ----
-        *args: Variable length argument list of strings
+        *args: list
             A list of path elements
         """
         self._last_item_type = None
@@ -206,9 +206,6 @@ class TikzPathList(LatexObject):
                 ret_str.append(item)
             elif isinstance(item, LatexObject):
                 ret_str.append(item.dumps())
-            else:
-                raise TypeError("Dumps failed. Unexpected item type in"
-                                "_arg_list")
         return ' '.join(ret_str)
 
 

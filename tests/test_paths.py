@@ -12,10 +12,14 @@ from pytest import raises
 
 from pythontikz import TikzUserPath, TikzOptions, TikzPathList, TikzArc
 from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
-                                  TikzNode)
+                                  TikzCalcScalar, _TikzCalcImplicitCoord,
+                                  TikzNode
+                                  )
 
 
 from contextlib import contextmanager
+from io import StringIO
+import sys
 
 
 @contextmanager
@@ -100,23 +104,10 @@ class TestPathList(object):
         (lambda: TikzPathList('(0, 1)', 'arc', rec_11), raises(TypeError))
     ]
 
-    @pytest.mark.parametrize("actual, expected", dumps_cases)
-    def test_dumps(self, actual, expected):
-        assert actual.dumps() == expected
-
-
-    ###############
-    # fail_cases = [
-        # (lambda: TikzPathList('(0, 1)', '--', '(2, 0)', TikzRectCoord(0,0)),
-        # (lambda: TikzPathList('(0, 1)', '--', '(2, 0)', TikzRectCoord(0,0)),
-        #  raises(
-        #     TypeError)),
-    # ]
-    #
-    # @pytest.mark.parametrize("case,expectation", fail_cases)
-    # def test_fail_cases(self, case, expectation):
-    #     with expectation:
-    #         case()
+    @pytest.mark.parametrize("case,expectation", fail_cases)
+    def test_fail_cases(self, case, expectation):
+        with expectation:
+            case()
 
 
 
