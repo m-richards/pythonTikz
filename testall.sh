@@ -81,16 +81,22 @@ mv .coverage{,.tests}
 
 count=0
 echo -e '\e[32mTesting example scripts\e[0m'
-for f in "$main_folder"/examples/*.py; do
+cd "$main_folder"/examples
+for f in ./*.py; do
     echo -e '\e[32m\t '"$f"'\e[0m'
     # primitive check that file doesn't crash check
-    if ! coverage run --source=pythontikz "$f"; then
+    if ! coverage run --source=pythontikz "$f" > /dev/null; then
 		echo -e '\e[31mTesting '"$f"' Failed. Tests Aborted. \e[0m'
         exit 1
     fi
+    f_no_ext=${f%.py}
+    # clean up files
+#    rm -rf "$f_no_ext"'.tex'
+#    rm -rf "$f_no_ext"'.pdf'
     ((count ++))
     mv .coverage .coverage.example$count
 done
+cd ..
 
 coverage combine
 
