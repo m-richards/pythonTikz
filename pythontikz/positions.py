@@ -189,8 +189,8 @@ class TikzRectCoord(BaseTikzCoord):
         """Euclidean distance between two coordinates."""
 
         other_coord = self._arith_check(other)
-        return math.sqrt(math.pow(self._x - other_coord._x, 2) +
-                         math.pow(self._y - other_coord._y, 2))
+        return math.sqrt(math.pow(self._x - other_coord._x, 2)
+                         + math.pow(self._y - other_coord._y, 2))
 
 
 class TikzPolCoord(TikzRectCoord):

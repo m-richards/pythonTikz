@@ -97,7 +97,7 @@ class TikzObject(Container):
         else:
             try:
                 anchor = int(anchor_name.split('_')[1])
-            except:
+            except (TypeError, ValueError, IndexError):
                 anchor = None
 
             if anchor is not None:

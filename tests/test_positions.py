@@ -237,7 +237,8 @@ class TestCalcImplicitCoords(object):
 
 def test_node():
     """Small test since Node also gets tested in paths. Also tests inherited
-    methods from TikzObject"""
+    methods from TikzObject
+    """
     with raises(TypeError):
         TikzNode(at='(1,1)')
     with raises(TypeError):
@@ -245,10 +246,7 @@ def test_node():
 
     a = TikzNode('s', at=TikzRectCoord(1, 1), options=[
         'anchor=east'], text='$x_1$')
-    assert a.dumps() ==r'\node[anchor=east] (s) at (1.0,1.0) {$x_1$};'
+    assert a.dumps() == r'\node[anchor=east] (s) at (1.0,1.0) {$x_1$};'
     b = TikzNode('s', at=TikzRectCoord(1, 1), options=[
         'anchor=east'])
     assert b.dumps() == r'\node[anchor=east] (s) at (1.0,1.0) {};'
-
-
-

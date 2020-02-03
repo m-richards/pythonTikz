@@ -15,7 +15,8 @@ import warnings
 
 
 def _warning(message, category, filename, lineno, file=None, line=None):
-    return f"{category.__name__ if category else None} {message}" # pragma: no cover
+    name = category.__name__ if category else None
+    return f"{name} {message}"  # pragma: no cover
 
 
 warnings.formatwarning = _warning
@@ -119,7 +120,7 @@ class TikzPathList(LatexObject):
             try:
                 self._add_point(item)
                 return
-            except (TypeError, ValueError) as ex:
+            except (TypeError, ValueError):
                 raise ValueError('only a point descriptor  or "cycle" can '
                                  'come after a path descriptor, got {}'
                                  .format(type(item)))
@@ -137,8 +138,9 @@ class TikzPathList(LatexObject):
             self._parse_next_item(item)
 
     def _add_path(self, path):
-        """Attempts to add input argument as a path type specifier,
-        raises and appropriate exception if invalid."""
+        """Attempt to add input argument as a path type specifier,
+        raises and appropriate exception if invalid.
+        """
         if isinstance(path, str):
             if path in self._legal_path_types:
                 _path = TikzUserPath(path)

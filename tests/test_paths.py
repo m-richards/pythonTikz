@@ -36,10 +36,8 @@ class TestUserPath(object):
         # necessary here because 'in' is a python keyword
         path_options = {'in': 90, 'out': 0}
         p = TikzUserPath('edge',
-                     TikzOptions('-latex', **path_options))
+                         TikzOptions('-latex', **path_options))
         assert p.dumps() == "edge[-latex,in=90,out=0]"
-
-
 
 
 pol1 = TikzPolCoord(180, 1)
@@ -48,18 +46,9 @@ pol2 = TikzPolCoord(90, 1)
 
 class TestPathList(object):
 
-    @pytest.fixture()
-    def redirect_stderr(self):
-        default_std_err = sys.stderr
-        redirected_stderr = StringIO()
-        sys.stderr = redirected_stderr
-        yield self.redirect_stderr
-        sys.stderr = default_std_err
-
-
-    def test_warning_case(self, redirect_stderr):
-        with pytest.warns(UserWarning) as unused:
-            a = TikzPathList('(0, 1)', '--', '(2, 0)', TikzRectCoord(0,0), (3,0))
+    def test_warning_case(self):
+        with pytest.warns(UserWarning):
+            TikzPathList('(0, 1)', '--', '(2, 0)', TikzRectCoord(0, 0), (3, 0))
 
     ###############
     fail_args = [
@@ -77,19 +66,20 @@ class TestPathList(object):
     ###############
     dumps_cases = [
         (TikzPathList('(0, 1)', '--', '(2, 0)'),
-            '(0.0,1.0) -- (2.0,0.0)'),
+         '(0.0,1.0) -- (2.0,0.0)'),
         (TikzPathList('(0, 1)', 'rectangle', '(2, 3)'),
-            '(0.0,1.0) rectangle (2.0,3.0)'),
+         '(0.0,1.0) rectangle (2.0,3.0)'),
         (TikzPathList('(0, 1)', 'arc', TikzArc(180, 45, radius=1), '--',
                       'cycle'),
          '(0.0,1.0) arc (180.0:45.0:1.0) -- cycle'),
-        (TikzPathList('(0, 1)',  TikzUserPath(
-            path_type="edge", options=TikzOptions('bend right')),
-                      (2,2), TikzNode(text='$x_2$')),
+        (TikzPathList('(0, 1)', TikzUserPath(
+            path_type="edge",
+            options=TikzOptions('bend right')),
+            (2, 2), TikzNode(text='$x_2$')),
          '(0.0,1.0) edge[bend right] (2.0,2.0) node {$x_2$}'),
         (TikzPathList('(0, 1)', 'arc', '(0:300:2)'),
          '(0.0,1.0) arc (0.0:300.0:2.0)'),
-        (TikzPathList('(0, 1)', 'arc', (0,300,2)),
+        (TikzPathList('(0, 1)', 'arc', (0, 300, 2)),
          '(0.0,1.0) arc (0.0:300.0:2.0)'),
     ]
 
@@ -100,7 +90,7 @@ class TestPathList(object):
     ###############
     fail_cases = [
         (lambda: TikzPathList('(0, 1)', TikzArc(180, 45, radius=1)),
-                              raises(TypeError)),
+         raises(TypeError)),
         (lambda: TikzPathList('arc', TikzArc(180, 45, radius=1)),
          raises(TypeError)),
         (lambda: TikzPathList(TikzArc(180, 45, radius=1)),
@@ -132,13 +122,13 @@ class TestTikzDraw(object):
         draw_options = TikzOptions("very thick", "->")
 
         a = TikzDraw([orig_handle + TikzRectCoord(-rad, 0), '--',
-                  orig_handle + TikzRectCoord(rad, 0),
-                  TikzNode(text=NoEscape(r"{$\Re$}"),
-                           options=['above'])],
-                 options=draw_options)
-        b = (r'\draw[very thick,->] (-1.0,0.0) -- (1.0,0.0)' 
-            r' node[above] {{$\Re$}};')
-        assert a.dumps() ==b
+                      orig_handle + TikzRectCoord(rad, 0),
+                      TikzNode(text=NoEscape(r"{$\Re$}"),
+                               options=['above'])],
+                     options=draw_options)
+        b = (r'\draw[very thick,->] (-1.0,0.0) -- (1.0,0.0)'
+             r' node[above] {{$\Re$}};')
+        assert a.dumps() == b
 
 
 ###############
@@ -165,4 +155,3 @@ class TestTikzDraw(object):
     def test_dumps(self, path, options, expected):
         actual = TikzDraw(path=path, options=options)
         assert actual.dumps() == expected
-
