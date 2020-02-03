@@ -148,6 +148,15 @@
 <span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="n">TikzLibrary</span><span class="p">,</span> <span class="n">TikzObject</span><span class="p">,</span> <span class="n">TikzAnchor</span>
 <span class="kn">from</span> <span class="nn">.positions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">,</span> <span class="n">BaseTikzCoord</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">,</span>
                         <span class="p">)</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+
+<span class="k">def</span> <span class="nf">_warning</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">category</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> </span><span class="si">{message}</span><span class="s2">&quot;</span>  <span class="c1"># pragma: no cover</span>
+
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">formatwarning</span> <span class="o">=</span> <span class="n">_warning</span>
 
 
 <div class="viewcode-block" id="TikzUserPath"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzUserPath">[docs]</a><span class="k">class</span> <span class="nc">TikzUserPath</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
@@ -188,7 +197,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args</span>
 <span class="sd">        ----</span>
-<span class="sd">        args: list</span>
+<span class="sd">        *args: list</span>
 <span class="sd">            A list of path elements</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="kc">None</span>
@@ -206,7 +215,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_next_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_next_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-
         <span class="c1"># assume first item is a point</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -228,6 +236,11 @@
                 <span class="k">return</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;TikzPath contains no path &#39;</span>
+                              <span class="s1">&#39;specifier between successive coordinates. &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;&quot;{self.dumps()}&quot; is legal &#39;</span>
+                              <span class="s1">&#39;TikZ but is unlikely to produce the desired &#39;</span>
+                              <span class="s1">&#39;result.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">return</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                 <span class="c1"># not a point, try path</span>
@@ -244,7 +257,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                 <span class="k">return</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only a point descriptor  or &quot;cycle&quot; can &#39;</span>
                                  <span class="s1">&#39;come after a path descriptor, got </span><span class="si">{}</span><span class="s1">&#39;</span>
                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span>
@@ -262,6 +275,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_parse_next_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to add input argument as a path type specifier,</span>
+<span class="sd">        raises and appropriate exception if invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legal_path_types</span><span class="p">:</span>
                 <span class="n">_path</span> <span class="o">=</span> <span class="n">TikzUserPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -329,9 +345,6 @@
                 <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LatexObject</span><span class="p">):</span>
                 <span class="n">ret_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">dumps</span><span class="p">())</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Dumps failed. Unexpected item type in&quot;</span>
-                                <span class="s2">&quot;_arg_list&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret_str</span><span class="p">)</span></div>
 
 
@@ -342,7 +355,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args</span>
 <span class="sd">        ----</span>
-<span class="sd">        path: TikzPathList</span>
+<span class="sd">        path: TikzPathList or list</span>
 <span class="sd">            A list of the nodes, path types in the path</span>
 <span class="sd">        options: TikzOptions</span>
 <span class="sd">            A list of options for the command</span>
@@ -359,8 +372,8 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikzPathList</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikzPathList</span><span class="p">(</span>
-                    <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">additional_path_types</span><span class="o">=</span><span class="n">additional_path_types</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikzPathList</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">additional_path_types</span><span class="o">=</span><span class="n">additional_path_types</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">TikzPathList</span><span class="p">(</span>
                 <span class="n">additional_path_types</span><span class="o">=</span><span class="n">additional_path_types</span><span class="p">)</span>

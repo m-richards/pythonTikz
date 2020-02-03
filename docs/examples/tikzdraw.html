@@ -35,7 +35,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="pythonTikZ 0.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="API reference" href="../api.html"/>
+        <link rel="next" title="Tikzplot example" href="tikzplot.html"/>
         <link rel="prev" title="Examples" href="../examples.html"/> 
 
   
@@ -94,6 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#the-generated-files">The generated files</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="tikzplot.html">Tikzplot example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API reference</a></li>
@@ -249,12 +250,12 @@
         <span class="c1"># can also use node in draw inline context</span>
         <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">-</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
                              <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="s2">&quot;{$\Re$}&quot;</span><span class="p">),</span>
+                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Re$}&quot;</span><span class="p">),</span>
                                       <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;above&#39;</span><span class="p">])],</span>
                             <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
         <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">rad</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
                              <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rad</span><span class="p">),</span>
-                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="s2">&quot;{$\Im$}&quot;</span><span class="p">),</span>
+                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Im$}&quot;</span><span class="p">),</span>
                                       <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">])],</span>
                             <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
     <span class="n">doc</span><span class="o">.</span><span class="n">generate_pdf</span><span class="p">(</span><span class="s1">&#39;tikzdraw&#39;</span><span class="p">,</span> <span class="n">clean_tex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -339,7 +340,7 @@ mark=between positions 0.1 and 0.9 step 0.25 with <span class="nb">{</span><span
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../api.html" class="btn btn-neutral float-right" title="API reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tikzplot.html" class="btn btn-neutral float-right" title="Tikzplot example" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../examples.html" class="btn btn-neutral" title="Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
