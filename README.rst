@@ -71,8 +71,7 @@ Original copyright:
 Copyright 2014 Jelte Fennema, under `the MIT
 license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
-.. |Integration| image:: https://img.shields.io/circleci/build/github/m-richards/pythonTikz
-.svg?style=svg
+.. |Integration| image:: https://img.shields.io/circleci/build/github/m-richards/pythonTikz.svg?style=svg
     :target:https://circleci.com/gh/m-richards/pythonTikz
    
 
