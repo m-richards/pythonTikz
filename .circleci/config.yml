@@ -30,12 +30,13 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            sudo apt-get update
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r dev_requirements.txt
+            pip install  -q -r dev_requirements.txt
             
-            sudo apt-get install python3 python3-dev virtualenv
-            texlive-pictures texlive-science texlive-latex-extra
+            sudo apt-get install python3 python3-dev virtualenv \
+            texlive-pictures texlive-science texlive-latex-extra \
             imagemagick
 
       - save_cache:
@@ -52,6 +53,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            chmod a+x doc_building/create_doc_files.sh
             bash testall.sh
 
       - store_artifacts:
