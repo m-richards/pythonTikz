@@ -1,5 +1,5 @@
-pythonTikZ |Integration| |Latest Docs|
-======================================
+pythonTikZ |Integration| |Latest Docs| |Coverage|
+=================================================
 
   ..  ..|Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
 
@@ -8,7 +8,7 @@ The library began in concept as a fork of
 `PyLaTeX <https://jeltef.github.io/PyLaTeX/current/>`_, which still
 forms a basis for the package. Its goal is to provide a higher
 level interface, less error prone interface to writing TikZ,
-whilst still exposing enough low level detail that complex 
+whilst still exposing enough low level detail that complex
 diagrams can be produced. Whilst most changes are in the form of additional
 functionality, some of the PyLaTeX base classes have been modified for a
 cleaner user experience.
@@ -73,13 +73,17 @@ license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
 .. |Integration| image:: https://img.shields.io/circleci/build/github/m-richards/pythonTikz.svg?style=svg
     :target:https://circleci.com/gh/m-richards/pythonTikz
-   
+
 
 .. .. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
  ..   :target: https://pypi.python.org/pypi/PyLaTeX
-   
+.. |Coverage| image:: https://img.shields.io/codecov/c/github/m-richards/pythonTikz
+    :target:https://codecov.io/gh/m-richards/pythonTikz
+
+
+
 .. |Latest Docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
      :target: https://m-richards.github.io/pythonTikz/
-   
+
 .. .. |Stable Docs| image:: https://img.shields.io/badge/docs-stable-brightgreen.svg?style=flat
  ..    :target: https://jeltef.github.io/PyLaTeX/current/
