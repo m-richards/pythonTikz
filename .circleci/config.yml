@@ -82,7 +82,8 @@ jobs:
             - "00:99:d1:3e:b9:7c:87:e3:1e:3e:cc:0d:c8:7d:78:a1"
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --dotfiles --message "[skip ci] Update Documentation"
+          command: |
+          gh-pages --dotfiles --message "[skip ci] UpdateDocumentation"
           --dist doc_building/build/html
 
 
