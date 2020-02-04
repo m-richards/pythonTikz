@@ -1,0 +1,22 @@
+\documentclass{standalone}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{tikz}%
+\usepackage{pgfplots}%
+\pgfplotsset{compat=newest}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\begin{tikzpicture}%
+\begin{axis}[axis x line=center,axis y line=middle,tick align=outside]%
+\addplot+[domain=-10:10,samples=80,mark size=0.6pt]{-sin(\x r)+4};%
+%
+\addlegendentry{$-\sin(x) + 4$}%
+\end{axis}%
+\end{tikzpicture}%
+\end{document}

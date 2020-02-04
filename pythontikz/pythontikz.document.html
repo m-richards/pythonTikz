@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pythontikz.document &mdash; pythonTikZ 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pythontikz.paths" href="pythontikz.paths.html" />
+    <link rel="prev" title="pythontikz.common" href="pythontikz.common.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pythonTikZ
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Library usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.base_classes.command.html">pythontikz.base_classes.command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.common.html">pythontikz.common</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pythontikz.document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.paths.html">pythontikz.paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythontikz.positions.html">pythontikz.positions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pythonTikZ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API reference</a> &raquo;</li>
+        
+      <li>pythontikz.document</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/pythontikz/pythontikz.document.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-pythontikz.document"></span><div class="section" id="pythontikz-document">
+<h1>pythontikz.document<a class="headerlink" href="#pythontikz-document" title="Permalink to this headline">¶</a></h1>
+<p>This module implements the class that deals with the full document.</p>
+<dl class="class">
+<dt id="pythontikz.document.Document">
+<em class="property">class </em><code class="descclassname">pythontikz.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>default_filepath='default_filepath'</em>, <em>*</em>, <em>documentclass='article'</em>, <em>document_options=None</em>, <em>fontenc='T1'</em>, <em>inputenc='utf8'</em>, <em>font_size='normalsize'</em>, <em>lmodern=True</em>, <em>textcomp=True</em>, <em>microtype=None</em>, <em>page_numbers=True</em>, <em>indent=None</em>, <em>geometry_options=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.containers.html#pylatex.base_classes.containers.Environment" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.containers.Environment</span></code></a></p>
+<p>A class that contains a full LaTeX document.</p>
+<p>If needed, you can append stuff to the preamble or the packages.
+For instance, if you need to use <code class="docutils literal"><span class="pre">\maketitle</span></code> you can add the title,
+author and date commands to the preamble to make it work.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>default_filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The default path to save files.</li>
+<li><strong>documentclass</strong> (str or <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.command.html#pylatex.base_classes.command.Command" title="(in PyLaTeX v1.3.1)"><code class="xref py py-obj docutils literal"><span class="pre">Command</span></code></a>) &#8211; The LaTeX class of the document.</li>
+<li><strong>document_options</strong> (str or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code></a>) &#8211; The options to supply to the documentclass</li>
+<li><strong>fontenc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The option for the fontenc package. If it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the fontenc
+package will not be loaded at all.</li>
+<li><strong>inputenc</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The option for the inputenc package. If it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>, the inputenc
+package will not be loaded at all.</li>
+<li><strong>font_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The font size to declare as normalsize</li>
+<li><strong>lmodern</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Use the Latin Modern font. This is a font that contains more glyphs
+than the standard LaTeX font.</li>
+<li><strong>textcomp</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Adds even more glyphs, for instance the Euro (€) sign.</li>
+<li><strong>page_numbers</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Adds the ability to add the last page to the document.</li>
+<li><strong>indent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Determines whether or not the document requires indentation. If it
+is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a> it will use the value from the active config. Which is
+<a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">True</span></code></a> by default.</li>
+<li><strong>geometry_options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; The options to supply to the geometry package</li>
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; Initial content of the document.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pythontikz.document.Document.generate_tex">
+<code class="descname">generate_tex</code><span class="sig-paren">(</span><em>filepath=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.generate_tex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.generate_tex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a .tex file for the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The name of the file (without .tex), if this is not supplied the
+default filepath attribute is used as the path.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.generate_pdf">
+<code class="descname">generate_pdf</code><span class="sig-paren">(</span><em>filepath=None</em>, <em>*</em>, <em>clean=True</em>, <em>clean_tex=True</em>, <em>compiler=None</em>, <em>compiler_args=None</em>, <em>silent=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.generate_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.generate_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a pdf file from the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The name of the file (without .pdf), if it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a> the
+<code class="docutils literal"><span class="pre">default_filepath</span></code> attribute will be used.</li>
+<li><strong>clean</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Whether non-pdf files created that are created during compilation
+should be removed.</li>
+<li><strong>clean_tex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Also remove the generated tex file.</li>
+<li><strong>compiler</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; The name of the LaTeX compiler to use. If it is None, PyLaTeX will
+choose a fitting one on its own. Starting with <code class="docutils literal"><span class="pre">latexmk</span></code> and then
+<code class="docutils literal"><span class="pre">pdflatex</span></code>.</li>
+<li><strong>compiler_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code></a>) &#8211; Extra arguments that should be passed to the LaTeX compiler. If
+this is None it defaults to an empty list.</li>
+<li><strong>silent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Whether to hide compiler output</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.change_page_style">
+<code class="descname">change_page_style</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.change_page_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.change_page_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alternate page styles of the current page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; value to set for the page style of the current page</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.change_document_style">
+<code class="descname">change_document_style</code><span class="sig-paren">(</span><em>style</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.change_document_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.change_document_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alternate page style for the entire document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; value to set for the document style</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.add_color">
+<code class="descname">add_color</code><span class="sig-paren">(</span><em>name</em>, <em>model</em>, <em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.add_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.add_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a color that can be used throughout the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Name to set for the color</li>
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The color model to use when defining the color</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The values to use to define the color</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.change_length">
+<code class="descname">change_length</code><span class="sig-paren">(</span><em>parameter</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.change_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.change_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the length of a certain parameter to a certain value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parameter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The name of the parameter to change the length for</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The value to set the parameter to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pythontikz.document.Document.omit_if_empty">
+<code class="descname">omit_if_empty</code><em class="property"> = False</em><a class="headerlink" href="#pythontikz.document.Document.omit_if_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pythontikz.document.Document.set_variable">
+<code class="descname">set_variable</code><span class="sig-paren">(</span><em>name</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/document.html#Document.set_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.document.Document.set_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a variable which can be used inside the document.</p>
+<p>Variables are defined before the preamble. If a variable with that name
+has already been set, the new value will override it for future uses.
+This is done by appending <code class="docutils literal"><span class="pre">\renewcommand</span></code> to the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The name to set for the variable</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; The value to set for the variable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pythontikz.paths.html" class="btn btn-neutral float-right" title="pythontikz.paths" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pythontikz.common.html" class="btn btn-neutral float-left" title="pythontikz.common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Matthew Richards
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
