@@ -83,8 +83,9 @@ jobs:
       - run:
           name: Deploy docs to gh-pages branch
           command: |
-            gh-pages --dotfiles --message "[skip ci] Update Documentation"
-            --dist "doc_building/build/html"
+            echo $ls
+            gh-pages --dotfiles --message "[skip ci] Update Documentation" \
+            --dist doc_building/build/html
 
 
 workflows:
