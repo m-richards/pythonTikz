@@ -1,5 +1,5 @@
-pythonTikZ |Integration| |Latest Docs|
-======================================
+pythonTikZ |Integration| |Latest Docs| |Coverage|
+=================================================
 
   ..  ..|Travis| |License| |PyPi| |Stable Docs| |Latest Docs|
 
@@ -77,6 +77,10 @@ license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
 .. .. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
  ..   :target: https://pypi.python.org/pypi/PyLaTeX
+.. |Coverage| image:: https://img.shields.io/codecov/c/github/m-richards/pythonTikz
+    :target:https://codecov.io/gh/m-richards/pythonTikz
+
+
    
 .. |Latest Docs| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
      :target: https://m-richards.github.io/pythonTikz/
