@@ -138,26 +138,5 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     cd ../docs/
     cat <>.nojekyll # add no jekyll indicator file
 
-    # check old docs match the newly build docs
-    cd ..
-    if diff docs/ docs_old -r -x '*.png' > /dev/null; then # same
-      exitVal=0
-      echo -e '\e[32mBuilt docs have not changed since last version. \e[0m'
-    else
-      echo -e '\e[33mBuilt docs have changed. This error can safely be ignored
-        locally; running this script has now updated the cached gh
-        pages docs [Rerunning this script again without changes will not
-        throw this error].
-
-        If this triggers on integration, you have changed the documentation
-        and not run "testall.sh" prior to pushing, so the docs have not be
-        updated. Integration tests will now fail.
-        \e[0m'
-      exitVal=3
-    fi
-    rm docs_old -r
-
-exit $exitVal
-
 
 fi
