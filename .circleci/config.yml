@@ -57,7 +57,7 @@ jobs:
           command: coverage xml
       - codecov/upload:
           file: coverage.xml
-          flags: pytest
+#          flags: pytest
 
       - persist_to_workspace:
           #root: doc_building/build
