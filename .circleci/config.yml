@@ -56,7 +56,7 @@ jobs:
           #root: doc_building/build
           # get docs working first then remove
           root: docs
-          paths: html
+          paths: ./*
 
       - store_artifacts:
           path: test-reports
@@ -67,7 +67,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: build
+          at: docs
       - run:
           name: Install and configure dependencies
           command: |
