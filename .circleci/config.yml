@@ -53,8 +53,8 @@ jobs:
             . venv/bin/activate
             chmod a+x doc_building/create_doc_files.sh
             bash testall.sh
-      - run:
-          command: coverage xml
+#      - run:
+#          command: coverage xml
       - codecov/upload:
           file: coverage.xml
 #          flags: pytest
