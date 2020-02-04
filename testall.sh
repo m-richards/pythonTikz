@@ -89,8 +89,8 @@ for f in ./*.py; do
 		echo -e '\e[31mTesting '"$f"' Failed. Tests Aborted. \e[0m'
         exit 1
     fi
-    f_no_ext=${f%.py}
     # clean up files
+#    f_no_ext=${f%.py}
 #    rm -rf "$f_no_ext"'.tex'
 #    rm -rf "$f_no_ext"'.pdf'
     ((count ++))
@@ -120,23 +120,7 @@ if [[ "$nodoc" != 'TRUE' && "$python_version" == "3" && "$python_version_long" !
     # documentation is built into doc_building/build
     # copy to docs so that gh pages can find it
 
-    # we do a manual check to make sure that the docs have been build locally
-    # This is a bad way to make sure a  commit fails if someone hasn't
-    # updated the docs (by not running this script)
-    cp -r ../docs ../docs_old
 
-    # clean docs folder first
-    rm ../docs/ -r;
-    mkdir ../docs/   # delete and recreate so that rm doesn't produce
-    # non existence warnings (we could stop these with -f but that might
-    # discard something important)
-
-    # copy contents of html folder not folder itself
-    cp -r build/html/. ../docs/
-    # copy source folder so that gh pages applies style sheets
-    cp -r source ../docs/source
-    cd ../docs/
-    cat <>.nojekyll # add no jekyll indicator file
 
 
 fi
