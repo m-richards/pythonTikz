@@ -72,13 +72,13 @@ Copyright 2014 Jelte Fennema, under `the MIT
 license <https://github.com/m-richards/pythonTikz/blob/master/LICENSE>`__
 
 .. |Integration| image:: https://img.shields.io/circleci/build/github/m-richards/pythonTikz.svg?style=svg
-    :target:https://circleci.com/gh/m-richards/pythonTikz
+    :target: https://circleci.com/gh/m-richards/pythonTikz
 
 
 .. .. |PyPi| image:: https://img.shields.io/pypi/v/pylatex.svg
  ..   :target: https://pypi.python.org/pypi/PyLaTeX
 .. |Coverage| image:: https://img.shields.io/codecov/c/github/m-richards/pythonTikz
-    :target:https://codecov.io/gh/m-richards/pythonTikz
+    :target: https://codecov.io/gh/m-richards/pythonTikz
 
 
 
