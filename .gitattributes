@@ -5,4 +5,5 @@ pythontikz/_version.py export-subst
 *.sh text eol=lf 
 *.py text eol=lf
 *.rst text eol=lf
+*.html text eol=lf
 Makefile text eol=lf

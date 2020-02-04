@@ -61,7 +61,7 @@ for f in ../examples/*.py; do
     cd source/_static/examples
     echo $PWD
     echo $python ../../../$f
-    $python ../../../$f #> /dev/null
+    $python ../../../$f > /dev/null
     rst=../../../$rst
     for pdf in ${name}*.pdf; do
         convert $pdf ${pdf}.png

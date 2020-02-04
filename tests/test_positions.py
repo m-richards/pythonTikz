@@ -45,9 +45,9 @@ class TestRectangularCoords(object):
         (TikzRectCoord.from_str("(1,1)"), rec_11)
     ]
 
-    @pytest.mark.parametrize('expected,actual', equality_cases)
-    def test_equality_checks(self, expected, actual):
-        assert expected == actual
+    @pytest.mark.parametrize('actual,expected', equality_cases)
+    def test_equality_checks(self, actual, expected):
+        assert actual == expected
 
     ###############
     fail_cases = [
@@ -70,9 +70,9 @@ class TestRectangularCoords(object):
         (TikzRectCoord(0, 5) - (1, 2), '(-1.0,3.0)')
     ]
 
-    @pytest.mark.parametrize("expected,actual", dumps_cases)
-    def test_rect_dumps(self, expected, actual):
-        assert expected.dumps() == actual
+    @pytest.mark.parametrize("actual, expected", dumps_cases)
+    def test_rect_dumps(self, actual, expected):
+        assert actual.dumps() == expected
 
 
 pol1 = TikzPolCoord(180, 1)
@@ -87,9 +87,9 @@ class TestPolarCoords(object):
         (TikzPolCoord.from_str('(180:1)'), pol1)
     ]
 
-    @pytest.mark.parametrize('expected,actual', equality_cases)
-    def test_equality_checks(self, expected, actual):
-        assert expected == actual
+    @pytest.mark.parametrize('actual,expected', equality_cases)
+    def test_equality_checks(self, actual, expected):
+        assert actual == expected
 
     ###############
     fail_cases = [
@@ -108,9 +108,9 @@ class TestPolarCoords(object):
         (TikzPolCoord(0, 5), '(0.0:5.0)'),
     ]
 
-    @pytest.mark.parametrize("expected,actual", dumps_cases)
-    def test_dumps(self, expected, actual):
-        assert expected.dumps() == actual
+    @pytest.mark.parametrize("actual,expected", dumps_cases)
+    def test_dumps(self, actual, expected):
+        assert actual.dumps() == expected
 
 
 calc1 = TikzCalcCoord(handle='h', at=rec_11, text='$(x_1, y_1)$')
@@ -125,9 +125,9 @@ class TestCalcCoords(object):
         (TikzPolCoord.from_str('(180:1)'), pol1),
     ]
 
-    @pytest.mark.parametrize('expected,actual', equality_cases)
-    def test_equality_checks(self, expected, actual):
-        assert expected == actual
+    @pytest.mark.parametrize('actual,expected', equality_cases)
+    def test_equality_checks(self, actual, expected):
+        assert actual == expected
 
     ###############
     fail_cases = [
@@ -173,9 +173,9 @@ class TestCalcCoords(object):
         (rec_11 - h1, r"($ (1.0,1.0) - (h) $)"),
     ]
 
-    @pytest.mark.parametrize("expected,actual", dumps_cases)
-    def test_dumps(self, expected, actual):
-        assert expected.dumps() == actual
+    @pytest.mark.parametrize("actual,expected", dumps_cases)
+    def test_dumps(self, actual, expected):
+        assert actual.dumps() == expected
 
 
 impl = _TikzCalcImplicitCoord(h1, '+', rec_11)
@@ -230,13 +230,23 @@ class TestCalcImplicitCoords(object):
 
     ]
 
-    @pytest.mark.parametrize("expected,actual", dumps_cases)
-    def test_dumps(self, expected, actual):
-        assert expected.dumps() == actual
+    @pytest.mark.parametrize("actual,expected", dumps_cases)
+    def test_dumps(self, actual, expected):
+        assert actual.dumps() == expected
 
 
 def test_node():
+    """Small test since Node also gets tested in paths. Also tests inherited
+    methods from TikzObject
+    """
     with raises(TypeError):
         TikzNode(at='(1,1)')
     with raises(TypeError):
         TikzNode(at=(1, 2))
+
+    a = TikzNode('s', at=TikzRectCoord(1, 1), options=[
+        'anchor=east'], text='$x_1$')
+    assert a.dumps() == r'\node[anchor=east] (s) at (1.0,1.0) {$x_1$};'
+    b = TikzNode('s', at=TikzRectCoord(1, 1), options=[
+        'anchor=east'])
+    assert b.dumps() == r'\node[anchor=east] (s) at (1.0,1.0) {};'

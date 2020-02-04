@@ -68,5 +68,7 @@ coverage.xml
 
 
 #Tex extras
-.log
-.aux
+*.log
+*.aux
+*.synctex.gz
+

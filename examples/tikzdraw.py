@@ -106,12 +106,12 @@ if __name__ == '__main__':
         # can also use node in draw inline context
         pic.append(TikzDraw([orig_handle + TikzRectCoord(-rad, 0), '--',
                              orig_handle + TikzRectCoord(rad, 0),
-                             TikzNode(text=NoEscape("{$\Re$}"),
+                             TikzNode(text=NoEscape(r"{$\Re$}"),
                                       options=['above'])],
                             options=draw_options))
         pic.append(TikzDraw([orig_handle + TikzRectCoord(0, -rad), '--',
                              orig_handle + TikzRectCoord(0, rad),
-                             TikzNode(text=NoEscape("{$\Im$}"),
+                             TikzNode(text=NoEscape(r"{$\Im$}"),
                                       options=['right'])],
                             options=draw_options))
     doc.generate_pdf('tikzdraw', clean_tex=False)

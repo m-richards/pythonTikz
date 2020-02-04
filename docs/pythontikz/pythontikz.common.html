@@ -286,7 +286,7 @@ automatic detection of some tikz libraries.</p>
 
 <dl class="class">
 <dt id="pythontikz.common.Plot">
-<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">Plot</code><span class="sig-paren">(</span><em>name=None</em>, <em>func=None</em>, <em>coordinates=None</em>, <em>error_bar=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.Plot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pythontikz.common.</code><code class="descname">Plot</code><span class="sig-paren">(</span><em>name=None</em>, <em>func=None</em>, <em>coordinates=None</em>, <em>error_bar_deltas=None</em>, <em>options=None</em>, <em>use_auto_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pythontikz/common.html#Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pythontikz.common.Plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://jeltef.github.io/PyLaTeX/latest/pylatex/pylatex.base_classes.latex_object.html#pylatex.base_classes.latex_object.LatexObject" title="(in PyLaTeX v1.3.1)"><code class="xref py py-class docutils literal"><span class="pre">pylatex.base_classes.latex_object.LatexObject</span></code></a></p>
 <p>A class representing a PGFPlot.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -297,7 +297,12 @@ automatic detection of some tikz libraries.</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; Name of the plot.</li>
 <li><strong>func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) &#8211; A function that should be plotted.</li>
 <li><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; A list of exact coordinates tat should be plotted.</li>
+<li><strong>error_bar_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) &#8211; A list of (x,y) pairs for each coordinate indicating the +/-
+error amount.</li>
 <li><strong>options</strong> (str, list or <a class="reference internal" href="pythontikz.base_classes.command.html#pythontikz.base_classes.command.Options" title="pythontikz.base_classes.command.Options"><code class="xref py py-obj docutils literal"><span class="pre">Options</span></code></a>) &#8211; </li>
+<li><strong>use_auto_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) &#8211; Boolean for whether pgfplot is called as addplot or addplot+
+which controls whether unspecified options are set automatically.
+Set pdfplots manual for details.</li>
 </ul>
 </td>
 </tr>
