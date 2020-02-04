@@ -99,7 +99,6 @@ done
 cd ..
 
 coverage combine
-coverage xml
 
 if [ "$clean_flag" = 'TRUE' ]; then
     rm -- *.pdf *.log *.aux *.tex *.fls *.fdb_latexmk > /dev/null
