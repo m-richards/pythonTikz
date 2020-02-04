@@ -1,8 +1,8 @@
-# Python CircleCI 2.0 configuration file
+# Python CircleCI 2.1 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2
+version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
@@ -53,7 +53,10 @@ jobs:
             . venv/bin/activate
             chmod a+x doc_building/create_doc_files.sh
             bash testall.sh
+      - run:
+          command: coverage xml
       - codecov/upload:
+          file: coverage.xml
           flags: pytest
 
       - persist_to_workspace:
