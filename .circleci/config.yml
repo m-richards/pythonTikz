@@ -55,8 +55,8 @@ jobs:
       - persist_to_workspace:
           #root: doc_building/build
           # get docs working first then remove
-          root: docs
-          paths: ./*
+          root: doc_building/build
+          paths: html
 
       - store_artifacts:
           path: test-reports
@@ -67,10 +67,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: docs
+          at: doc_building/build
       - run:
           name: Disable jekyll builds
-          command: touch docs/.nojekyll
+          command: touch doc_building/build/html/.nojekyll
       - run:
           name: Install and configure dependencies
           command: |
@@ -82,7 +82,8 @@ jobs:
             - "00:99:d1:3e:b9:7c:87:e3:1e:3e:cc:0d:c8:7d:78:a1"
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs
+          command: gh-pages --dotfiles --message "[skip ci] Update Documentation"
+          --dist doc_building/build/html/
 
 
 workflows:
