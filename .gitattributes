@@ -9,5 +9,6 @@ pythontikz/_version.py export-subst
 *.js text eol=lf
 *.inv text eol=lf
 *.png text eol=lf
+*.yml text eol=lf
 
 Makefile text eol=lf
