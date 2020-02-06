@@ -3,12 +3,15 @@ coverage:
     project:
       default:
         target: auto
-        treshold: 1
+        threshold: 1
         base: auto
+    # coverage measured only in the diff
+    # intentionally have lax requirements on patch changes to reduce
+    # contribution burden. This is a trade off.
     patch:
       default:
-        target: 90
-        treshold: null
+        target: 30
+        threshold: 10
         base: auto
 
 comment:

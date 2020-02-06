@@ -15,7 +15,9 @@ import warnings
 
 
 def _warning(message, category, filename, lineno, file=None, line=None):
-    name = category.__name__ if category else None
+    # note coverage excluded since this is never directly called since it is
+    # a monkey patch
+    name = category.__name__ if category else None  # pragma: no cover
     return f"{name} {message}"  # pragma: no cover
 
 

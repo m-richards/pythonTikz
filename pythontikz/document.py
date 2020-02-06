@@ -9,15 +9,15 @@ This module implements the class that deals with the full document.
 import os
 import subprocess
 import errno
-from .base_classes import Environment, Command, Container, LatexObject, \
-    UnsafeCommand
+from .base_classes import Command, Container, LatexObject
+import pylatex
 from pylatex import Package
 from pylatex.errors import CompilerError
-from pylatex.utils import dumps_list, rm_temp_dir, NoEscape
+from pylatex.utils import rm_temp_dir
 import pylatex.config as cf
 
 
-class Document(Environment):
+class Document(pylatex.Document):
     r"""
     A class that contains a full LaTeX document.
 
@@ -28,9 +28,9 @@ class Document(Environment):
     """
 
     def __init__(self, default_filepath='default_filepath', *,
-                 documentclass='article', document_options=None, fontenc='T1',
-                 inputenc='utf8', font_size="normalsize", lmodern=True,
-                 textcomp=True, microtype=None, page_numbers=True, indent=None,
+                 documentclass='article', document_options=None, fontenc=None,
+                 inputenc=None, font_size=None, lmodern=None,
+                 textcomp=None, microtype=None, page_numbers=None, indent=None,
                  geometry_options=None, data=None):
         r"""
         Args
@@ -65,6 +65,14 @@ class Document(Environment):
         data: list
             Initial content of the document.
         """
+        # preserve old default values for non standalone
+        if documentclass != 'standalone':
+            fontenc = 'T1' if fontenc is None else fontenc
+            inputenc = 'utf8' if inputenc is None else inputenc
+            lmodern = True if lmodern is None else lmodern
+            textcomp = True if textcomp is None else textcomp
+            page_numbers = True if page_numbers is None else page_numbers
+            font_size = 'normalsize' if font_size is None else font_size
 
         self.default_filepath = default_filepath
 
@@ -123,8 +131,8 @@ class Document(Environment):
         # No colors have been added to the document yet
         self.color = False
         self.meta_data = False
-
-        self.append(Command(command=font_size))
+        if font_size is not None:
+            self.append(Command(command=font_size))
 
     def _propagate_packages(self):
         r"""Propogate packages.
@@ -135,39 +143,12 @@ class Document(Environment):
 
         super()._propagate_packages()
 
-        for item in (self.preamble):
+        for item in self.preamble:
             if isinstance(item, LatexObject):
                 if isinstance(item, Container):
                     item._propagate_packages()
                 for p in item.packages:
                     self.packages.add(p)
-
-    def dumps(self):
-        """Represent the document as a string in LaTeX syntax.
-
-        Returns
-        -------
-        str
-        """
-
-        head = self.documentclass.dumps() + '%\n'
-        head += self.dumps_packages() + '%\n'
-        head += dumps_list(self.variables) + '%\n'
-        head += dumps_list(self.preamble) + '%\n'
-
-        return head + '%\n' + super().dumps()
-
-    def generate_tex(self, filepath=None):
-        """Generate a .tex file for the document.
-
-        Args
-        ----
-        filepath: str
-            The name of the file (without .tex), if this is not supplied the
-            default filepath attribute is used as the path.
-        """
-
-        super().generate_tex(self._select_filepath(filepath))
 
     def generate_pdf(self, filepath=None, *, clean=True, clean_tex=True,
                      compiler=None, compiler_args=None, silent=True):
@@ -241,8 +222,22 @@ class Document(Environment):
                 raise
             except subprocess.CalledProcessError as e:
                 # For all other errors print the output and raise the error
-                print(e.output.decode())
-                raise
+                # try to catch windows 'perl.exe' not found so that we can
+                # try pdflatex instead rather than just crashing
+                output = str(e.output.decode())
+                import re
+                import sys
+                output = re.sub(r'\s+', '', output)
+                if "couldnotfindthescriptengine'perl.exe'" in output:
+                    print("ERROR: Compiler latexmk failed since the dependency"
+                          " 'perl.exe' was not found. Trying alternative "
+                          "compilers. Specify the compiler in future to avoid"
+                          " this check if not using latexmk.",
+                          file=sys.stderr)
+                    continue
+                else:
+                    print(e.output.decode())
+                    raise e
             else:
                 if not silent:
                     print(output.decode())
@@ -275,121 +270,10 @@ class Document(Environment):
 
         else:
             # Notify user that none of the compilers worked.
-            raise(CompilerError(
+            raise (CompilerError(
                 'No LaTex compiler was found\n'
                 'Either specify a LaTex compiler '
                 'or make sure you have latexmk or pdfLaTex installed.'
             ))
 
         os.chdir(cur_dir)
-
-    def _select_filepath(self, filepath):
-        """Make a choice between ``filepath`` and ``self.default_filepath``.
-
-        Args
-        ----
-        filepath: str
-            the filepath to be compared with ``self.default_filepath``
-
-        Returns
-        -------
-        str
-            The selected filepath
-        """
-
-        if filepath is None:
-            return self.default_filepath
-        else:
-            if os.path.basename(filepath) == '':
-                filepath = os.path.join(filepath, os.path.basename(
-                    self.default_filepath))
-            return filepath
-
-    def change_page_style(self, style):
-        r"""Alternate page styles of the current page.
-
-        Args
-        ----
-        style: str
-            value to set for the page style of the current page
-        """
-
-        self.append(Command("thispagestyle", arguments=style))
-
-    def change_document_style(self, style):
-        r"""Alternate page style for the entire document.
-
-        Args
-        ----
-        style: str
-            value to set for the document style
-        """
-
-        self.append(Command("pagestyle", arguments=style))
-
-    def add_color(self, name, model, description):
-        r"""Add a color that can be used throughout the document.
-
-        Args
-        ----
-        name: str
-            Name to set for the color
-        model: str
-            The color model to use when defining the color
-        description: str
-            The values to use to define the color
-        """
-
-        if self.color is False:
-            self.packages.append(Package("color"))
-            self.color = True
-
-        self.preamble.append(Command("definecolor", arguments=[name,
-                                                               model,
-                                                               description]))
-
-    def change_length(self, parameter, value):
-        r"""Change the length of a certain parameter to a certain value.
-
-        Args
-        ----
-        parameter: str
-            The name of the parameter to change the length for
-        value: str
-            The value to set the parameter to
-        """
-
-        self.preamble.append(UnsafeCommand('setlength',
-                                           arguments=[parameter, value]))
-
-    def set_variable(self, name, value):
-        r"""Add a variable which can be used inside the document.
-
-        Variables are defined before the preamble. If a variable with that name
-        has already been set, the new value will override it for future uses.
-        This is done by appending ``\renewcommand`` to the document.
-
-        Args
-        ----
-        name: str
-            The name to set for the variable
-        value: str
-            The value to set for the variable
-        """
-
-        name_arg = "\\" + name
-        variable_exists = False
-
-        for variable in self.variables:
-            if name_arg == variable.arguments._positional_args[0]:
-                variable_exists = True
-                break
-
-        if variable_exists:
-            renew = Command(command="renewcommand",
-                            arguments=[NoEscape(name_arg), value])
-            self.append(renew)
-        else:
-            new = Command(command="newcommand",
-                          arguments=[NoEscape(name_arg), value])
-            self.variables.append(new)
