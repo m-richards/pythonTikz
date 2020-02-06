@@ -7,10 +7,14 @@ orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
   build:
+    parameters:
+      docker_img:
+        type: string
+        default: python:3.6.1
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
+      - image: circleci/<<parameters.docker_img>>
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -99,7 +103,9 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      - build:
+          name: python3.6.1
+          docker_img: python:3.6.1
       - docs-deploy:
           requires:
             - build
