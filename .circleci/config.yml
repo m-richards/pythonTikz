@@ -104,8 +104,8 @@ workflows:
   build-and-deploy:
     jobs:
       - build:
-          name: build-python3.6.9
-          docker_img: python:3.6.9
+          name: build-python3.6.1
+          docker_img: python:3.6.1
 #      - build:
 #          name: build-python3.7.5
 #          docker_img: python:3.7.5
