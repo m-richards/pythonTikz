@@ -68,6 +68,11 @@ if [ "$python_version" = '2' ]; then
 fi
 
 echo -e '\e[32mTesting tests directory\e[0m'
+# Setup: Building test versions of examples
+cd "$main_folder"/tests/ # avoids confusing back and forth
+$python build_test_examples.py
+cd ../"$main_folder"
+
 if ! coverage run --source="$main_folder"/pythontikz -m pytest -v tests/*; then
   echo -e '\e[32mCoverage Report:\e[0m'
   coverage report;

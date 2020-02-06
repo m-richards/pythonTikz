@@ -1,53 +1,73 @@
 #!/usr/bin/python
-
 """
 Tests that the example files match the cached example output. Note that this
 could be done in bash with git diff, but is written like this to integrate
 with the rest of the pytest suite.
 """
-from io import StringIO
 
 import pytest
-from pytest import raises
-from pythontikz.positions import (TikzRectCoord, TikzPolCoord, TikzCalcCoord,
-                                  TikzCalcScalar, _TikzCalcImplicitCoord,
-                                  TikzNode
-                                  )
+import os
+from os.path import join
+import difflib
 
 
-from contextlib import contextmanager
-
-
-@contextmanager
-def does_not_raise():
-    yield
-
-
-rec_11 = TikzRectCoord(1, 1)
-
-import os.path
-
-def test_examples():
-    expected_tex_path = 'examples_reference/tikzdraw.tex'
-    actual_tex_path = '../examples/tikzdraw.tex'
-
+def test_example_tikzdraw():
+    curr_dir = os.getcwd()
+    if str(curr_dir).endswith('tests'):
+        expected_tex_path = r'examples_reference/tikzdraw.tex'
+        os.chdir(join('..', 'examples'))
+    else:  # Assume we are at root
+        expected_tex_path = r'tests/examples_reference/tikzdraw.tex'
+        os.chdir(join('.', 'examples'))
+    from examples.tikzdraw import doc
+    os.chdir(curr_dir)
     if os.path.exists(expected_tex_path):
         expected_tex = open(expected_tex_path, 'r')
     else:
-        expected_tex = StringIO("")
+        pytest.fail(f"{expected_tex_path} not found. \nIf you have"
+                    " just added a "
+                    f"new example, a copy of the .tex file\nmust go in"
+                    f" 'tests/examples_reference/'. This cached copy is used\n"
+                    "to check the output for changes when api changes.")
+    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    output_str = doc.dumps()
+    output_lines = output_str.split('\n')
+    # note list cast is important - stops generator consuming.
+    diff = list(difflib.unified_diff(output_lines, cached_lines))
+    changes = [l for l in diff if
+               l.startswith('+') or l.startswith('-')]
+    if len(changes) == 0:
+        return
+    difftext = ''.join(diff)
+    pytest.fail(msg=f'File diff is not null:\n{difftext}', pytrace=False)
 
-    if os.path.exists(actual_tex_path):
-        expected_tex = open(actual_tex_path, 'r')
+
+def test_example_tikzplot():
+    curr_dir = os.getcwd()
+    if str(curr_dir).endswith('tests'):
+        expected_tex_path = r'examples_reference/tikzplot.tex'
+        os.chdir(join('..', 'examples'))
+    else:  # Assume we are at root
+        expected_tex_path = r'tests/examples_reference/tikzplot.tex'
+        os.chdir(join('.', 'examples'))
+    from examples.tikzplot import doc
+    os.chdir(curr_dir)
+    if os.path.exists(expected_tex_path):
+        expected_tex = open(expected_tex_path, 'r')
     else:
-        expected_tex = StringIO("")
-
-    actual_tex = open(actual_tex_path)
-
-    for n, e_line, a_line in enumerate(zip(expected_tex, actual_tex), start=1):
-        if e_line != a_line:
-            pytest.fail(msg=(f"Example output has change on line {n}."
-                        f"{e_line} != {a_line}"))
-
-
-    expected_tex.close()
-    actual_tex.close()
+        pytest.fail(f"{expected_tex_path} not found. \nIf you have"
+                    " just added a "
+                    f"new example, a copy of the .tex file\nmust go in"
+                    f" 'tests/examples_reference/'. This cached copy is used\n"
+                    "to check the output for changes when api changes.")
+    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    output_str = doc.dumps()
+    output_lines = output_str.split('\n')
+    # note list cast is important - stops generator consuming.
+    diff = list(difflib.unified_diff(output_lines, cached_lines))
+    changes = [l for l in diff if
+               l.startswith('+') or l.startswith('-')]
+    if len(changes) == 0:
+        return
+    difftext = ''.join(diff)
+    pytest.fail(msg=f'File diff is not null:\n{difftext}', pytrace=False)
