@@ -179,7 +179,9 @@
 
 
 <span class="k">def</span> <span class="nf">_warning</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">category</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="c1"># note coverage excluded since this is never directly called since it is</span>
+    <span class="c1"># a monkey patch</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">category</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># pragma: no cover</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2"> </span><span class="si">{message}</span><span class="s2">&quot;</span>  <span class="c1"># pragma: no cover</span>
 
 

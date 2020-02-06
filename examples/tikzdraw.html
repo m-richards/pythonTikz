@@ -186,107 +186,109 @@
                         <span class="n">TikzUserPath</span><span class="p">,</span> <span class="n">TikzOptions</span><span class="p">,</span> <span class="n">NoEscape</span><span class="p">,</span> <span class="n">TikzScope</span><span class="p">,</span>
                         <span class="n">TikzArc</span><span class="p">,</span> <span class="n">TikzLibrary</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># create document</span>
-    <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">()</span>
 
-    <span class="c1"># can manually add tikz libraries to document</span>
-    <span class="c1"># (some are detected automatically, like calc)</span>
-    <span class="n">doc</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s2">&quot;arrows.meta&quot;</span><span class="p">))</span>
-    <span class="n">doc</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s2">&quot;decorations.markings&quot;</span><span class="p">))</span>
+<span class="c1"># create document</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">()</span>
 
-    <span class="c1"># add our sample drawings</span>
-    <span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzPicture</span><span class="p">())</span> <span class="k">as</span> <span class="n">pic</span><span class="p">:</span>
+<span class="c1"># can manually add tikz libraries to document</span>
+<span class="c1"># (some are detected automatically, like calc)</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s2">&quot;arrows.meta&quot;</span><span class="p">))</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzLibrary</span><span class="p">(</span><span class="s2">&quot;decorations.markings&quot;</span><span class="p">))</span>
 
-        <span class="c1"># options for our node</span>
-        <span class="n">node_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;minimum size&#39;</span><span class="p">:</span> <span class="s1">&#39;100pt&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;fill&#39;</span><span class="p">:</span> <span class="s1">&#39;black!20&#39;</span><span class="p">}</span>
+<span class="c1"># add our sample drawings</span>
+<span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzPicture</span><span class="p">())</span> <span class="k">as</span> <span class="n">pic</span><span class="p">:</span>
 
-        <span class="c1"># create our test node</span>
-        <span class="n">box</span> <span class="o">=</span> <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;My block&#39;</span><span class="p">,</span>
-                       <span class="n">handle</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">,</span>
-                       <span class="n">options</span><span class="o">=</span><span class="n">TikzOptions</span><span class="p">(</span><span class="s1">&#39;draw&#39;</span><span class="p">,</span>
-                                           <span class="s1">&#39;rounded corners&#39;</span><span class="p">,</span>
-                                           <span class="o">**</span><span class="n">node_kwargs</span><span class="p">))</span>
+    <span class="c1"># options for our node</span>
+    <span class="n">node_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;minimum size&#39;</span><span class="p">:</span> <span class="s1">&#39;100pt&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;fill&#39;</span><span class="p">:</span> <span class="s1">&#39;black!20&#39;</span><span class="p">}</span>
 
-        <span class="c1"># add to tikzpicture</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="c1"># create our test node</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;My block&#39;</span><span class="p">,</span>
+                   <span class="n">handle</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">,</span>
+                   <span class="n">options</span><span class="o">=</span><span class="n">TikzOptions</span><span class="p">(</span><span class="s1">&#39;draw&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;rounded corners&#39;</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">node_kwargs</span><span class="p">))</span>
 
-        <span class="c1"># draw a few paths</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span>
-                             <span class="s1">&#39;rectangle&#39;</span><span class="p">,</span>
-                             <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">)],</span>
-                            <span class="n">options</span><span class="o">=</span><span class="n">TikzOptions</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)))</span>
+    <span class="c1"># add to tikzpicture</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
-        <span class="c1"># show use of anchor, relative coordinate</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">box</span><span class="o">.</span><span class="n">west</span><span class="p">,</span>
-                             <span class="s1">&#39;--&#39;</span><span class="p">,</span>
-                             <span class="s1">&#39;++(-1,0)&#39;</span><span class="p">]))</span>
+    <span class="c1"># draw a few paths</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span>
+                         <span class="s1">&#39;rectangle&#39;</span><span class="p">,</span>
+                         <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">)],</span>
+                        <span class="n">options</span><span class="o">=</span><span class="n">TikzOptions</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)))</span>
 
-        <span class="c1"># demonstrate the use of the with syntax</span>
-        <span class="k">with</span> <span class="n">pic</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">())</span> <span class="k">as</span> <span class="n">path</span><span class="p">:</span>
+    <span class="c1"># show use of anchor, relative coordinate</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">box</span><span class="o">.</span><span class="n">west</span><span class="p">,</span>
+                         <span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;++(-1,0)&#39;</span><span class="p">]))</span>
 
-            <span class="c1"># start at an anchor of the node</span>
-            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">east</span><span class="p">)</span>
+    <span class="c1"># demonstrate the use of the with syntax</span>
+    <span class="k">with</span> <span class="n">pic</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">())</span> <span class="k">as</span> <span class="n">path</span><span class="p">:</span>
 
-            <span class="c1"># necessary here because &#39;in&#39; is a python keyword</span>
-            <span class="n">path_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;in&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzUserPath</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span>
-                                     <span class="n">TikzOptions</span><span class="p">(</span><span class="s1">&#39;-latex&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">path_options</span><span class="p">)))</span>
-            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="c1"># start at an anchor of the node</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">east</span><span class="p">)</span>
 
-        <span class="c1"># Demonstrate use of arc syntax and \coordinate variables with</span>
-        <span class="c1"># TikZ Scopes. Example is drawing an integration contour diagram</span>
-        <span class="c1"># with an isolated singularity:</span>
+        <span class="c1"># necessary here because &#39;in&#39; is a python keyword</span>
+        <span class="n">path_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;in&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzUserPath</span><span class="p">(</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span>
+                                 <span class="n">TikzOptions</span><span class="p">(</span><span class="s1">&#39;-latex&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">path_options</span><span class="p">)))</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
-        <span class="c1"># define a coordinate so that we can reposition the origin easily</span>
-        <span class="c1"># after the latex is produced</span>
-        <span class="n">orig</span> <span class="o">=</span> <span class="n">TikzCalcCoord</span><span class="p">(</span><span class="n">handle</span><span class="o">=</span><span class="s2">&quot;orig&quot;</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>
-        <span class="n">orig_handle</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">get_handle</span><span class="p">()</span>  <span class="c1"># handle label to coordinate</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>  <span class="c1"># add definition of coordinate</span>
+    <span class="c1"># Demonstrate use of arc syntax and \coordinate variables with</span>
+    <span class="c1"># TikZ Scopes. Example is drawing an integration contour diagram</span>
+    <span class="c1"># with an isolated singularity:</span>
 
-        <span class="c1"># demonstrate use of tikz scopes</span>
-        <span class="n">scope_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span>
-            <span class="n">NoEscape</span><span class="p">(</span><span class="s2">&quot;decoration={markings,&quot;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="sa">r</span><span class="s2">&quot;mark=between positions 0.1&quot;</span>
-                     <span class="sa">r</span><span class="s2">&quot; and 0.9 step 0.25 with {\arrow[very thick]{&gt;}},}&quot;</span>
-                     <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">shift</span><span class="o">=</span><span class="n">orig_handle</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># define a coordinate so that we can reposition the origin easily</span>
+    <span class="c1"># after the latex is produced</span>
+    <span class="n">orig</span> <span class="o">=</span> <span class="n">TikzCalcCoord</span><span class="p">(</span><span class="n">handle</span><span class="o">=</span><span class="s2">&quot;orig&quot;</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">orig_handle</span> <span class="o">=</span> <span class="n">orig</span><span class="o">.</span><span class="n">get_handle</span><span class="p">()</span>  <span class="c1"># handle label to coordinate</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span>  <span class="c1"># add definition of coordinate</span>
 
-        <span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzScope</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">scope_options</span><span class="p">))</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
-            <span class="n">draw_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;gray!10&quot;</span><span class="p">,</span> <span class="n">postaction</span><span class="o">=</span><span class="s2">&quot;decorate&quot;</span><span class="p">,</span> <span class="p">)</span>
-            <span class="n">rad</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">sing_rad</span> <span class="o">=</span> <span class="mf">0.25</span>
-            <span class="c1"># angle constants</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="mi">180</span>
-            <span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">TikzDraw</span><span class="p">([</span><span class="n">TikzPolCoord</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">rad</span><span class="p">),</span>
-                          <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="n">TikzArc</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">rad</span><span class="p">),</span>
-                          <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">TikzPolCoord</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">sing_rad</span><span class="p">),</span>
-                          <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="n">TikzArc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">sing_rad</span><span class="p">),</span>
-                          <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="s1">&#39;cycle&#39;</span><span class="p">],</span>  <span class="c1"># close shape with cycle</span>
-                         <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
+    <span class="c1"># demonstrate use of tikz scopes</span>
+    <span class="n">scope_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span>
+        <span class="n">NoEscape</span><span class="p">(</span><span class="s2">&quot;decoration={markings,&quot;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="sa">r</span><span class="s2">&quot;mark=between positions 0.1&quot;</span>
+                 <span class="sa">r</span><span class="s2">&quot; and 0.9 step 0.25 with {\arrow[very thick]{&gt;}},}&quot;</span>
+                 <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">shift</span><span class="o">=</span><span class="n">orig_handle</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="c1"># demonstrate the use of \coordinate variables without scope</span>
+    <span class="k">with</span> <span class="n">doc</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">TikzScope</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">scope_options</span><span class="p">))</span> <span class="k">as</span> <span class="n">scope</span><span class="p">:</span>
+        <span class="n">draw_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;gray!10&quot;</span><span class="p">,</span> <span class="n">postaction</span><span class="o">=</span><span class="s2">&quot;decorate&quot;</span><span class="p">,</span> <span class="p">)</span>
+        <span class="n">rad</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">sing_rad</span> <span class="o">=</span> <span class="mf">0.25</span>
+        <span class="c1"># angle constants</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">180</span>
+        <span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">TikzDraw</span><span class="p">([</span><span class="n">TikzPolCoord</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">rad</span><span class="p">),</span>
+                      <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="n">TikzArc</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">rad</span><span class="p">),</span>
+                      <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">TikzPolCoord</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">sing_rad</span><span class="p">),</span>
+                      <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="n">TikzArc</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">sing_rad</span><span class="p">),</span>
+                      <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="s1">&#39;cycle&#39;</span><span class="p">],</span>  <span class="c1"># close shape with cycle</span>
+                     <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
 
-        <span class="c1"># (Add an axis to diagram):</span>
+    <span class="c1"># demonstrate the use of \coordinate variables without scope</span>
 
-        <span class="n">rad</span> <span class="o">=</span> <span class="mf">3.5</span>
-        <span class="n">draw_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span><span class="s2">&quot;very thick&quot;</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">)</span>
-        <span class="c1"># can handle addition/ subtraction between coordinate handle</span>
-        <span class="c1"># &amp; explicit coordinate object.</span>
+    <span class="c1"># (Add an axis to diagram):</span>
 
-        <span class="c1"># can also use node in draw inline context</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">-</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
-                             <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Re$}&quot;</span><span class="p">),</span>
-                                      <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;above&#39;</span><span class="p">])],</span>
-                            <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
-        <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">rad</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
-                             <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rad</span><span class="p">),</span>
-                             <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Im$}&quot;</span><span class="p">),</span>
-                                      <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">])],</span>
-                            <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="mf">3.5</span>
+    <span class="n">draw_options</span> <span class="o">=</span> <span class="n">TikzOptions</span><span class="p">(</span><span class="s2">&quot;very thick&quot;</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">)</span>
+    <span class="c1"># can handle addition/ subtraction between coordinate handle</span>
+    <span class="c1"># &amp; explicit coordinate object.</span>
+
+    <span class="c1"># can also use node in draw inline context</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="o">-</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                         <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                         <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Re$}&quot;</span><span class="p">),</span>
+                                  <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;above&#39;</span><span class="p">])],</span>
+                        <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
+    <span class="n">pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TikzDraw</span><span class="p">([</span><span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">rad</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                         <span class="n">orig_handle</span> <span class="o">+</span> <span class="n">TikzRectCoord</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rad</span><span class="p">),</span>
+                         <span class="n">TikzNode</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">NoEscape</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{$\Im$}&quot;</span><span class="p">),</span>
+                                  <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">])],</span>
+                        <span class="n">options</span><span class="o">=</span><span class="n">draw_options</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">doc</span><span class="o">.</span><span class="n">generate_pdf</span><span class="p">(</span><span class="s1">&#39;tikzdraw&#39;</span><span class="p">,</span> <span class="n">clean_tex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -323,7 +325,8 @@
 26
 27
 28
-29</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span><span class="c">%</span>
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span><span class="c">%</span>
 <span class="k">\usepackage</span><span class="na">[T1]</span><span class="nb">{</span>fontenc<span class="nb">}</span><span class="c">%</span>
 <span class="k">\usepackage</span><span class="na">[utf8]</span><span class="nb">{</span>inputenc<span class="nb">}</span><span class="c">%</span>
 <span class="k">\usepackage</span><span class="nb">{</span>lmodern<span class="nb">}</span><span class="c">%</span>
@@ -336,6 +339,7 @@
 <span class="k">\usetikzlibrary</span><span class="nb">{</span>decorations.markings<span class="nb">}</span><span class="c">%</span>
 <span class="c">%</span>
 <span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span><span class="c">%</span>
+<span class="k">\normalsize</span><span class="c">%</span>
 <span class="k">\normalsize</span><span class="c">%</span>
 <span class="k">\begin</span><span class="nb">{</span>tikzpicture<span class="nb">}</span><span class="c">%</span>
 <span class="k">\node</span><span class="na">[draw,rounded corners,align=center,minimum size=100pt,fill=black!20]</span> (box) <span class="nb">{</span>My block<span class="nb">}</span>;<span class="c">%</span>

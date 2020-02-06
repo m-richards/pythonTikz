@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pythontikz.document &mdash; pythonTikZ 0.1 documentation</title>
+  <title>pylatex.document &mdash; pythonTikZ 0.1 documentation</title>
   
 
   
@@ -146,7 +146,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>pythontikz.document</li>
+      <li>pylatex.document</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -161,7 +161,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for pythontikz.document</h1><div class="highlight"><pre>
+  <h1>Source code for pylatex.document</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module implements the class that deals with the full document.</span>
@@ -173,15 +173,15 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">errno</span>
-<span class="kn">from</span> <span class="nn">.base_classes</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">LatexObject</span>
-<span class="kn">import</span> <span class="nn">pylatex</span>
-<span class="kn">from</span> <span class="nn">pylatex</span> <span class="kn">import</span> <span class="n">Package</span>
-<span class="kn">from</span> <span class="nn">pylatex.errors</span> <span class="kn">import</span> <span class="n">CompilerError</span>
-<span class="kn">from</span> <span class="nn">pylatex.utils</span> <span class="kn">import</span> <span class="n">rm_temp_dir</span>
+<span class="kn">from</span> <span class="nn">.base_classes</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Command</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">LatexObject</span><span class="p">,</span> \
+    <span class="n">UnsafeCommand</span>
+<span class="kn">from</span> <span class="nn">.package</span> <span class="kn">import</span> <span class="n">Package</span>
+<span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">CompilerError</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dumps_list</span><span class="p">,</span> <span class="n">rm_temp_dir</span><span class="p">,</span> <span class="n">NoEscape</span>
 <span class="kn">import</span> <span class="nn">pylatex.config</span> <span class="k">as</span> <span class="nn">cf</span>
 
 
-<div class="viewcode-block" id="Document"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document">[docs]</a><span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">pylatex</span><span class="o">.</span><span class="n">Document</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">Environment</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class that contains a full LaTeX document.</span>
 
@@ -192,16 +192,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_filepath</span><span class="o">=</span><span class="s1">&#39;default_filepath&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
-                 <span class="n">documentclass</span><span class="o">=</span><span class="s1">&#39;article&#39;</span><span class="p">,</span> <span class="n">document_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontenc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">inputenc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lmodern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">textcomp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">microtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_numbers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">documentclass</span><span class="o">=</span><span class="s1">&#39;article&#39;</span><span class="p">,</span> <span class="n">document_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontenc</span><span class="o">=</span><span class="s1">&#39;T1&#39;</span><span class="p">,</span>
+                 <span class="n">inputenc</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="s2">&quot;normalsize&quot;</span><span class="p">,</span> <span class="n">lmodern</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">textcomp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">microtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_numbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">geometry_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args</span>
 <span class="sd">        ----</span>
 <span class="sd">        default_filepath: str</span>
 <span class="sd">            The default path to save files.</span>
-<span class="sd">        documentclass: str or `~pylatex.base_classes.command.Command`</span>
+<span class="sd">        documentclass: str or `~.Command`</span>
 <span class="sd">            The LaTeX class of the document.</span>
 <span class="sd">        document_options: str or `list`</span>
 <span class="sd">            The options to supply to the documentclass</span>
@@ -229,14 +229,6 @@
 <span class="sd">        data: list</span>
 <span class="sd">            Initial content of the document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># preserve old default values for non standalone</span>
-        <span class="k">if</span> <span class="n">documentclass</span> <span class="o">!=</span> <span class="s1">&#39;standalone&#39;</span><span class="p">:</span>
-            <span class="n">fontenc</span> <span class="o">=</span> <span class="s1">&#39;T1&#39;</span> <span class="k">if</span> <span class="n">fontenc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fontenc</span>
-            <span class="n">inputenc</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span> <span class="k">if</span> <span class="n">inputenc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">inputenc</span>
-            <span class="n">lmodern</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">lmodern</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">lmodern</span>
-            <span class="n">textcomp</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">textcomp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">textcomp</span>
-            <span class="n">page_numbers</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">page_numbers</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">page_numbers</span>
-            <span class="n">font_size</span> <span class="o">=</span> <span class="s1">&#39;normalsize&#39;</span> <span class="k">if</span> <span class="n">font_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">font_size</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">default_filepath</span> <span class="o">=</span> <span class="n">default_filepath</span>
 
@@ -295,8 +287,8 @@
         <span class="c1"># No colors have been added to the document yet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">font_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">font_size</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">font_size</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_propagate_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Propogate packages.</span>
@@ -307,14 +299,41 @@
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_propagate_packages</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">preamble</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preamble</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LatexObject</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Container</span><span class="p">):</span>
                     <span class="n">item</span><span class="o">.</span><span class="n">_propagate_packages</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">packages</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Document.generate_pdf"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.generate_pdf">[docs]</a>    <span class="k">def</span> <span class="nf">generate_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_tex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represent the document as a string in LaTeX syntax.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentclass</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">head</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dumps_packages</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">head</span> <span class="o">+=</span> <span class="n">dumps_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">head</span> <span class="o">+=</span> <span class="n">dumps_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preamble</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">head</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dumps</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Document.generate_tex"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.generate_tex">[docs]</a>    <span class="k">def</span> <span class="nf">generate_tex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a .tex file for the document.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        filepath: str</span>
+<span class="sd">            The name of the file (without .tex), if this is not supplied the</span>
+<span class="sd">            default filepath attribute is used as the path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_tex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select_filepath</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">generate_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_tex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                      <span class="n">compiler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compiler_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a pdf file from the document.</span>
 
@@ -386,22 +405,8 @@
                 <span class="k">raise</span>
             <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># For all other errors print the output and raise the error</span>
-                <span class="c1"># try to catch windows &#39;perl.exe&#39; not found so that we can</span>
-                <span class="c1"># try pdflatex instead rather than just crashing</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
-                <span class="kn">import</span> <span class="nn">re</span>
-                <span class="kn">import</span> <span class="nn">sys</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;couldnotfindthescriptengine&#39;perl.exe&#39;&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: Compiler latexmk failed since the dependency&quot;</span>
-                          <span class="s2">&quot; &#39;perl.exe&#39; was not found. Trying alternative &quot;</span>
-                          <span class="s2">&quot;compilers. Specify the compiler in future to avoid&quot;</span>
-                          <span class="s2">&quot; this check if not using latexmk.&quot;</span><span class="p">,</span>
-                          <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-                    <span class="k">continue</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
-                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+                <span class="k">raise</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">silent</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
@@ -411,7 +416,7 @@
                     <span class="c1"># Try latexmk cleaning first</span>
                     <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;latexmk&#39;</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="n">basename</span><span class="p">],</span>
                                             <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
-                <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">):</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="c1"># Otherwise just remove some file extensions.</span>
                     <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;aux&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="s1">&#39;fls&#39;</span><span class="p">,</span>
                                   <span class="s1">&#39;fdb_latexmk&#39;</span><span class="p">]</span>
@@ -434,13 +439,124 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Notify user that none of the compilers worked.</span>
-            <span class="k">raise</span> <span class="p">(</span><span class="n">CompilerError</span><span class="p">(</span>
-                <span class="s1">&#39;No LaTex compiler was found</span><span class="se">\n</span><span class="s1">&#39;</span>
-                <span class="s1">&#39;Either specify a LaTex compiler &#39;</span>
+            <span class="k">raise</span><span class="p">(</span><span class="n">CompilerError</span><span class="p">(</span>
+                <span class="s1">&#39;No LaTex compiler was found</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;Either specify a LaTex compiler &#39;</span> <span class="o">+</span>
                 <span class="s1">&#39;or make sure you have latexmk or pdfLaTex installed.&#39;</span>
             <span class="p">))</span>
 
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cur_dir</span><span class="p">)</span></div></div>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">cur_dir</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_select_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a choice between ``filepath`` and ``self.default_filepath``.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        filepath: str</span>
+<span class="sd">            the filepath to be compared with ``self.default_filepath``</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The selected filepath</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">filepath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_filepath</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">default_filepath</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">filepath</span>
+
+<div class="viewcode-block" id="Document.change_page_style"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.change_page_style">[docs]</a>    <span class="k">def</span> <span class="nf">change_page_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternate page styles of the current page.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        style: str</span>
+<span class="sd">            value to set for the page style of the current page</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;thispagestyle&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">style</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Document.change_document_style"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.change_document_style">[docs]</a>    <span class="k">def</span> <span class="nf">change_document_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternate page style for the entire document.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        style: str</span>
+<span class="sd">            value to set for the document style</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;pagestyle&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="n">style</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Document.add_color"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.add_color">[docs]</a>    <span class="k">def</span> <span class="nf">add_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a color that can be used throughout the document.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        name: str</span>
+<span class="sd">            Name to set for the color</span>
+<span class="sd">        model: str</span>
+<span class="sd">            The color model to use when defining the color</span>
+<span class="sd">        description: str</span>
+<span class="sd">            The values to use to define the color</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Package</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Command</span><span class="p">(</span><span class="s2">&quot;definecolor&quot;</span><span class="p">,</span> <span class="n">arguments</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">,</span>
+                                                               <span class="n">model</span><span class="p">,</span>
+                                                               <span class="n">description</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Document.change_length"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.change_length">[docs]</a>    <span class="k">def</span> <span class="nf">change_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Change the length of a certain parameter to a certain value.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        parameter: str</span>
+<span class="sd">            The name of the parameter to change the length for</span>
+<span class="sd">        value: str</span>
+<span class="sd">            The value to set the parameter to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">preamble</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnsafeCommand</span><span class="p">(</span><span class="s1">&#39;setlength&#39;</span><span class="p">,</span>
+                                           <span class="n">arguments</span><span class="o">=</span><span class="p">[</span><span class="n">parameter</span><span class="p">,</span> <span class="n">value</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Document.set_variable"><a class="viewcode-back" href="../../pythontikz/pythontikz.document.html#pythontikz.document.Document.set_variable">[docs]</a>    <span class="k">def</span> <span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a variable which can be used inside the document.</span>
+
+<span class="sd">        Variables are defined before the preamble. If a variable with that name</span>
+<span class="sd">        has already been set, the new value will override it for future uses.</span>
+<span class="sd">        This is done by appending ``\renewcommand`` to the document.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        name: str</span>
+<span class="sd">            The name to set for the variable</span>
+<span class="sd">        value: str</span>
+<span class="sd">            The value to set for the variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">name_arg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">name</span>
+        <span class="n">variable_exists</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name_arg</span> <span class="o">==</span> <span class="n">variable</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">_positional_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">variable_exists</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">variable_exists</span><span class="p">:</span>
+            <span class="n">renew</span> <span class="o">=</span> <span class="n">Command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="s2">&quot;renewcommand&quot;</span><span class="p">,</span>
+                            <span class="n">arguments</span><span class="o">=</span><span class="p">[</span><span class="n">NoEscape</span><span class="p">(</span><span class="n">name_arg</span><span class="p">),</span> <span class="n">value</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">renew</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">Command</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="s2">&quot;newcommand&quot;</span><span class="p">,</span>
+                          <span class="n">arguments</span><span class="o">=</span><span class="p">[</span><span class="n">NoEscape</span><span class="p">(</span><span class="n">name_arg</span><span class="p">),</span> <span class="n">value</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

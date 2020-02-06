@@ -1,4 +1,4 @@
-\documentclass{standalone}%
+\documentclass{article}%
 \usepackage[T1]{fontenc}%
 \usepackage[utf8]{inputenc}%
 \usepackage{lmodern}%
@@ -12,6 +12,7 @@
 %
 \begin{document}%
 \normalsize%
+\pagestyle{empty}%
 \begin{tikzpicture}%
 \begin{axis}[axis x line=center,axis y line=middle,tick align=outside]%
 \addplot+[domain=-10:10,samples=80,mark size=0.6pt]{-sin(\x r)+4};%
