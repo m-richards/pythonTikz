@@ -43,7 +43,7 @@ jobs:
             pip install codecov
             sudo apt-get install python3 python3-dev virtualenv \
             texlive-pictures texlive-science texlive-latex-extra \
-            imagemagick
+            imagemagick ghostscript
 
       - save_cache:
           paths:
