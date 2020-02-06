@@ -7,16 +7,20 @@ with the rest of the pytest suite.
 
 import pytest
 import os
+from os.path import join
 import difflib
 
 
 def test_example_tikzdraw():
-    if str(os.getcwd()).endswith('tests'):
+    curr_dir = os.getcwd()
+    if str(curr_dir).endswith('tests'):
         expected_tex_path = r'examples_reference/tikzdraw.tex'
-        actual_tex_path = r'../examples/tikzdraw.tex'
+        os.chdir(join('..', 'examples'))
     else:  # Assume we are at root
         expected_tex_path = r'tests/examples_reference/tikzdraw.tex'
-        actual_tex_path = r'examples/tikzdraw.tex'
+        os.chdir(join('.', 'examples'))
+    from examples.tikzdraw import doc
+    os.chdir(curr_dir)
     if os.path.exists(expected_tex_path):
         expected_tex = open(expected_tex_path, 'r')
     else:
@@ -25,14 +29,11 @@ def test_example_tikzdraw():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    if os.path.exists(expected_tex_path):
-        actual_tex = open(actual_tex_path, 'r')
-    else:
-        expected_tex.close()
-        pytest.fail(f"Something has gone wrong, {actual_tex_path} does not "
-                    f"exist.", False)
-    diff = list(difflib.ndiff(expected_tex.readlines(),
-                actual_tex.readlines()))
+    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    output_str = doc.dumps()
+    output_lines = output_str.split('\n')
+    # note list cast is important - stops generator consuming.
+    diff = list(difflib.unified_diff(output_lines, cached_lines))
     changes = [l for l in diff if
                l.startswith('+') or l.startswith('-')]
     if len(changes) == 0:
@@ -42,12 +43,15 @@ def test_example_tikzdraw():
 
 
 def test_example_tikzplot():
-    if str(os.getcwd()).endswith('tests'):
+    curr_dir = os.getcwd()
+    if str(curr_dir).endswith('tests'):
         expected_tex_path = r'examples_reference/tikzplot.tex'
-        actual_tex_path = r'../examples/tikzplot.tex'
+        os.chdir(join('..', 'examples'))
     else:  # Assume we are at root
         expected_tex_path = r'tests/examples_reference/tikzplot.tex'
-        actual_tex_path = r'examples/tikzplot.tex'
+        os.chdir(join('.', 'examples'))
+    from examples.tikzplot import doc
+    os.chdir(curr_dir)
     if os.path.exists(expected_tex_path):
         expected_tex = open(expected_tex_path, 'r')
     else:
@@ -56,14 +60,11 @@ def test_example_tikzplot():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    if os.path.exists(expected_tex_path):
-        actual_tex = open(actual_tex_path, 'r')
-    else:
-        expected_tex.close()
-        pytest.fail(f"Something has gone wrong, {actual_tex_path} does not "
-                    f"exist.", False)
-    diff = list(difflib.ndiff(expected_tex.readlines(),
-                actual_tex.readlines()))
+    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    output_str = doc.dumps()
+    output_lines = output_str.split('\n')
+    # note list cast is important - stops generator consuming.
+    diff = list(difflib.unified_diff(output_lines, cached_lines))
     changes = [l for l in diff if
                l.startswith('+') or l.startswith('-')]
     if len(changes) == 0:

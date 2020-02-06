@@ -30,16 +30,17 @@ def write_test(fp, example_filename, example_dir, cache_dir):
     # full_current_example_path = join(example_dir, example_filename)
     lines = [
         (0, f"def test_example_{example_filename}():"),
-        (1, f"if str(os.getcwd()).endswith('tests'):"),
-        (2, f"expected_tex_path = r'"
+        (1, "curr_dir = os.getcwd()"),
+        (1, "if str(curr_dir).endswith('tests'):"),
+        (2, "expected_tex_path = r'"
             f"{join('examples_reference', example_filename)}.tex'"),
-        (2, f"actual_tex_path = r'"
-            f"{join('..','examples', example_filename)}.tex'"),
+        (2, "os.chdir(join('..', 'examples'))"),
         (1, "else:  # Assume we are at root"),
         (2, f"expected_tex_path = r'"
             f"{join('tests', 'examples_reference', example_filename)}.tex'"),
-        (2, f"actual_tex_path = r'"
-            f"{join('examples', example_filename)}.tex'"),
+        (2, "os.chdir(join('.', 'examples'))"),
+        (1, f"from examples.{example_filename} import doc"),
+        (1, "os.chdir(curr_dir)"),
         (1, "if os.path.exists(expected_tex_path):"),
         (2, "expected_tex = open(expected_tex_path, 'r')"),
         (1, "else:"),
@@ -48,14 +49,11 @@ def write_test(fp, example_filename, example_dir, cache_dir):
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")"""),
-        (1, "if os.path.exists(expected_tex_path):"),
-        (2, "actual_tex = open(actual_tex_path, 'r')"),
-        (1, "else:"),
-        (2, "expected_tex.close()"),
-        (2, """pytest.fail(f"Something has gone wrong, {actual_tex_path} does not "
-                    f"exist.", False)"""),
-        (1, """diff = list(difflib.ndiff(expected_tex.readlines(),
-                actual_tex.readlines()))"""),
+        (1, "cached_lines = [l.strip() for l in expected_tex.readlines()]"),
+        (1, "output_str = doc.dumps()"),
+        (1, r"output_lines = output_str.split('\n')"),
+        (1, "# note list cast is important - stops generator consuming."),
+        (1, "diff = list(difflib.unified_diff(output_lines, cached_lines))"),
         (1, """changes = [l for l in diff if
                l.startswith('+') or l.startswith('-')]"""),
         (1, "if len(changes) == 0:"),
@@ -81,6 +79,7 @@ if __name__ == "__main__":
 
         f.write("import pytest\n")
         f.write("import os\n")
+        f.write("from os.path import join\n")
         f.write("import difflib\n")
         if str(os.getcwd()).endswith("tests"):
             example_dir = join("..", "examples")
