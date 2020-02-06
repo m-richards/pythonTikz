@@ -104,11 +104,11 @@ workflows:
   build-and-deploy:
     jobs:
       - build:
-          name: python3.6.1
+          name: build-python3.6.1
           docker_img: python:3.6.1
       - docs-deploy:
           requires:
-            - build
+            - build-python3.6.1
           filters:
             branches:
               only: master
