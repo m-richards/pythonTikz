@@ -114,7 +114,7 @@ workflows:
           docker_img: python:3.8
       - docs-deploy:
           requires:
-            - build-python3.6.9
+            - build-python3.6.1
           filters:
             branches:
               only: master
