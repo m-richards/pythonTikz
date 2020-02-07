@@ -51,11 +51,48 @@ class TikzUserPath(LatexObject):
         return ret_str
 
 
+class TikzRadius(LatexObject):
+    """Class which represents specification of a radius or radii for use with
+    the 'circle' path argument. Should not need to be used directly, should
+    be able inference from context.
+    """
+
+    def __init__(self, radius, ellipse_second_rad=None):
+        """Initialise a Radius object for a circle or ellipse respectively"""
+        if ellipse_second_rad is None:
+            self.is_ellipse = False
+        else:
+            self.is_ellipse = True
+        self._radius = radius
+        self._ellipse_second_rad = ellipse_second_rad
+
+        if isinstance(radius, (float, int)) is False:
+            raise TypeError("Radius must be an integer for float.")
+        if radius < 0:
+            raise ValueError(f"{__class__} radius cannot be negative.")
+
+        if ellipse_second_rad is not None:
+            if ellipse_second_rad < 0:
+                raise ValueError(f"{__class__} secondary radius cannot be "
+                                 f"negative.")
+            if isinstance(ellipse_second_rad, (float, int)) is False:
+                raise TypeError("Secondary radius must be an integer for "
+                                "float.")
+
+    def dumps(self):
+        """Return a string representation of a radius argument."""
+        if self.is_ellipse:
+            return "[x radius={}, y radius={}]".format(
+                self._radius, self._ellipse_second_rad)
+        else:
+            return "[radius={}]".format(self._radius)
+
+
 class TikzPathList(LatexObject):
     """Represents a path drawing."""
 
     _base_legal_path_types = ['--', '-|', '|-', 'to',
-                              'rectangle', 'circle',
+                              'rectangle', 'circle', 'ellipse',
                               'arc', 'edge']
 
     def __init__(self, *args, additional_path_types=None):
@@ -90,8 +127,7 @@ class TikzPathList(LatexObject):
                     'First element of path list must be a node identifier'
                     ' or coordinate'
                 )
-        elif self._last_item_type in ('point', 'arc'):
-            # point after point is permitted, doesnt draw
+        elif self._last_item_type in ('point', 'arc', 'circle', 'ellipse'):
 
             if isinstance(item, TikzNode):
                 # Note that we drop the preceding backslash since that is
@@ -99,6 +135,8 @@ class TikzPathList(LatexObject):
                 # since TikzPath will add this from its own dumps
                 self._arg_list.append(item.dumps()[1:-1])
                 return
+
+            # point after point is permitted, doesnt draw
             try:
                 self._add_point(item)
                 warnings.warn('TikzPath contains no path '
@@ -111,35 +149,45 @@ class TikzPathList(LatexObject):
                 # not a point, try path
                 pass
 
-            # will raise typeerror if wrong
-            self._add_path(item)
-        elif self._last_item_type == 'path':
-            # only point  or cycle allowed after path
-            if isinstance(item, str) and item.strip() == 'cycle':
-                self._arg_list.append(item)
-                return
+            if isinstance(item, (str, TikzUserPath)):
+                # special cases need more information
+                if item in ('circle', 'ellipse', 'arc'):
+                    self._add_path(item, append_text=item)
+                else:
+                    self._add_path(item, append_text=None)
 
-            try:
-                self._add_point(item)
+        # block for dealing with all path types
+        elif 'path' in self._last_item_type:
+            if self._last_item_type == 'path.arc':
+                # only allow arc specifier after arc path
+                # note this will throw exceptions if incorrect
+                self._add_arc_spec(item)
                 return
-            except (TypeError, ValueError):
-                raise ValueError('only a point descriptor  or "cycle" can '
-                                 'come after a path descriptor, got {}'
-                                 .format(type(item)))
+            if self._last_item_type == 'path.circle':
+                self._add_circle(item)
+            elif self._last_item_type == 'path.ellipse':
+                self._add_ellipse(item)
 
-        # not path.arc is path specifier "arc", not a TikzArc
-        elif self._last_item_type == 'path.arc':
-            # only allow arc specifier after arc path
-            # note this will throw exceptions if incorrect
-            self._add_arc_spec(item)
-            return
+            else:  # ordinary path - last type == 'path'
+                # only point  or cycle allowed after path
+                if isinstance(item, str) and item.strip() == 'cycle':
+                    self._arg_list.append(item)
+                    return
+
+                try:
+                    self._add_point(item)
+                    return
+                except (TypeError, ValueError):
+                    raise ValueError('only a point descriptor  or "cycle" can '
+                                     'come after a path descriptor, got {}'
+                                     .format(type(item)))
 
     def _parse_arg_list(self, args):
 
         for item in args:
             self._parse_next_item(item)
 
-    def _add_path(self, path):
+    def _add_path(self, path, append_text=None):
         """Attempt to add input argument as a path type specifier,
         raises and appropriate exception if invalid.
         """
@@ -150,16 +198,13 @@ class TikzPathList(LatexObject):
                 raise ValueError('Illegal user path type: "{}"'.format(path))
         elif isinstance(path, TikzUserPath):
             _path = path
-        else:
-            raise TypeError('Only string or TikzUserPath types are allowed')
 
         # add
         self._arg_list.append(_path)
         self._last_item_type = 'path'
-        # if path is an arc, need to know since then we expect
-        # following to be a TikzArc not a point
-        if _path.path_type == "arc":
-            self._last_item_type += ".arc"
+        # add additional info if needed
+        if append_text is not None:
+            self._last_item_type += "." + append_text
 
     def _add_point(self, point):
         if isinstance(point, str):
@@ -193,6 +238,7 @@ class TikzPathList(LatexObject):
             _arc = arc
         elif isinstance(arc, tuple):
             _arc = TikzArc(*arc)
+
         else:
             raise TypeError('Only str, tuple or TikzArc'
                             'arc allowed to follow arc specifier,'
@@ -200,6 +246,59 @@ class TikzPathList(LatexObject):
         # add, finally
         self._arg_list.append(_arc)
         self._last_item_type = 'arc'
+
+    def _add_circle(self, item):
+        """If circle is false then ellipse"""
+        method_error_msg = TypeError("Circle radius must be of type float, "
+                                     "str which is castable to float, "
+                                     f"or TikzRadius. Got {type(item)}.")
+        if isinstance(item, str):
+
+            try:
+                _item = TikzRadius(float(item))
+            except ValueError:
+                raise method_error_msg
+
+        elif isinstance(item, (float, int)):
+            # note non-negative is check on initialisation
+            _item = TikzRadius(item)
+        elif isinstance(item, TikzRadius):
+            if item.is_ellipse:
+                raise ValueError("'circle' path cannot be succeeded by"
+                                 " ellipse specifier")
+            _item = item
+        else:
+            raise method_error_msg
+        self._arg_list.append(_item)
+        self._last_item_type = 'circle'
+
+    def _add_ellipse(self, item):
+        method_error_msg = TypeError(
+            "Ellipse radius must be of type tuple [of length 2], "
+            "a string representation of a tuple or "
+            f"or TikzRadius. Got {type(item)}.")
+        if isinstance(item, str):
+            m = re.match(r'\('
+                         r'\s*([0-9]+(\.[0-9]+)?)\s*,'
+                         r'\s*([0-9]+(\.[0-9]+)?)\s*\)', item)
+            if m is None:
+                raise method_error_msg
+            _item = TikzRadius(m.group(1), m.group(3))
+        elif (isinstance(item, (list, tuple)) and len(item) == 2
+              and (isinstance(item[0], (float, int))
+              and (item[1], (float, int)))):
+            _item = TikzRadius(*item)
+
+        elif isinstance(item, TikzRadius):
+            if item.is_ellipse is False:
+                raise ValueError("'ellipse' path cannot be succeeded by"
+                                 " circle specifier.")
+            _item = item
+
+        else:
+            raise method_error_msg
+        self._arg_list.append(_item)
+        self._last_item_type = 'ellipse'
 
     def dumps(self):
         """Return representation of the path command."""

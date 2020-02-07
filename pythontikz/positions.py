@@ -337,7 +337,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
 class TikzCalcScalar(LatexObject):
     """Wrapper for multiplication scalar in calc expressions e.g.
     ($ 4*(3,2.2) $)
-    Written explicitly as a seperate class to enable dumps support.
+    Written explicitly as a separate class to enable dumps support.
     Simpler than trying to deal with casting floats and strings
     without having other string parsing cause issues.
     """
