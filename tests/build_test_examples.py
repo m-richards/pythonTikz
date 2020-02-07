@@ -53,15 +53,16 @@ def write_test(fp, example_filename, example_dir, cache_dir):
         (1, "output_str = doc.dumps()"),
         (1, r"output_lines = output_str.split('\n')"),
         (1, "# note list cast is important - stops generator consuming."),
-        (1, "diff = list(difflib.unified_diff(output_lines, cached_lines))"),
+        # diff is in order expected, actual
+        (1, "diff = list(difflib.unified_diff(cached_lines, output_lines))"),
         (1, """changes = [l for l in diff if
                l.startswith('+') or l.startswith('-')]"""),
         (1, "if len(changes) == 0:"),
         (2, "return"),
         # (1, "print(''.join(diff), end='')"),
-        (1, "difftext = ''.join(diff)"),
+        (1, r"difftext = '\n'.join(diff)"),
         (1, r"pytest.fail(msg=f'File diff is not null:\n{difftext}', "
-            r"pytrace=False)")
+            r"pytrace=True)")
 
     ]
     fp.write("\n\n")

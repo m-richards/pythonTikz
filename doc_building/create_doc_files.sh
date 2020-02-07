@@ -45,7 +45,7 @@ for f in ../examples/*.py; do
     echo $name
     rst=source/examples/${name}.rst
     $python gen_example_title.py "$name" > $rst
-    echo Creating file ${rst}
+    echo Creating file: ${rst}
     echo .. automodule:: examples.$name >> $rst
     echo >> $rst
 
