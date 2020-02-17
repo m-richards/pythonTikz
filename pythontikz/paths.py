@@ -57,33 +57,34 @@ class TikzRadius(LatexObject):
     be able inference from context.
     """
 
-    def __init__(self, radius, ellipse_second_rad=None):
+    def __init__(self, radius, ellipse_semi_minor_ax=None):
         """Initialise a Radius object for a circle or ellipse respectively"""
-        if ellipse_second_rad is None:
-            self.is_ellipse = False
-        else:
-            self.is_ellipse = True
-        self._radius = radius
-        self._ellipse_second_rad = ellipse_second_rad
-
         if isinstance(radius, (float, int)) is False:
-            raise TypeError("Radius must be an integer for float.")
+            raise TypeError("Radius must be an integer or float.")
         if radius < 0:
             raise ValueError(f"{__class__} radius cannot be negative.")
+        self._radius = radius
 
-        if ellipse_second_rad is not None:
-            if ellipse_second_rad < 0:
-                raise ValueError(f"{__class__} secondary radius cannot be "
-                                 f"negative.")
-            if isinstance(ellipse_second_rad, (float, int)) is False:
-                raise TypeError("Secondary radius must be an integer for "
+        # if ellipse or not
+        if ellipse_semi_minor_ax is None:
+            self.is_ellipse = False
+            self._ellipse_semi_minor_ax = None
+        else:
+            self.is_ellipse = True
+            self._ellipse_semi_minor_ax = ellipse_semi_minor_ax
+            # continue type checking
+            if isinstance(ellipse_semi_minor_ax, (float, int)) is False:
+                raise TypeError("Semi-minor axis must be an integer or "
                                 "float.")
+            if ellipse_semi_minor_ax < 0:
+                raise ValueError(f"{__class__} semi-minor axis cannot be "
+                                 f"negative.")
 
     def dumps(self):
         """Return a string representation of a radius argument."""
         if self.is_ellipse:
             return "[x radius={}, y radius={}]".format(
-                self._radius, self._ellipse_second_rad)
+                self._radius, self._ellipse_semi_minor_ax)
         else:
             return "[radius={}]".format(self._radius)
 
@@ -256,7 +257,7 @@ class TikzPathList(LatexObject):
 
             try:
                 _item = TikzRadius(float(item))
-            except ValueError:
+            except (ValueError, TypeError):
                 raise method_error_msg
 
         elif isinstance(item, (float, int)):
@@ -274,7 +275,7 @@ class TikzPathList(LatexObject):
 
     def _add_ellipse(self, item):
         method_error_msg = TypeError(
-            "Ellipse radius must be of type tuple [of length 2], "
+            "Ellipse args must be of type tuple [of length 2], "
             "a string representation of a tuple or "
             f"or TikzRadius. Got {type(item)}.")
         if isinstance(item, str):
@@ -283,7 +284,7 @@ class TikzPathList(LatexObject):
                          r'\s*([0-9]+(\.[0-9]+)?)\s*\)', item)
             if m is None:
                 raise method_error_msg
-            _item = TikzRadius(m.group(1), m.group(3))
+            _item = TikzRadius(float(m.group(1)), float(m.group(3)))
         elif (isinstance(item, (list, tuple)) and len(item) == 2
               and (isinstance(item[0], (float, int))
               and (item[1], (float, int)))):
