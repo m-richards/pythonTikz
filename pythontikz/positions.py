@@ -148,7 +148,7 @@ class TikzRectCoord(BaseTikzCoord):
 
         tol = 1e-6
 
-        # return comparison result
+        # return comparison result - tolerance for polar coordinate case
         return abs(other_x - self._x) < tol and abs(other_y - self._y) < tol
 
     def _arith_check(self, other):
@@ -189,7 +189,7 @@ class TikzRectCoord(BaseTikzCoord):
         other = self._arith_check(other)
         # note that other should never return the exception flag False
         # as every class which extends BaseTikzCoord should also
-        # support subtraction with rectangular coords. If not, the defautlt
+        # support subtraction with rectangular coords. If not, the default
         # exception should suffice
         return self.__sub__(first=other, second=self)
 
@@ -315,7 +315,7 @@ class TikzCalcCoord(BaseTikzCoord, TikzNode):
             ret_str.append('at {}'.format(str(self._node_position)))
 
         if self._node_text is not None:
-            ret_str.append('{{{text}}}'.format(text=self._node_text))
+            ret_str.append(f'{{{self._node_text}}}')
         # note text can be empty in / coordinate
         return ' '.join(ret_str) + ";"  # avoid space on end
 

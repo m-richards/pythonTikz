@@ -90,7 +90,9 @@ class TikzRadius(LatexObject):
 
 
 class TikzPathList(LatexObject):
-    """Represents a path drawing."""
+    """Represents a the components of a path drawing, comprised of
+    coordinates and keyword arguments.
+    """
 
     _base_legal_path_types = ['--', '-|', '|-', 'to',
                               'rectangle', 'circle', 'ellipse',
@@ -100,8 +102,8 @@ class TikzPathList(LatexObject):
         """
         Args
         ----
-        *args: list
-            A list of path elements
+        *args: str or tuple or `~.BaseTikzCoord`
+            A list of path elements (args itself is an iterable/ list)
         """
         self._last_item_type = None
         self._arg_list = []
