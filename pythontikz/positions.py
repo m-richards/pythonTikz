@@ -25,11 +25,11 @@ class TikzNode(TikzObject):
         """
         Args
         ----
-        handle: str
-            Node identifier
+        handle: str or None
+            Node identifier, may be none for inline text usage
         options: list or `~.TikzOptions`
             List of options
-        at: TikzRectCoord
+        at: BaseTikzCoord or tuple
             Coordinate where node is placed
         text: str
             Body text of the node
@@ -38,12 +38,20 @@ class TikzNode(TikzObject):
 
         self.handle = handle
 
-        if isinstance(at, (TikzRectCoord, type(None))):
+        error_msg = TypeError(f"'at' argument of TikzNode must be a "
+                              f"TikzCoordinate type or tuple specifying "
+                              f"rectangular coordinates.")
+
+        if isinstance(at, tuple):
+            try:
+                self._node_position = TikzRectCoord(*at, relative=False)
+            except (TypeError, ValueError):
+                raise error_msg
+
+        elif isinstance(at, (BaseTikzCoord, type(None))):
             self._node_position = at
         else:
-            raise TypeError(
-                'at parameter must be an object of the'
-                'TikzCoordinate class')
+            raise error_msg
 
         self._node_text = text
 

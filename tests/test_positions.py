@@ -239,10 +239,11 @@ def test_node():
     """Small test since Node also gets tested in paths. Also tests inherited
     methods from TikzObject
     """
+    assert TikzNode(at=(1, 1)).dumps() == '\\node at (1.0,1.0) {};'
     with raises(TypeError):
         TikzNode(at='(1,1)')
     with raises(TypeError):
-        TikzNode(at=(1, 2))
+        TikzNode(at=(1, 1, 1))
 
     a = TikzNode('s', at=TikzRectCoord(1, 1), options=[
         'anchor=east'], text='$x_1$')
