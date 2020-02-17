@@ -278,8 +278,7 @@
         <span class="k">if</span> <span class="n">geometry_options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">packages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Package</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">geometry_options</span><span class="p">))</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-
+        <span class="nb">super</span><span class="p">(</span><span class="n">pylatex</span><span class="o">.</span><span class="n">Document</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="c1"># Usually the name is the class name, but if we create our own</span>
         <span class="c1"># document class, \begin{document} gets messed up.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_latex_name</span> <span class="o">=</span> <span class="s1">&#39;document&#39;</span>

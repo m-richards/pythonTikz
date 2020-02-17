@@ -215,11 +215,49 @@
         <span class="k">return</span> <span class="n">ret_str</span></div>
 
 
+<div class="viewcode-block" id="TikzRadius"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzRadius">[docs]</a><span class="k">class</span> <span class="nc">TikzRadius</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class which represents specification of a radius or radii for use with</span>
+<span class="sd">    the &#39;circle&#39; path argument. Should not need to be used directly, should</span>
+<span class="sd">    be able inference from context.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">ellipse_semi_minor_ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a Radius object for a circle or ellipse respectively&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Radius must be an integer or float.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{__class__}</span><span class="s2"> radius cannot be negative.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">radius</span>
+
+        <span class="c1"># if ellipse or not</span>
+        <span class="k">if</span> <span class="n">ellipse_semi_minor_ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_ellipse</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ellipse_semi_minor_ax</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_ellipse</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ellipse_semi_minor_ax</span> <span class="o">=</span> <span class="n">ellipse_semi_minor_ax</span>
+            <span class="c1"># continue type checking</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ellipse_semi_minor_ax</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Semi-minor axis must be an integer or &quot;</span>
+                                <span class="s2">&quot;float.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ellipse_semi_minor_ax</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{__class__}</span><span class="s2"> semi-minor axis cannot be &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;negative.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a string representation of a radius argument.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ellipse</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;[x radius=</span><span class="si">{}</span><span class="s2">, y radius=</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ellipse_semi_minor_ax</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;[radius=</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_radius</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="TikzPathList"><a class="viewcode-back" href="../../pythontikz/pythontikz.paths.html#pythontikz.paths.TikzPathList">[docs]</a><span class="k">class</span> <span class="nc">TikzPathList</span><span class="p">(</span><span class="n">LatexObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a path drawing.&quot;&quot;&quot;</span>
 
     <span class="n">_base_legal_path_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="s1">&#39;-|&#39;</span><span class="p">,</span> <span class="s1">&#39;|-&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;rectangle&#39;</span><span class="p">,</span> <span class="s1">&#39;circle&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;rectangle&#39;</span><span class="p">,</span> <span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="s1">&#39;ellipse&#39;</span><span class="p">,</span>
                               <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="s1">&#39;edge&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">additional_path_types</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -254,8 +292,7 @@
                     <span class="s1">&#39;First element of path list must be a node identifier&#39;</span>
                     <span class="s1">&#39; or coordinate&#39;</span>
                 <span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;arc&#39;</span><span class="p">):</span>
-            <span class="c1"># point after point is permitted, doesnt draw</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;arc&#39;</span><span class="p">,</span> <span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="s1">&#39;ellipse&#39;</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzNode</span><span class="p">):</span>
                 <span class="c1"># Note that we drop the preceding backslash since that is</span>
@@ -263,6 +300,8 @@
                 <span class="c1"># since TikzPath will add this from its own dumps</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">dumps</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">return</span>
+
+            <span class="c1"># point after point is permitted, doesnt draw</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;TikzPath contains no path &#39;</span>
@@ -275,35 +314,45 @@
                 <span class="c1"># not a point, try path</span>
                 <span class="k">pass</span>
 
-            <span class="c1"># will raise typeerror if wrong</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path&#39;</span><span class="p">:</span>
-            <span class="c1"># only point  or cycle allowed after path</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;cycle&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-                <span class="k">return</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">TikzUserPath</span><span class="p">)):</span>
+                <span class="c1"># special cases need more information</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="s1">&#39;ellipse&#39;</span><span class="p">,</span> <span class="s1">&#39;arc&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">append_text</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_path</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">append_text</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="c1"># block for dealing with all path types</span>
+        <span class="k">elif</span> <span class="s1">&#39;path&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path.arc&#39;</span><span class="p">:</span>
+                <span class="c1"># only allow arc specifier after arc path</span>
+                <span class="c1"># note this will throw exceptions if incorrect</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_arc_spec</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                 <span class="k">return</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only a point descriptor  or &quot;cycle&quot; can &#39;</span>
-                                 <span class="s1">&#39;come after a path descriptor, got </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path.circle&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_circle</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path.ellipse&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_ellipse</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-        <span class="c1"># not path.arc is path specifier &quot;arc&quot;, not a TikzArc</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">==</span> <span class="s1">&#39;path.arc&#39;</span><span class="p">:</span>
-            <span class="c1"># only allow arc specifier after arc path</span>
-            <span class="c1"># note this will throw exceptions if incorrect</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_arc_spec</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># ordinary path - last type == &#39;path&#39;</span>
+                <span class="c1"># only point  or cycle allowed after path</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;cycle&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="k">return</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_point</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only a point descriptor  or &quot;cycle&quot; can &#39;</span>
+                                     <span class="s1">&#39;come after a path descriptor, got </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">_parse_arg_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parse_next_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_add_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">append_text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attempt to add input argument as a path type specifier,</span>
 <span class="sd">        raises and appropriate exception if invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -314,16 +363,13 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Illegal user path type: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">TikzUserPath</span><span class="p">):</span>
             <span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only string or TikzUserPath types are allowed&#39;</span><span class="p">)</span>
 
         <span class="c1"># add</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;path&#39;</span>
-        <span class="c1"># if path is an arc, need to know since then we expect</span>
-        <span class="c1"># following to be a TikzArc not a point</span>
-        <span class="k">if</span> <span class="n">_path</span><span class="o">.</span><span class="n">path_type</span> <span class="o">==</span> <span class="s2">&quot;arc&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">+=</span> <span class="s2">&quot;.arc&quot;</span>
+        <span class="c1"># add additional info if needed</span>
+        <span class="k">if</span> <span class="n">append_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">+=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">append_text</span>
 
     <span class="k">def</span> <span class="nf">_add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -357,6 +403,7 @@
             <span class="n">_arc</span> <span class="o">=</span> <span class="n">arc</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arc</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">_arc</span> <span class="o">=</span> <span class="n">TikzArc</span><span class="p">(</span><span class="o">*</span><span class="n">arc</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Only str, tuple or TikzArc&#39;</span>
                             <span class="s1">&#39;arc allowed to follow arc specifier,&#39;</span>
@@ -364,6 +411,59 @@
         <span class="c1"># add, finally</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_arc</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;arc&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_add_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;If circle is false then ellipse&quot;&quot;&quot;</span>
+        <span class="n">method_error_msg</span> <span class="o">=</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Circle radius must be of type float, &quot;</span>
+                                     <span class="s2">&quot;str which is castable to float, &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;or TikzRadius. Got {type(item)}.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRadius</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">method_error_msg</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="c1"># note non-negative is check on initialisation</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRadius</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzRadius</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_ellipse</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;circle&#39; path cannot be succeeded by&quot;</span>
+                                 <span class="s2">&quot; ellipse specifier&quot;</span><span class="p">)</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">method_error_msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;circle&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_add_ellipse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">method_error_msg</span> <span class="o">=</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;Ellipse args must be of type tuple [of length 2], &quot;</span>
+            <span class="s2">&quot;a string representation of a tuple or &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;or TikzRadius. Got {type(item)}.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\(&#39;</span>
+                         <span class="sa">r</span><span class="s1">&#39;\s*([0-9]+(\.[0-9]+)?)\s*,&#39;</span>
+                         <span class="sa">r</span><span class="s1">&#39;\s*([0-9]+(\.[0-9]+)?)\s*\)&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">method_error_msg</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRadius</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+              <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span>
+              <span class="ow">and</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)))):</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">TikzRadius</span><span class="p">(</span><span class="o">*</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">TikzRadius</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_ellipse</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;ellipse&#39; path cannot be succeeded by&quot;</span>
+                                 <span class="s2">&quot; circle specifier.&quot;</span><span class="p">)</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">item</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">method_error_msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item_type</span> <span class="o">=</span> <span class="s1">&#39;ellipse&#39;</span>
 
     <span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return representation of the path command.&quot;&quot;&quot;</span>

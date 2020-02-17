@@ -1,0 +1,19 @@
+Tikzpath additions example
+==========================
+.. automodule:: examples.tikzpath_additions
+
+The code
+--------
+.. literalinclude:: /../../examples/tikzpath_additions.py
+    :start-after: begin-doc-include
+
+The generated files
+-------------------
+.. literalinclude:: /_static/examples/tikzpath_additions.tex
+    :language: latex
+    :linenos:
+    :caption: tikzpath_additions.tex
+
+tikzpath_additions.pdf
+
+.. figure:: /_static/examples/tikzpath_additions.pdf.png
