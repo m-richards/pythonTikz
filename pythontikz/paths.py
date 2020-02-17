@@ -5,6 +5,8 @@ This module implements the classes used to show plots.
 ..  :copyright: (c) 2020 by Matthew Richards.
     :license: MIT, see License for more details.
 """
+from pylatex import TikZOptions
+
 from .base_classes import LatexObject, Command
 import re
 
@@ -373,13 +375,47 @@ class TikzDraw(TikzPath):
         options: TikzOptions
             A list of options for the command
         """
-        super(TikzDraw, self).__init__(path=path, options=options)
+        super().__init__(path=path, options=options)
 
     def dumps(self):
         r"""Return a representation for the command. Override
         to provide clearer syntax to user instead of \path[draw]
         """
         ret_str = [Command('draw', options=self.options).dumps()]
+
+        ret_str.append(self.path.dumps())
+        return ' '.join(ret_str) + ";"
+
+
+class TikzFill(TikzPath):
+    r"""Exposes /fill as a command directly accessible. Wrapper sitting on
+    top of \path and \draw
+    """
+
+    def __init__(self, fill, path=None, options=None):
+        """
+        Args
+        ----
+        fill: str
+            Fill color - supplied explicitly since mandatory
+        path: `~.TikzPathList` or List
+            A list of the nodes, path types in the path
+        options: `~.TikzOptions`
+            A list of options for the command
+        """
+        if isinstance(options, TikZOptions):
+            options._positional_args.insert(0, fill)
+        else:
+            # make sure fill color is always the first argument
+            options = [fill] if options is None else [fill] + list(options)
+        self._fill = fill  # just here to make latex object repr happy
+        super().__init__(path=path, options=options)
+
+    def dumps(self):
+        r"""Return a representation for the command. Override
+        to provide clearer syntax to user instead of \path[fill='####']
+        """
+        ret_str = [Command('fill', options=self.options).dumps()]
 
         ret_str.append(self.path.dumps())
         return ' '.join(ret_str) + ";"

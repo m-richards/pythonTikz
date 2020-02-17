@@ -27,3 +27,4 @@ del get_versions
 Tikz = TikzPicture
 TikzNodeAnchor = TikzAnchor
 TikzCoordinate = TikzRectCoord
+Tikz
