@@ -114,8 +114,7 @@ class Document(pylatex.Document):
         if geometry_options is not None:
             packages.append(Package('geometry', options=geometry_options))
 
-        super().__init__(data=data)
-
+        super(pylatex.Document, self).__init__(data=data)
         # Usually the name is the class name, but if we create our own
         # document class, \begin{document} gets messed up.
         self._latex_name = 'document'

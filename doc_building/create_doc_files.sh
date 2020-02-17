@@ -41,11 +41,11 @@ rm source/pythontikz/pythontikz.base_classes.rst
 
 for f in ../examples/*.py; do
     echo $f
-    name=`echo $f | cut -d'/' -f3 | cut -d'.' -f1`
+    name=$(echo $f | cut -d'/' -f3 | cut -d'.' -f1)
     echo $name
     rst=source/examples/${name}.rst
     $python gen_example_title.py "$name" > $rst
-    echo Creating file ${rst}
+    echo "Creating file: ""${rst}"
     echo .. automodule:: examples.$name >> $rst
     echo >> $rst
 
@@ -58,13 +58,16 @@ for f in ../examples/*.py; do
     echo The generated files >> $rst
     echo ------------------- >> $rst
     # Compiling examples to png
+    mkdir --parents source/_static/examples  # make sure this exists
     cd source/_static/examples
-    echo $PWD
-    echo $python ../../../$f
+#    echo $PWD
+#    echo $python ../../../$f
     $python ../../../$f > /dev/null
     rst=../../../$rst
     for pdf in ${name}*.pdf; do
-        convert $pdf ${pdf}.png
+      # explicit RGB in case example printout happens to be greyscale
+        convert $pdf -colorspace RGB ${pdf}.png
+
         echo ".. literalinclude:: /_static/examples/${pdf%.pdf}.tex" >> $rst
         echo "    :language: latex" >> $rst
         echo "    :linenos:" >> $rst
