@@ -9,12 +9,25 @@ import pylatex
 from .latex_object import LatexObject
 
 
-class Container(pylatex.base_classes.Container, LatexObject):
+class Container(LatexObject, pylatex.base_classes.Container):
     """Shallow wrapper to enable use of updated Parent class. This docstring
     is overridden in sphinx documentation.
     """
 
     __doc__ = pylatex.base_classes.Container.__doc__
+
+    def dumps_packages(self):
+        r"""Represent the packages needed as a string in LaTeX syntax.
+
+        Returns
+        -------
+        string:
+            A LaTeX string representing the packages of the container
+        """
+
+        self._propagate_packages()
+
+        return super().dumps_packages()
 
     def get_package_sources(self):
         """Return a list of all data sources which can contain a package
@@ -29,6 +42,9 @@ class Environment(pylatex.base_classes.Environment, Container):
     """
 
     __doc__ = pylatex.base_classes.Environment.__doc__
+
+    def get_package_sources(self):
+        return [self.options, self.arguments, self.start_arguments]
 
 
 class ContainerCommand(Container):

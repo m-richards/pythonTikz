@@ -28,9 +28,20 @@ class LatexObject(pylatex.base_classes.LatexObject):
 
     def _propagate_packages(self):
         """Make sure packages get propagated."""
+        print("propagate packages, sources are:", self.get_package_sources())
         for source in self.get_package_sources():
+            if source is None:
+                continue
             for item in source:
-                if isinstance(item, LatexObject):
-                    item._propagate_packages()
+                print("item:", item, end='')
+                if isinstance(item, pylatex.base_classes.LatexObject):
+                    print('->', item)
                     for p in item.packages:
                         self.packages.add(p)
+                    # pythontikz latex object should all have propagate
+                    # packages defined
+                    if isinstance(item, LatexObject):
+                        item._propagate_packages()
+                else:
+                    print()
+        print("\t\t total list: ", self.packages)

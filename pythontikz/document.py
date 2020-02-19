@@ -10,17 +10,19 @@ import os
 import subprocess
 import errno
 
-from pylatex.base_classes import Environment
 
-from .base_classes import Command, Container, LatexObject
+
+from .base_classes import Command, Container, LatexObject, Environment
 import pylatex
 from pylatex import Package
 from pylatex.errors import CompilerError
-from pylatex.utils import rm_temp_dir
+from pylatex.utils import rm_temp_dir, dumps_list
 import pylatex.config as cf
 
+from pylatex import Document as PlDocument
 
-class Document(pylatex.Document):
+
+class Document(PlDocument, Environment):
     r"""
     A class that contains a full LaTeX document.
 
@@ -29,6 +31,9 @@ class Document(pylatex.Document):
     author and date commands to the preamble to make it work.
 
     """
+
+    def get_package_sources(self):
+        return [self.preamble]
 
     def __init__(self, default_filepath='default_filepath', *,
                  documentclass='article', document_options=None, fontenc=None,
@@ -117,7 +122,7 @@ class Document(pylatex.Document):
         if geometry_options is not None:
             packages.append(Package('geometry', options=geometry_options))
 
-        super(pylatex.Document, self).__init__(data=data)
+        super().__init__(data=data)
         # Usually the name is the class name, but if we create our own
         # document class, \begin{document} gets messed up.
         self._latex_name = 'document'
@@ -135,22 +140,6 @@ class Document(pylatex.Document):
         self.meta_data = False
         if font_size is not None:
             self.append(Command(command=font_size))
-
-    def _propagate_packages(self):
-        r"""Propogate packages.
-
-        Make sure that all the packages included in the previous containers
-        are part of the full list of packages.
-        """
-
-        super(Environment, self)._propagate_packages()
-
-        for item in self.preamble:
-            if isinstance(item, LatexObject):
-                if isinstance(item, Container):
-                    item._propagate_packages()
-                for p in item.packages:
-                    self.packages.add(p)
 
     def generate_pdf(self, filepath=None, *, clean=True, clean_tex=True,
                      compiler=None, compiler_args=None, silent=True):
@@ -279,3 +268,118 @@ class Document(pylatex.Document):
             ))
 
         os.chdir(cur_dir)
+
+    def _propagate_packages(self):
+        """This needs to be defined to force LatexObject inherited method to
+        get used, since this ordering is contrary to the MRO."""
+        return LatexObject._propagate_packages(self)
+
+    # def dumps(self):
+    #     """Represent the document as a string in LaTeX syntax.
+    #
+    #     Returns
+    #     -------
+    #     str
+    #     """
+    #
+    #     head = self.documentclass.dumps() + '%\n'
+    #     head += self.dumps_packages() + '%\n'
+    #     head += dumps_list(self.variables) + '%\n'
+    #     head += dumps_list(self.preamble) + '%\n'
+    #
+    #     return head + '%\n' + super().dumps()
+    #
+    # def generate_tex(self, filepath=None):
+    #     """Generate a .tex file for the document.
+    #
+    #     Args
+    #     ----
+    #     filepath: str
+    #         The name of the file (without .tex), if this is not supplied the
+    #         default filepath attribute is used as the path.
+    #     """
+    #
+    #     return PlDocument.generate_tex(self, filepath)
+    #
+    #
+    # def _select_filepath(self, filepath):
+    #     """Make a choice between ``filepath`` and ``self.default_filepath``.
+    #
+    #     Args
+    #     ----
+    #     filepath: str
+    #         the filepath to be compared with ``self.default_filepath``
+    #
+    #     Returns
+    #     -------
+    #     str
+    #         The selected filepath
+    #     """
+    #
+    #     return PlDocument._select_filepath(self, filepath)
+    #
+    # def change_page_style(self, style):
+    #     r"""Alternate page styles of the current page.
+    #
+    #     Args
+    #     ----
+    #     style: str
+    #         value to set for the page style of the current page
+    #     """
+    #
+    #     return PlDocument.change_page_style(self, style)
+    #
+    # def change_document_style(self, style):
+    #     r"""Alternate page style for the entire document.
+    #
+    #     Args
+    #     ----
+    #     style: str
+    #         value to set for the document style
+    #     """
+    #
+    #     self.append(Command("pagestyle", arguments=style))
+    #
+    # def add_color(self, name, model, description):
+    #     r"""Add a color that can be used throughout the document.
+    #
+    #     Args
+    #     ----
+    #     name: str
+    #         Name to set for the color
+    #     model: str
+    #         The color model to use when defining the color
+    #     description: str
+    #         The values to use to define the color
+    #     """
+    #     return PlDocument.add_color(self, name, model, description)
+    #
+    # def change_length(self, parameter, value):
+    #     r"""Change the length of a certain parameter to a certain value.
+    #
+    #     Args
+    #     ----
+    #     parameter: str
+    #         The name of the parameter to change the length for
+    #     value: str
+    #         The value to set the parameter to
+    #     """
+    #
+    #     return PlDocument.change_length(self, parameter, value)
+    #
+    # def set_variable(self, name, value):
+    #     r"""Add a variable which can be used inside the document.
+    #
+    #     Variables are defined before the preamble. If a variable with that name
+    #     has already been set, the new value will override it for future uses.
+    #     This is done by appending ``\renewcommand`` to the document.
+    #
+    #     Args
+    #     ----
+    #     name: str
+    #         The name to set for the variable
+    #     value: str
+    #         The value to set for the variable
+    #     """
+    #
+    #     return PlDocument.set_variable(self, name, value)

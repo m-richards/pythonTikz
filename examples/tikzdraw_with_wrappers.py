@@ -21,7 +21,7 @@ doc = Document()
 # can manually add tikz libraries to document
 # (some are detected automatically, like calc)
 doc.preamble.append(TikzLibrary("arrows.meta"))
-doc.preamble.append(TikzLibrary("decorations.markings"))
+# doc.preamble.append(TikzLibrary("decorations.markings"))
 
 # add our sample drawings
 with doc.create(TikzPicture()) as pic:
@@ -118,4 +118,7 @@ with doc.create(TikzPicture()) as pic:
                         options=draw_options))
 
 if __name__ == "__main__":
-    doc.generate_pdf('tikzdraw_with_wrappers', clean_tex=False)
+    # doc.generate_pdf('tikzdraw_with_wrappers', clean_tex=False)
+    print(Document.__mro__)
+    # print(doc._propagate_packages())
+    print(doc.dumps())
