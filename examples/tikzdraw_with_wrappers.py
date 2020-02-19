@@ -103,7 +103,7 @@ with doc.create(TikzPicture()) as pic:
     rad = 3.5
     draw_options = TikzOptions("very thick", "->")
     # can handle addition/ subtraction between coordinate handle
-    #& explicit coordinate object.
+    # & explicit coordinate object.
 
     # can also use node in draw inline context
     pic.append(TikzDraw([orig_handle + TikzRectCoord(-rad, 0), '--',

@@ -9,6 +9,9 @@ This module implements the class that deals with the full document.
 import os
 import subprocess
 import errno
+
+from pylatex.base_classes import Environment
+
 from .base_classes import Command, Container, LatexObject
 import pylatex
 from pylatex import Package
@@ -140,7 +143,7 @@ class Document(pylatex.Document):
         are part of the full list of packages.
         """
 
-        super()._propagate_packages()
+        super(Environment, self)._propagate_packages()
 
         for item in self.preamble:
             if isinstance(item, LatexObject):

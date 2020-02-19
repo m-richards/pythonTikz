@@ -27,7 +27,7 @@ with doc.create(TikzPicture()) as pic:
                  # coordinates=[(1,1), (2,2), (3,-3)],
                  error_bar_deltas=None,
                  options=TikzOptions({
-                     'domain': NoEscape('-10:10'),
+                     'domain': '-10:10',
                      'samples': 80,
                      'mark size': '0.6pt'
                  }),

@@ -7,25 +7,14 @@ This example shows TikZ drawing capabilities.
 """
 
 # begin-doc-include
-from pythontikz import (Document, TikzPicture, TikzNode, TikzDraw,
-                        TikzRectCoord, TikzCalcCoord, TikzLibrary)
-
-
+from pythontikz import Document, TikzPicture
+from pythontikz.positions import TikzNode, TikzRectCoord, TikzCalcCoord
+from pythontikz.paths import TikzRadius, TikzDraw
 # create document
-from pythontikz.paths import TikzRadius
-
 doc = Document(documentclass='standalone')
-
-# can manually add tikz libraries to document
-# (some are detected automatically, like calc)
-
-doc.preamble.append(TikzLibrary("arrows.meta"))
-doc.preamble.append(TikzLibrary("decorations.markings"))
-
 
 # add our sample drawings
 with doc.create(TikzPicture()) as pic:
-
     # define a coordinate so that we can reposition the origin easily
     # after the latex is produced
     orig = TikzCalcCoord(handle="orig", at=TikzRectCoord(5, -3))
