@@ -1,6 +1,6 @@
 [flake8]
 # Tool generated files that are okay to violate pep
-exclude = pythontikz/_version.py, versioneer.py
+exclude = pythontikz/_version.py, versioneer.py, tests/test_examples.py
 ignore = 
 	# W503:=line break before binary operator. 
 	# W503 and W504 are contradictory, allowing the operator to start a line
