@@ -332,6 +332,7 @@ class TikzPath(TikzObject):
         super(TikzPath, self).__init__(options=options)
 
         additional_path_types = None
+        # tODO replace when options can store packages
         if options is not None and 'use Hobby shortcut' in options:
             self.packages.add(TikzLibrary('hobby'))
             additional_path_types = [".."]

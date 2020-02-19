@@ -2,7 +2,7 @@
 """
 This module implements the classes used to show plots.
 
-..  :copyright: (c) 2014 by Jelte Fennema.
+..  :copyright: (c) 2020 by Matthew Richards.
     :license: MIT, see License for more details.
 """
 from .base_classes import LatexObject, Environment, Command, Options, Container
