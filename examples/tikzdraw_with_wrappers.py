@@ -118,5 +118,4 @@ with doc.create(TikzPicture()) as pic:
                         options=draw_options))
 
 if __name__ == "__main__":
-    # print(doc.dumps())
     doc.generate_pdf('tikzdraw_with_wrappers', clean_tex=False)

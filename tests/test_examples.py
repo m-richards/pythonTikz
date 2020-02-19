@@ -29,7 +29,7 @@ def test_example_tikzdraw():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    cached_lines = [l.replace('\n', '').replace('\r', '') for l in expected_tex.readlines()]
     output_str = doc.dumps()
     output_lines = output_str.split('\n')
     # note list cast is important - stops generator consuming.
@@ -60,7 +60,7 @@ def test_example_tikzdraw_with_wrappers():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    cached_lines = [l.replace('\n', '').replace('\r', '') for l in expected_tex.readlines()]
     output_str = doc.dumps()
     output_lines = output_str.split('\n')
     # note list cast is important - stops generator consuming.
@@ -91,7 +91,7 @@ def test_example_tikzpath_additions():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    cached_lines = [l.replace('\n', '').replace('\r', '') for l in expected_tex.readlines()]
     output_str = doc.dumps()
     output_lines = output_str.split('\n')
     # note list cast is important - stops generator consuming.
@@ -122,7 +122,7 @@ def test_example_tikzplot():
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")
-    cached_lines = [l.strip() for l in expected_tex.readlines()]
+    cached_lines = [l.replace('\n', '').replace('\r', '') for l in expected_tex.readlines()]
     output_str = doc.dumps()
     output_lines = output_str.split('\n')
     # note list cast is important - stops generator consuming.

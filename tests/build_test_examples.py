@@ -49,7 +49,8 @@ def write_test(fp, example_filename, example_dir, cache_dir):
                     f"new example, a copy of the .tex file\nmust go in"
                     f" 'tests/examples_reference/'. This cached copy is used\n"
                     "to check the output for changes when api changes.")"""),
-        (1, "cached_lines = [l.strip() for l in expected_tex.readlines()]"),
+        (1, r"cached_lines = [l.replace('\n', '').replace('\r', '') for l in "
+            r"expected_tex.readlines()]"),
         (1, "output_str = doc.dumps()"),
         (1, r"output_lines = output_str.split('\n')"),
         (1, "# note list cast is important - stops generator consuming."),
