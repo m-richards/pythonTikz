@@ -6,8 +6,7 @@ Baseclasses that can be used to create classes representing LaTeX objects.
 """
 
 from pylatex.base_classes.latex_object import LatexObject
-from pylatex.base_classes.containers import Container, Environment, \
-    ContainerCommand
+from .containers import Container, Environment, ContainerCommand
 from .command import CommandBase, Command, UnsafeCommand, Options, \
     SpecialOptions, Arguments
 from pylatex.base_classes.float import Float
