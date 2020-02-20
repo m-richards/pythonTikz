@@ -16,6 +16,24 @@ class Container(LatexObject, pylatex.base_classes.Container):
 
     __doc__ = pylatex.base_classes.Container.__doc__
 
+    def dumps_content(self):
+        r"""Represent the container as a string in LaTeX syntax.
+
+        Args
+        ----
+        \*\*kwargs:
+            Arguments that can be passed to `~pylatex.utils.dumps_list`
+
+
+        Returns
+        -------
+        string:
+            A LaTeX string representing the container
+        """
+        # Note, only purpose of this overload is to make pylatex reference in
+        # docs explicit so that sphinx works
+        return super().dumps_content()
+
     def dumps_packages(self):
         r"""Represent the packages needed as a string in LaTeX syntax.
 
