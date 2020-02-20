@@ -7,6 +7,7 @@ This module implements the base LaTeX object.
 """
 
 import pylatex
+from collections.abc import Iterable
 
 
 class LatexObject(pylatex.base_classes.LatexObject):
@@ -20,28 +21,27 @@ class LatexObject(pylatex.base_classes.LatexObject):
 
     dumps_docstring = "Represent the class as a string in LaTeX syntax."
 
-    def get_package_sources(self):
+    def _get_dependency_sources(self):
         """Return a list of all associated data which may contain a package
         dependence.
         """
         return []
 
     def _propagate_packages(self):
-        """Make sure packages get propagated."""
-        print("propagate packages, sources are:", self.get_package_sources())
-        for source in self.get_package_sources():
+        """Make sure packages get propagated. Recursive DFS to obtain all
+        package dependencies of sub-components
+        """
+        for source in self._get_dependency_sources():
             if source is None:
                 continue
+            if isinstance(source, Iterable) is False:
+                source = [source]
             for item in source:
-                print("item:", item, end='')
                 if isinstance(item, pylatex.base_classes.LatexObject):
-                    print('->', item)
-                    for p in item.packages:
-                        self.packages.add(p)
                     # pythontikz latex object should all have propagate
                     # packages defined
-                    if isinstance(item, LatexObject):
+                    if isinstance(item, (LatexObject,
+                                         pylatex.base_classes.Container)):
                         item._propagate_packages()
-                else:
-                    print()
-        print("\t\t total list: ", self.packages)
+                    for p in item.packages:
+                        self.packages.add(p)

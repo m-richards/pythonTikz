@@ -21,7 +21,6 @@ doc = Document()
 # can manually add tikz libraries to document
 # (some are detected automatically, like calc)
 doc.preamble.append(TikzLibrary("arrows.meta"))
-# doc.preamble.append(TikzLibrary("decorations.markings"))
 
 # add our sample drawings
 with doc.create(TikzPicture()) as pic:
@@ -67,14 +66,14 @@ with doc.create(TikzPicture()) as pic:
     # Demonstrate use of arc syntax and \coordinate variables with
     # TikZ Scopes. Example is drawing an integration contour diagram
     # with an isolated singularity:
-
+    #
     # define a coordinate so that we can reposition the origin easily
     # after the latex is produced
     orig = TikzCalcCoord(handle="orig", at=TikzRectCoord(5, -3))
     orig_handle = orig.get_handle()  # handle label to coordinate
     pic.append(orig)  # add definition of coordinate
 
-    # # demonstrate use of tikz scopes
+    # demonstrate use of tikz scopes
     scope_options = TikzOptions(
         decoration=MarkingsBetween(start_pos=0.1, end_pos=0.9,
                                    step=0.25,
@@ -118,7 +117,4 @@ with doc.create(TikzPicture()) as pic:
                         options=draw_options))
 
 if __name__ == "__main__":
-    # doc.generate_pdf('tikzdraw_with_wrappers', clean_tex=False)
-    print(Document.__mro__)
-    # print(doc._propagate_packages())
-    print(doc.dumps())
+    doc.generate_pdf('tikzdraw_with_wrappers', clean_tex=False)

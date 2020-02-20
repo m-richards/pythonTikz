@@ -29,11 +29,11 @@ class Container(LatexObject, pylatex.base_classes.Container):
 
         return super().dumps_packages()
 
-    def get_package_sources(self):
+    def _get_dependency_sources(self):
         """Return a list of all data sources which can contain a package
         dependence.
         """
-        return [self.data]
+        return super()._get_dependency_sources() + [self.data]
 
 
 class Environment(pylatex.base_classes.Environment, Container):
@@ -43,8 +43,9 @@ class Environment(pylatex.base_classes.Environment, Container):
 
     __doc__ = pylatex.base_classes.Environment.__doc__
 
-    def get_package_sources(self):
-        return [self.options, self.arguments, self.start_arguments]
+    def _get_dependency_sources(self):
+        return (super()._get_dependency_sources()
+                + [self.options, self.arguments, self.start_arguments])
 
 
 class ContainerCommand(Container):

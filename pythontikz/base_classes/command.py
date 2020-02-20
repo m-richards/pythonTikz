@@ -22,13 +22,17 @@ from pylatex.base_classes import (CommandBase, Command,  # noqa: F401
                                   UnsafeCommand)  # noqa: F401
 
 
-class Parameters(pylatex.base_classes.command.Parameters):
+class Parameters(pylatex.base_classes.command.Parameters, LatexObject):
     """The base class used by :class:`~Options` and
     `~Arguments`.
 
     This class should probably never be used on its own and inhereting from it
     is only useful if a class like `~Options` or `~Arguments` is needed again.
     """
+
+    def _get_dependency_sources(self):
+        return (super()._get_dependency_sources()
+                + [self._positional_args, self._key_value_args.values()])
 
     @recursive_repr()
     def __repr__(self):

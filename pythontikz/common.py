@@ -60,6 +60,9 @@ class TikzScope(Environment):
 class TikzObject(Container):
     """Abstract Class that some TikZ Objects inherits from."""
 
+    def _get_dependency_sources(self):
+        return [self.options]
+
     def __init__(self, options=None):
         """
         Args

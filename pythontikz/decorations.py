@@ -1,9 +1,9 @@
 """Classes for tikz decorations libraries"""
-from pylatex import Package, Command
-from pylatex.base_classes import Container
+from . import Package, Command
+from .base_classes import Container
 import re
 
-from pythontikz.common import TikzObject
+from .common import TikzObject, TikzLibrary
 
 
 def build_markings(at=None, between=None, start=None, finish=None, step=None,
@@ -31,6 +31,8 @@ def _check_valid_unit(input_):
 
 class MarkingsAt(TikzObject):
     """Construct a decoration marking using the 'at' syntax"""
+
+    packages = [Package('tikz'), TikzLibrary('decorations.markings')]
 
     def __init__(self, at, marking):
         """Construct object instance"""
