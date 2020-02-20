@@ -2,7 +2,7 @@ coverage:
   status:
     project:
       default:
-        target: auto
+        target: 70
         threshold: 1
         base: auto
     # coverage measured only in the diff
